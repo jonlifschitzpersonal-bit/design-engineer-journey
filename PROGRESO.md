@@ -5,17 +5,19 @@
 
 **Clase actual:** 0.1
 **URL publicada:** —
-**Repo:** —
+**Repo:** https://github.com/jonlifschitzpersonal-bit/design-engineer-journey.git
 
 ---
 
 ## Checklist
 
 ### Módulo 0 — Setup
-- [ ] 0.1 Terminal y Git
+
+- [x] 0.1 Terminal y Git
 - [ ] 0.2 GitHub + Vercel + IA como tutor
 
 ### Módulo 1 — CSS
+
 - [ ] 1.1 Cascada, especificidad, herencia
 - [ ] 1.2 Box model y unidades
 - [ ] 1.3 Flexbox
@@ -26,6 +28,7 @@
 - [ ] 1.8 Proyecto: sección pixel-perfect
 
 ### Módulo 2 — JavaScript y lógica
+
 - [ ] 2.1 Pensar en pasos (pseudocódigo)
 - [ ] 2.2 Variables, tipos, operadores
 - [ ] 2.3 Condicionales y funciones
@@ -41,6 +44,7 @@
 - [ ] Práctica semanal de lógica (módulos 2 y 3)
 
 ### Módulo 3 — React
+
 - [ ] 3.1 JSX y Vite
 - [ ] 3.2 Componentes y props
 - [ ] 3.3 useState
@@ -53,6 +57,7 @@
 - [ ] 3.10 Proyecto: componentes en React
 
 ### Módulo 4 — TypeScript + Next.js + Tailwind
+
 - [ ] 4.1 TypeScript básico
 - [ ] 4.2 Tipar componentes
 - [ ] 4.3 Tailwind y tokens
@@ -63,6 +68,7 @@
 - [ ] 4.8 Dashboard: deploy
 
 ### Módulo 5 — Motion
+
 - [ ] 5.1 Principios de animación
 - [ ] 5.2 Transitions y keyframes
 - [ ] 5.3 Performance de animación
@@ -73,6 +79,7 @@
 - [ ] 5.8 Craft lab (6–10)
 
 ### Módulo 6 — Design systems
+
 - [ ] 6.1 Tokens Figma → código
 - [ ] 6.2 API de componentes
 - [ ] 6.3 Accesibilidad
@@ -81,6 +88,7 @@
 - [ ] 6.6 Mini design system + docs
 
 ### Módulo 7 — Calidad de producción
+
 - [ ] 7.1 Core Web Vitals
 - [ ] 7.2 Auditoría a11y
 - [ ] 7.3 Branches, PRs, code review
@@ -89,6 +97,7 @@
 - [ ] 7.6 Estados y pulido
 
 ### Módulo 8 — Portfolio y búsqueda
+
 - [ ] 8.1 Narrativa del portfolio
 - [ ] 8.2 Portfolio (1)
 - [ ] 8.3 Portfolio (2)
