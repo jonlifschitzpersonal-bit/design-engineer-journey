@@ -60,9 +60,17 @@ Salario base publicado (NYC): USD 120k–250k + equity.
 
 **Cada clase tiene 4 partes**
 1. **Concepto** — explicación corta, conectada con lo que ya sabés de diseño.
-2. **Ejercicio guiado** — vos escribís el código; yo reviso, señalo errores y te doy pistas. No te lo escribo yo.
+2. **Ejercicio guiado** — con el ciclo híbrido (abajo): predecís, Claude Code genera, explicás y modificás a mano.
 3. **Desafío** — para hacer solo, con criterios claros de "listo".
 4. **Review** — al empezar la clase siguiente revisamos el desafío y actualizamos `PROGRESO.md`.
+
+**Ciclo híbrido para cada ejercicio con IA (módulos 0 a 3)**
+1. **Predecir:** antes de generar, decís qué elementos, propiedades o lógica esperás que tenga el código.
+2. **Generar:** Claude Code lo escribe.
+3. **Explicar:** contás con tus palabras qué hace cada parte. Si no podés, preguntás hasta entenderla.
+4. **Modificar a mano:** hacés al menos un cambio vos (ajustar un valor, agregar un estado, romper algo a propósito y arreglarlo).
+
+**Siempre a mano ✍️:** la práctica semanal de lógica, las clases 2.1 a 2.4 y un ejercicio de CSS por clase en el módulo 1.
 
 **Para arrancar cada sesión** escribime: _"arranquemos la clase X.Y"_. Leo `PROGRESO.md` y seguimos desde ahí.
 
@@ -78,7 +86,7 @@ La IA no reemplaza saber programar: en el trabajo vas a ser responsable de cada 
 
 | Etapa | Módulos | Regla |
 |---|---|---|
-| **Aprender a mano** | 0 a 3 (setup, CSS, JS, React) | Escribís todo vos. La IA solo para explicar un concepto o un mensaje de error, **nunca para generar la solución**. |
+| **Híbrido** | 0 a 3 (setup, CSS, JS, React) | Claude Code genera el código, pero antes **predecís** qué debería tener, después lo **explicás** con tus palabras y hacés **cambios chicos a mano**. Los ejercicios de lógica y algunos de CSS siguen 100% a mano. |
 | **Trabajar con IA** | 4 a 7 (Next/TS, motion, design systems, calidad) | Le pedís a Claude Code que implemente, como en un equipo real. Cada clase suma un ejercicio de **review del código generado**. |
 | **Demostrar sin IA** | 8 (portfolio y búsqueda) | Práctica de live coding y take-home **sin IA**, para simular la entrevista. |
 
@@ -110,7 +118,7 @@ La IA no reemplaza saber programar: en el trabajo vas a ser responsable de cada 
 ## 4. Módulos y clases
 
 ### Módulo 0 — Setup y flujo de trabajo (semana 1)
-**IA:** solo para preguntar conceptos.
+**IA:** híbrido (ver tabla de etapas).
 
 | Clase | Tema |
 |---|---|
@@ -120,7 +128,7 @@ La IA no reemplaza saber programar: en el trabajo vas a ser responsable de cada 
 **Entregable:** primera página publicada con URL pública.
 
 ### Módulo 1 — CSS de verdad (semanas 2–5)
-**IA:** a mano. Solo para explicar conceptos o errores.
+**IA:** híbrido: Claude Code genera, vos predecís, explicás y modificás a mano. Ejercicios marcados ✍️ van 100% a mano.
 
 | Clase | Tema |
 |---|---|
@@ -134,7 +142,7 @@ La IA no reemplaza saber programar: en el trabajo vas a ser responsable de cada 
 | 1.8 | **Proyecto:** recrear pixel-perfect una sección de una landing (Linear, Vercel o Profound). |
 
 ### Módulo 2 — JavaScript y lógica de programación (semanas 6–11)
-**IA:** a mano. Solo para explicar conceptos o errores.
+**IA:** híbrido: Claude Code genera, vos predecís, explicás y modificás a mano. Ejercicios marcados ✍️ van 100% a mano.
 
 | Clase | Tema |
 |---|---|
@@ -154,7 +162,7 @@ La IA no reemplaza saber programar: en el trabajo vas a ser responsable de cada 
 **Práctica semanal de lógica** (durante los módulos 2 y 3): 2–3 ejercicios cortos por semana, de unos 15 minutos cada uno, sin interfaz. Ejemplo: _"dada una lista de productos, devolvé los que cuestan menos de X, ordenados por nombre"_. Primero lo escribís en pseudocódigo y después en JavaScript. Van en la carpeta `ejercicios-logica/`.
 
 ### Módulo 3 — React (semanas 12–16)
-**IA:** a mano. Solo para explicar conceptos o errores.
+**IA:** híbrido: Claude Code genera, vos predecís, explicás y modificás a mano. Ejercicios marcados ✍️ van 100% a mano.
 
 | Clase | Tema |
 |---|---|
