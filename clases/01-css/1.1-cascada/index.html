@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.1 — Cascada, especificidad y herencia</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 2rem;
+        }
+
+        /* Regla A */
+        p { color: gray; }
+
+        /* Regla B */
+        .card p { color: blue; }
+
+        /* Regla C */
+        .highlight { color: green; }
+
+        /* Regla D */
+        #featured { color: red; }
+
+        /* Regla E */
+        p { color: black; }
+
+        /* Regla F */
+        .card {
+            color: purple;
+            font-family: Georgia, serif;
+            border: 2px solid currentColor;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>1. Título</h2>
+        <p>2. Párrafo</p>
+        <p class="highlight">3. Párrafo con .highlight</p>
+        <p id="featured" class="highlight">4. Párrafo con #featured y .highlight</p>
+        <button>5. Botón</button>
+    </div>
+
+    <p>6. Párrafo fuera de la card</p>
+</body>
+</html>

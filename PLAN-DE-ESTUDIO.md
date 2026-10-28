@@ -1,27 +1,50 @@
 # Plan de estudio: de Product Designer a Design Engineer
 
-> Alumno: Jonathan · Tutor: Claude · Inicio: 28/10/2026
+> Alumno: Jonathan · Tutor: Claude · Inicio: 28/10/2026 · Versión 2 (reestructurada sobre la guía *De Figma a código con IA*)
 > Objetivo: llegar con un perfil y un portfolio que encajen en roles como **Senior Design Engineer en Profound** (React, Next.js, TypeScript, Tailwind, motion, design systems).
 
 ---
 
-## 1. Punto de partida
+## 1. La idea del curso
+
+**El diseño es el punto de partida; el código es lo que te diferencia.**
+
+El curso sigue el flujo de trabajo de [`recursos/Guia_Completa_Figma_AI_a_Codigo.md`](recursos/Guia_Completa_Figma_AI_a_Codigo.md):
+
+```
+Problema → Figma estructurado → Figma MCP → Plan → Código en una branch → Storybook → QA con evidencia → Entrega
+```
+
+Vos diseñás y tomás las decisiones; Claude Code implementa; vos revisás que el resultado respete el diseño y funcione. Para revisar con criterio necesitás entender el código generado, y eso es lo que suman los módulos de fundamentos.
+
+**Lo que agrega este plan sobre la guía**, porque lo piden los puestos de Design Engineer y la guía no lo cubre:
+- **CSS fino**: Profound pide "CSS excelente" e interfaces pixel-precise.
+- **Leer React y TypeScript** con soltura, no solo "por arriba".
+- **Motion y micro-interacciones.**
+- **Preparación para entrevistas técnicas.**
+
+---
+
+## 2. Punto de partida
 
 | | |
 |---|---|
 | Rol actual | Product Designer |
 | Código | HTML/CSS ok · JavaScript poco · sin React |
 | Tiempo | 5–8 hs por semana |
-| Entorno | VS Code, Node.js y GitHub listos |
+| Entorno | VS Code, Node.js, GitHub y Vercel listos |
+| Figma | Plan Free / Starter |
 | Estrategia | Prepararse primero, aplicar con portfolio de design engineering |
 
-**Lo que ya tenés y es tu ventaja:** ojo visual, tipografía, layout, Figma, sistemas de diseño, criterio de producto, diálogo con PMs. La mayoría de los developers que aplican a estos roles **no** tienen eso.
+**Tu ventaja:** ojo visual, tipografía, layout, Figma, sistemas de diseño, criterio de producto.
 
-**El gap a cerrar:** JavaScript → React → TypeScript/Next.js/Tailwind → motion → calidad de producción (performance, accesibilidad, code review).
+**Restricción del plan Free de Figma:**
+- **Code Connect** requiere plan Organization o Enterprise. Lo aprendés igual (concepto, archivos de mapeo y checklist) y en tus proyectos lo reemplazamos por un **mapeo documentado** Figma ↔ código que el agente lee. Si conseguís acceso a un plan Organization (por ejemplo, en un trabajo), lo aplicás directo.
+- **Figma MCP:** el plan gratuito tiene límites de uso. Lo verificamos con la documentación oficial en la clase 2.4.
 
 ---
 
-## 2. Qué pide el mercado
+## 3. Qué pide el mercado
 
 ### Profound — Member of Technical Staff, Design Engineer (Buenos Aires / NYC, presencial)
 **Responsabilidades**
@@ -45,241 +68,209 @@ Salario base publicado (NYC): USD 120k–250k + equity.
 
 ### Patrones en otras búsquedas (Vercel, Raycast, startups de IA)
 - Mismo stack: React + Next.js + TypeScript + Tailwind.
-- Librerías de motion: **Motion** (ex Framer Motion), GSAP.
-- Figma fluido y trabajo en design systems.
+- Motion (ex Framer Motion), GSAP.
+- Figma fluido y design systems.
 - Graphic design sólido: layout, tipografía, color.
-- Obsesión por polish, accesibilidad y performance.
-- Fluidez con herramientas de IA para desarrollar (Cursor, Claude Code).
-- Portfolio con **proyectos publicados** que muestren diseño + código, idealmente con case studies de punta a punta.
+- Polish, accesibilidad y performance.
+- Fluidez con herramientas de IA (Cursor, Claude Code).
+- Portfolio con **proyectos publicados** y case studies de punta a punta.
 
 ---
 
-## 3. Cómo funciona la tutoría
+## 4. Cómo funciona la tutoría
 
-**Ritmo:** 2 clases por semana (~2 hs c/u) + ~2 hs de práctica libre. Duración estimada: **~37 semanas (8–9 meses)**, con margen para repasar.
+**Ritmo:** 2 clases por semana (~2 hs c/u) + ~2 hs de práctica. Duración estimada: **~38 semanas (9 meses)**, con margen.
 
-**Cada clase tiene 4 partes**
-1. **Concepto** — explicación corta, conectada con lo que ya sabés de diseño.
-2. **Ejercicio guiado** — con el ciclo híbrido (abajo): predecís, Claude Code genera, explicás y modificás a mano.
-3. **Desafío** — para hacer solo, con criterios claros de "listo".
-4. **Review** — al empezar la clase siguiente revisamos el desafío y actualizamos `PROGRESO.md`.
+**Cada clase:** concepto corto → ejercicio → review al empezar la clase siguiente.
 
-**Ciclo híbrido para cada ejercicio con IA (módulos 0 a 3)**
-1. **Predecir:** antes de generar, decís qué elementos, propiedades o lógica esperás que tenga el código.
-2. **Generar:** Claude Code lo escribe.
-3. **Explicar:** contás con tus palabras qué hace cada parte. Si no podés, preguntás hasta entenderla.
-4. **Modificar a mano:** hacés al menos un cambio vos (ajustar un valor, agregar un estado, romper algo a propósito y arreglarlo).
+**Para arrancar cada sesión** escribime: _"arranquemos la clase X.Y"_. Leo `PROGRESO.md` y seguimos.
 
-**Siempre a mano ✍️:** la práctica semanal de lógica, las clases 2.1 a 2.4 y un ejercicio de CSS por clase en el módulo 1.
+### Cómo se usa la IA en cada etapa
 
-**Para arrancar cada sesión** escribime: _"arranquemos la clase X.Y"_. Leo `PROGRESO.md` y seguimos desde ahí.
-
-**Reglas de juego**
-- Si te trabás, pedime **una pista**, no la solución.
-- Todo lo que hagas va a GitHub. Lo que vale la pena, se publica.
-- Desde el módulo 1, los READMEs de los ejercicios los escribís **en inglés**.
-- Al final de cada módulo hay un mini-proyecto con review tipo code review real.
-
-### Cómo usar IA (Claude Code) durante el plan
-
-La IA no reemplaza saber programar: en el trabajo vas a ser responsable de cada línea que se shippee y en las entrevistas te van a evaluar sin ayuda. La meta es **saber leer, juzgar y corregir** el código, no memorizar sintaxis.
-
-| Etapa | Módulos | Regla |
+| Etapa | Módulos | Cómo trabajás |
 |---|---|---|
-| **Híbrido** | 0 a 3 (setup, CSS, JS, React) | Claude Code genera el código, pero antes **predecís** qué debería tener, después lo **explicás** con tus palabras y hacés **cambios chicos a mano**. Los ejercicios de lógica y algunos de CSS siguen 100% a mano. |
-| **Trabajar con IA** | 4 a 7 (Next/TS, motion, design systems, calidad) | Le pedís a Claude Code que implemente, como en un equipo real. Cada clase suma un ejercicio de **review del código generado**. |
-| **Demostrar sin IA** | 8 (portfolio y búsqueda) | Práctica de live coding y take-home **sin IA**, para simular la entrevista. |
+| **Fundamentos** | 1, 3, 4 (CSS, JS, React) | **Predecir → Claude genera → explicar → verificar en DevTools.** El objetivo es poder leer y juzgar código. |
+| **Workflow con agente** | 2, 5 a 8 | El flujo de la guía: **Figma → inspección con MCP → plan → aprobar → implementar → revisar el diff → QA con evidencia.** Vos decidís, el agente ejecuta. |
+| **Demostrar** | 9 | Live coding y take-home, **con y sin IA**, para simular entrevistas. |
 
-**Ejercicio de review del código generado (módulos 4 a 7)**
-1. Le pedís la implementación a Claude Code con un pedido claro (qué, cómo debe verse, estados, accesibilidad).
-2. Leés el diff completo antes de aceptarlo.
-3. Explicás en 2–3 líneas qué hace cada parte. Si no podés explicarla, no se acepta: preguntás hasta entenderla.
-4. Buscás problemas con este checklist:
-   - [ ] ¿Se ve igual al diseño? (espaciado, tipografía, estados hover/focus/disabled)
-   - [ ] ¿Funciona con teclado y lector de pantalla?
-   - [ ] ¿Hay `useEffect`, estado o dependencias que sobran?
-   - [ ] ¿Las animaciones usan `transform`/`opacity` y respetan `prefers-reduced-motion`?
-   - [ ] ¿Funciona en mobile y con contenido largo o vacío?
-5. Corregís al menos un problema **a mano** y anotás en `PROGRESO.md` qué encontraste.
+**Ejercicios a mano ✍️ (opcionales):** en cada clase de fundamentos hay uno corto y vos elegís si lo hacés. Antes de las entrevistas (módulo 9) conviene retomarlos.
 
-**Nivel objetivo por tema**
-
-| Tema | Nivel |
-|---|---|
-| Lógica (variables, condicionales, funciones, arrays, objetos) | Sólido: es la base de todo |
-| JavaScript | Leer cualquier código de UI y escribir componentes sin ayuda |
-| React | A fondo: estado, efectos, composición. Es tu herramienta principal |
-| CSS | Experto: es tu diferencial |
-| TypeScript | Leer y tipar componentes, sin tipos avanzados |
-| Algoritmos complejos, backend, infraestructura | No hace falta para este rol |
+### Review de cada slice (desde el módulo 5)
+1. **Plan** antes de código: resultado observable, alcance, estados, qué se reutiliza/extiende/crea, archivos afectados (guía §15).
+2. **Diff:** lo leés completo y explicás qué hace cada archivo (prompt "Entender el código", guía §22).
+3. **Señales de alarma** (guía §16): valores sin tokens, componentes duplicados, `<div>` clickeables, estados inventados, archivos gigantes.
+4. **Ledger de verificación** (guía §17): cada criterio como `PASS`, `FAIL`, `UNVERIFIED`, `OUT OF SCOPE` o `NOT APPLICABLE`, con evidencia.
+5. **Craft:** ¿se ve igual a Figma? Espaciado, tipografía, hover/focus/disabled, motion.
 
 ---
 
-## 4. Módulos y clases
+## 5. Módulos y clases
 
-### Módulo 0 — Setup y flujo de trabajo (semana 1)
-**IA:** híbrido (ver tabla de etapas).
+### Módulo 0 — Setup ✅ (semana 1)
+| Clase | Tema |
+|---|---|
+| 0.1 | Terminal y Git: repo, commit, push. |
+| 0.2 | Deploy en Vercel. IA como tutor. |
+
+### Módulo 1 — CSS para juzgar y pulir (semanas 2–5)
+Lo que más vas a corregir de lo que genera la IA. Es tu diferencial.
 
 | Clase | Tema |
 |---|---|
-| 0.1 | Terminal y Git: qué es un repo, commit, push. Primer repo. |
-| 0.2 | GitHub + deploy en Vercel. Cómo usar IA como tutor y no como muleta. |
-
-**Entregable:** primera página publicada con URL pública.
-
-### Módulo 1 — CSS de verdad (semanas 2–5)
-**IA:** híbrido: Claude Code genera, vos predecís, explicás y modificás a mano. Ejercicios marcados ✍️ van 100% a mano.
-
-| Clase | Tema |
-|---|---|
-| 1.1 | Cascada, especificidad, herencia. Por qué "mi estilo no se aplica". |
-| 1.2 | Box model y unidades (`px`, `rem`, `em`, `%`, `vw`, `ch`). |
-| 1.3 | Flexbox a fondo (es Auto Layout de Figma, con más reglas). |
+| 1.1 | Cascada, especificidad, herencia. |
+| 1.2 | Box model y unidades. |
+| 1.3 | Flexbox = Auto Layout de Figma (dirección, gap, alineación, hug/fill). |
 | 1.4 | CSS Grid: layouts de página y de componentes. |
 | 1.5 | Posicionamiento, stacking context, `z-index`, `overflow`. |
 | 1.6 | Responsive fluido: media queries, `clamp()`, container queries. |
-| 1.7 | Tokens con custom properties + tipografía web (variable fonts, carga, `line-height`, `text-wrap: balance`). |
-| 1.8 | **Proyecto:** recrear pixel-perfect una sección de una landing (Linear, Vercel o Profound). |
+| 1.7 | Tokens con custom properties + tipografía web. |
+| 1.8 | DevTools para QA visual: medir, comparar con Figma, encontrar por qué algo no se ve igual. |
 
-### Módulo 2 — JavaScript y lógica de programación (semanas 6–11)
-**IA:** híbrido: Claude Code genera, vos predecís, explicás y modificás a mano. Ejercicios marcados ✍️ van 100% a mano.
-
-| Clase | Tema |
-|---|---|
-| 2.1 | **Pensar en pasos:** descomponer un problema y escribirlo en pseudocódigo, sin código todavía. |
-| 2.2 | Variables, tipos y operadores. La consola del navegador. |
-| 2.3 | Condicionales y funciones. |
-| 2.4 | **Bucles:** `for`, `while`, `for...of`. Repetir y acumular. |
-| 2.5 | Arrays y objetos: modelar datos de una UI. |
-| 2.6 | `map`, `filter`, `find`, `reduce`: transformar datos en interfaz. |
-| 2.7 | El DOM: seleccionar, crear y modificar elementos. |
-| 2.8 | Eventos: click, teclado, input, delegación. |
-| 2.9 | Estado en vanilla JS: tabs y modal accesible. |
-| 2.10 | Asincronía: `fetch`, `async/await`, JSON. |
-| 2.11 | Módulos + **proyecto** command palette (parte 1). |
-| 2.12 | Command palette (parte 2): búsqueda, navegación con teclado, review. |
-
-**Práctica semanal de lógica** (durante los módulos 2 y 3): 2–3 ejercicios cortos por semana, de unos 15 minutos cada uno, sin interfaz. Ejemplo: _"dada una lista de productos, devolvé los que cuestan menos de X, ordenados por nombre"_. Primero lo escribís en pseudocódigo y después en JavaScript. Van en la carpeta `ejercicios-logica/`.
-
-### Módulo 3 — React (semanas 12–16)
-**IA:** híbrido: Claude Code genera, vos predecís, explicás y modificás a mano. Ejercicios marcados ✍️ van 100% a mano.
+### Módulo 2 — Figma AI-ready y primer flujo con agente (semanas 6–8)
+Guía §5–8. Tu terreno: diseño estructurado para que humanos e IA lo entiendan.
 
 | Clase | Tema |
 |---|---|
-| 3.1 | Por qué React. JSX. Proyecto con Vite. |
-| 3.2 | Componentes y props (como componentes y variantes de Figma). |
-| 3.3 | Estado con `useState`. Pensar la UI como función del estado. |
-| 3.4 | Listas, `key`, renderizado condicional. |
-| 3.5 | Eventos y formularios controlados. |
-| 3.6 | `useEffect` y carga de datos. Cuándo **no** usarlo. |
-| 3.7 | Composición: `children`, compound components. |
-| 3.8 | `useRef`, manejo de foco, portales. |
-| 3.9 | Custom hooks. |
-| 3.10 | **Proyecto:** rehacer tabs, modal y command palette en React. |
+| 2.1 | Estructura del archivo, nombres semánticos, componentes, propiedades y variantes (guía §6.1–6.4). |
+| 2.2 | Auto Layout con intención + variables y tokens en 3 niveles: primitivo, semántico, componente (guía §6.5–6.6). |
+| 2.3 | Estados, responsive, accesibilidad y anotaciones. Criterio de "Ready for development" (guía §6.7–6.11). |
+| 2.4 | IA dentro de Figma + conectar Figma MCP a Claude Code. Inspeccionar antes de implementar (guía §7–8). |
+| 2.5 | **Mini-proyecto:** diseñar una sección en tu Figma con estructura AI-ready. |
+| 2.6 | Implementarla con Figma MCP + Claude Code en HTML/CSS, y hacer QA visual contra Figma. Deploy. |
 
-### Módulo 4 — TypeScript + Next.js + Tailwind (semanas 17–20)
-**IA:** empezás a trabajar con Claude Code + review del código generado en cada clase.
+### Módulo 3 — Lógica y JavaScript para leer código (semanas 9–12)
+Saber qué hace el código que genera la IA.
 
 | Clase | Tema |
 |---|---|
-| 4.1 | TypeScript básico: tipos, interfaces, unions. Cómo trabajar con Claude Code: pedir, leer el diff, iterar. |
-| 4.2 | Tipar componentes React (props, eventos, children). |
-| 4.3 | Tailwind: utility-first, Tailwind v4 `@theme`, tokens. |
-| 4.4 | Next.js App Router: rutas, layouts, `Link`, `Image`, fuentes. |
-| 4.5 | Server vs client components. Data fetching. |
-| 4.6 | shadcn/ui + `cva`: componentes con variantes. |
-| 4.7 | **Proyecto ancla 1 (base):** dashboard "AI visibility" — estructura y datos. |
-| 4.8 | Dashboard: deploy en Vercel y review. |
+| 3.1 | Pensar en pasos: descomponer un problema en pseudocódigo. |
+| 3.2 | Variables, tipos, condicionales y funciones. |
+| 3.3 | Bucles, arrays y objetos: modelar los datos de una UI. |
+| 3.4 | `map`, `filter`, `find`: transformar datos en interfaz. |
+| 3.5 | DOM y eventos: cómo una página reacciona al usuario. |
+| 3.6 | Estado: tabs y modal accesible. |
+| 3.7 | Datos remotos: `fetch`, `async/await`, JSON. Loading, error y vacío. |
+| 3.8 | Leer código ajeno: recorrer un archivo generado y explicarlo línea por línea. |
 
-### Módulo 5 — Motion y micro-interacciones (semanas 21–24)
-**IA:** con Claude Code + review. El ajuste fino de timing y easing lo hacés a mano.
+**Práctica semanal de lógica ✍️ (opcional):** 2–3 ejercicios de 15 minutos, primero en pseudocódigo y después en JS. Van en `ejercicios-logica/`.
 
-| Clase | Tema |
-|---|---|
-| 5.1 | Principios: cuándo animar, duración, easing, propósito. |
-| 5.2 | CSS transitions y keyframes. |
-| 5.3 | Performance de animación: `transform`/`opacity`, compositor, DevTools. |
-| 5.4 | Motion (motion.dev): `animate`, variants, springs. |
-| 5.5 | `AnimatePresence` y layout animations. |
-| 5.6 | Gestos (drag, hover, tap) y `prefers-reduced-motion`. |
-| 5.7 | **Proyecto ancla 3:** craft lab — experimentos 1 a 5. |
-| 5.8 | Craft lab — experimentos 6 a 10 y publicación. |
-
-### Módulo 6 — Design systems en código (semanas 25–27)
-**IA:** con Claude Code + review, con foco en API de componentes y accesibilidad.
+### Módulo 4 — React y TypeScript para design engineers (semanas 13–16)
+El lenguaje en el que vive tu design system en código.
 
 | Clase | Tema |
 |---|---|
-| 6.1 | Tokens de Figma (Variables) a código. |
-| 6.2 | Diseñar la API de un componente: props, variantes, composición. |
-| 6.3 | Accesibilidad: semántica, teclado, foco, ARIA. |
-| 6.4 | Radix primitives: accesibilidad resuelta, estilo tuyo. |
-| 6.5 | Dark mode y theming. |
-| 6.6 | **Proyecto ancla 2:** mini design system + sitio de documentación. |
+| 4.1 | Componentes y JSX: el equivalente en código de un componente de Figma. |
+| 4.2 | Props y variantes: de las propiedades de Figma a las props de React. |
+| 4.3 | Estado (`useState`) y eventos: la UI como función del estado. |
+| 4.4 | Listas, condicionales y estados de UI (loading, empty, error). |
+| 4.5 | Efectos y datos: `useEffect`, y cuándo **no** usarlo. |
+| 4.6 | Composición: `children` y slots. |
+| 4.7 | TypeScript: leer y escribir los tipos de las props. |
+| 4.8 | Arquitectura: datos → feature → componente → pantalla (guía §16). Leer un diff de React. |
 
-### Módulo 7 — Calidad de producción (semanas 28–30)
-**IA:** con Claude Code + review. Auditorías y code review hechos por vos.
-
-| Clase | Tema |
-|---|---|
-| 7.1 | Performance: Core Web Vitals, Lighthouse. |
-| 7.2 | Auditoría de accesibilidad (axe, lector de pantalla, teclado). |
-| 7.3 | Flujo de equipo: branches, pull requests, code review. |
-| 7.4 | UI densa de datos: tablas, filtros, ordenamiento. |
-| 7.5 | Charts para producto. |
-| 7.6 | Estados: loading, empty, error, skeletons. Pulido final del dashboard. |
-
-### Módulo 8 — Portfolio y búsqueda (semanas 31–34, +3 de margen)
-**IA:** portfolio con Claude Code; live coding y take-home **sin IA**.
+### Módulo 5 — Trabajar en un repo real con agente (semanas 17–20)
+Guía §4, 11–13, 15–16. Arranca el **proyecto ancla 1**.
 
 | Clase | Tema |
 |---|---|
-| 8.1 | Estructura y narrativa del portfolio de design engineer. |
-| 8.2 | Construir el portfolio en Next.js (parte 1). |
-| 8.3 | Portfolio (parte 2): detalles, motion, performance. |
-| 8.4 | Case studies en inglés: proceso, decisiones, código. |
-| 8.5 | Práctica de live coding de UI, sin IA. |
-| 8.6 | Take-home simulado con tiempo límite, sin IA. |
-| 8.7 | Pitch y entrevista en inglés. |
-| 8.8 | CV, LinkedIn y aplicar. |
+| 5.1 | Next.js + Tailwind: crear el proyecto y entender su estructura. |
+| 5.2 | Tailwind desde los tokens: `@theme` con tus variables de Figma. |
+| 5.3 | Preparar el repo para el agente: `CLAUDE.md`, `PROJECT_CONTEXT`, `CURRENT_STATE`, `PENDING_TASKS` (guía §11). |
+| 5.4 | Git en equipo: branches, diff, commits con intención, pull requests (guía §12). |
+| 5.5 | Trabajar por slices: plan → aprobación → implementación (guía §13, 15). |
+| 5.6 | Revisar implementaciones: señales de código poco confiable (guía §16). |
+| 5.7 | **Proyecto ancla 1** — Dashboard "AI visibility": Figma AI-ready + slice 1 (shell de la app). |
+| 5.8 | Slice 2 (metric cards) + deploy de preview en Vercel. |
+
+### Módulo 6 — Design system agéntico (semanas 21–25)
+Guía §9–11, 14. **Proyecto ancla 2.**
+
+| Clase | Tema |
+|---|---|
+| 6.1 | Tokens en código mapeados 1 a 1 con las variables de Figma (primitivo → semántico). |
+| 6.2 | Componentes con variantes en código (`cva`, shadcn/ui): API de componentes. |
+| 6.3 | Accesibilidad de componentes: semántica, teclado, foco, Radix. |
+| 6.4 | Storybook: stories por variante y estado, addon de accesibilidad (guía §10). |
+| 6.5 | Dark mode y modos de variables. |
+| 6.6 | Documentación para agentes: `docs/design-system/`, `AI_CONTEXT.md` y la regla en `CLAUDE.md` (guía §11.1). |
+| 6.7 | Code Connect: concepto, template files, checklist. En plan Free: **mapeo documentado** Figma ↔ código (guía §9). |
+| 6.8 | Skills y reglas: gobernar al agente con roles (Component Architect, Plan Reviewer, Slice Closer…) (guía §14). |
+| 6.9 | StorySync y drift Figma ↔ código: concepto y demo (opcional según requisitos) (guía §10.1). |
+| 6.10 | **Prueba final:** pedirle a Claude Code una pantalla nueva y verificar que use tu sistema sin indicaciones extra. |
+
+### Módulo 7 — Motion y craft (semanas 26–28)
+Lo que la guía no cubre y Profound pide explícitamente. **Proyecto ancla 3.**
+
+| Clase | Tema |
+|---|---|
+| 7.1 | Principios: cuándo animar, duración, easing, propósito. |
+| 7.2 | CSS transitions y keyframes + performance (`transform`/`opacity`). |
+| 7.3 | Motion (motion.dev): variants, springs, `AnimatePresence`. |
+| 7.4 | Layout animations, gestos y `prefers-reduced-motion`. |
+| 7.5 | Documentar motion como tokens (duraciones y curvas) en el design system. |
+| 7.6 | **Craft lab:** experimentos de micro-interacción publicados. |
+
+### Módulo 8 — QA y verificación con evidencia (semanas 29–31)
+Guía §17–18. Cerrar el **proyecto ancla 1** con nivel de producción.
+
+| Clase | Tema |
+|---|---|
+| 8.1 | Ledger de verificación: `PASS`/`FAIL`/`UNVERIFIED` con evidencia. |
+| 8.2 | Checks estáticos: lint, typecheck, build. Leer sus resultados. |
+| 8.3 | Accesibilidad en runtime: teclado, foco, lector de pantalla, contraste. |
+| 8.4 | Datos remotos: loading, error, retry, vacío (guía §18). Tablas y filtros. |
+| 8.5 | Responsive, contenido extremo y performance (Core Web Vitals). |
+| 8.6 | Dashboard: slices finales cerrados con ledger. |
+
+### Módulo 9 — Portfolio y búsqueda (semanas 32–35, +3 de margen)
+| Clase | Tema |
+|---|---|
+| 9.1 | Narrativa: mostrar el **proceso** (Figma AI-ready → MCP → slices → ledger), no solo el resultado. |
+| 9.2 | Portfolio en Next.js (con tu propio design system). |
+| 9.3 | Case studies en inglés. |
+| 9.4 | Live coding de UI ✍️: CSS y componentes React chicos. |
+| 9.5 | Take-home simulado: con agente y sin agente. |
+| 9.6 | Explicar decisiones técnicas en inglés (code review y design critique). |
+| 9.7 | Entrevista en inglés: pitch y preguntas frecuentes. |
+| 9.8 | CV, LinkedIn y aplicar. |
 
 ---
 
-## 5. Proyectos de portfolio
+## 6. Proyectos de portfolio
 
 | Proyecto | Qué muestra | Módulos |
 |---|---|---|
-| **1. Dashboard "AI visibility"** — mismo dominio que Profound: cómo aparece una marca en ChatGPT, Gemini, Perplexity, Claude. Diseño en Figma + Next/TS/Tailwind, tablas, charts, filtros, responsive, estados. | Product UI real, datos, criterio de producto | 4, 7 |
-| **2. Mini design system** — tokens desde Figma, 8–10 componentes accesibles con variantes y motion, sitio de docs. | Sistemas, API de componentes, accesibilidad | 6 |
-| **3. Craft lab** — playground público de micro-interacciones. | Gusto, motion, detalle | 5 |
-| **4. Portfolio** — hecho en código; es en sí mismo una pieza de craft. | Todo lo anterior | 8 |
+| **1. Dashboard "AI visibility"**: cómo aparece una marca en ChatGPT, Gemini, Perplexity y Claude (el dominio de Profound). Hecho con el workflow completo de la guía. | Product UI real, slices, QA con evidencia | 5, 8 |
+| **2. Design system agéntico**: tokens Figma ↔ código, componentes accesibles, Storybook, docs para agentes, mapeo de componentes. | Sistemas, gobernanza de IA, accesibilidad | 6 |
+| **3. Craft lab**: micro-interacciones publicadas. | Gusto, motion, detalle | 7 |
+| **4. Portfolio**: construido con tu propio design system. | Todo lo anterior | 9 |
+
+**Meta del modelo de madurez (guía §23):** terminar en **Nivel 4 — Workflow gobernado**.
 
 ---
 
-## 6. Recursos
+## 7. Recursos
 
 | Tema | Recursos |
 |---|---|
-| CSS | [web.dev/learn/css](https://web.dev/learn/css) (gratis) · Josh Comeau, *CSS for JavaScript Developers* (pago) · Kevin Powell (YouTube) · [MDN](https://developer.mozilla.org) |
+| Workflow Figma → código | [`recursos/Guia_Completa_Figma_AI_a_Codigo.md`](recursos/Guia_Completa_Figma_AI_a_Codigo.md) · [Figma MCP](https://help.figma.com/hc/en-us/articles/39216419318551-Get-started-with-the-Figma-MCP-server) · [Skills de Figma para MCP](https://help.figma.com/hc/en-us/articles/39166810751895-Figma-skills-for-MCP) · [Code Connect](https://developers.figma.com/docs/code-connect/) |
+| CSS | [web.dev/learn/css](https://web.dev/learn/css) · Josh Comeau, *CSS for JavaScript Developers* (pago) · Kevin Powell (YouTube) · [MDN](https://developer.mozilla.org) |
 | JavaScript | [javascript.info](https://javascript.info) · MDN |
-| React | [react.dev/learn](https://react.dev/learn) · Josh Comeau, *The Joy of React* (pago) |
+| React | [react.dev/learn](https://react.dev/learn) |
 | TypeScript | [Total TypeScript](https://www.totaltypescript.com) (tutoriales gratis) |
-| Next.js | [nextjs.org/learn](https://nextjs.org/learn) (curso gratis) |
-| Tailwind / UI | [tailwindcss.com/docs](https://tailwindcss.com/docs) · [ui.shadcn.com](https://ui.shadcn.com) · [radix-ui.com](https://www.radix-ui.com) |
-| Motion | [motion.dev](https://motion.dev) · Emil Kowalski, *animations.dev* y [su blog](https://emilkowal.ski) · Rauno Freiberg, *Devouring Details* e [interfaces.rauno.me](https://interfaces.rauno.me) |
-| Calidad | Vercel, [Web Interface Guidelines](https://vercel.com/design/guidelines) · [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) |
-
-Los cursos pagos son opcionales; con los gratuitos y las clases alcanza. Si invertís en uno, el de más impacto para tu perfil es *CSS for JavaScript Developers* o *animations.dev*.
+| Next.js / Tailwind | [nextjs.org/learn](https://nextjs.org/learn) · [tailwindcss.com/docs](https://tailwindcss.com/docs) · [ui.shadcn.com](https://ui.shadcn.com) · [radix-ui.com](https://www.radix-ui.com) |
+| Storybook | [storybook.js.org/docs](https://storybook.js.org/docs) · [StorySync](https://github.com/brendanciccone/storysync) |
+| Motion | [motion.dev](https://motion.dev) · [Emil Kowalski](https://emilkowal.ski) (*animations.dev*) · [interfaces.rauno.me](https://interfaces.rauno.me) |
+| Calidad | [Vercel Web Interface Guidelines](https://vercel.com/design/guidelines) · [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) |
 
 ---
 
-## 7. Fuentes de la investigación
+## 8. Fuentes de la investigación
 - [Profound — Design Engineer (posting oficial)](https://www.tryprofound.com/careers/e98d1d1d-aeec-4b8d-aef8-ea9b61546639)
 - [Profound — Design Engineer (startup.jobs)](https://startup.jobs/design-engineer-profound-7918723)
-- [Profound — Design Engineer (Built In NYC)](https://www.builtinnyc.com/job/design-engineer/8167420)
-- [Vercel — Design Engineer (Working Nomads)](https://www.workingnomads.com/jobs/design-engineer-vercel-1223595)
+- [Vercel — Design Engineer](https://www.workingnomads.com/jobs/design-engineer-vercel-1223595)
 - [Raycast — Design Engineer](https://careers.atomico.com/companies/raycast/jobs/29648155-design-engineer)
-- [Antimetal — Design Engineer](https://jobs.arbitrum.io/companies/antimetal/jobs/87883480-design-engineer)
-- [Design Engineer: React, Framer, Motion & Cursor](https://www.onlinejobs.ph/jobseekers/job/design-engineer-build-with-react-framer-motion-cursor-1561113)
+- [Figma — Code Connect: quién puede usarlo](https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect)
+- [Foro de Figma — Code Connect en plan Professional](https://forum.figma.com/ask-the-community-7/code-connect-on-the-professional-plan-docs-say-it-s-supported-but-there-s-no-code-connect-token-scope-and-mappings-are-rejected-59258)
 
 > Nota: Profound avisa que su comunicación oficial llega siempre desde un mail **@tryprofound.com**. El mensaje que recibiste vino de un recruiter externo; cuando llegue el momento de aplicar, confirmá que el proceso sea legítimo.

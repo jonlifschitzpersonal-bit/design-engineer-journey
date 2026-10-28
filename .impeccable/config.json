@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "clases/01-css/1.1-cascada/index.html"
+        ],
+        "createdAt": "2026-10-28T16:44:37.506Z",
+        "reason": "Claude: teaching fixture for CSS cascade; colors are intentional puzzle values, not product UI"
+      },
+      {
+        "rule": "ai-color-palette",
+        "value": "*",
+        "files": [
+          "clases/01-css/1.1-cascada/index.html"
+        ],
+        "createdAt": "2026-10-28T16:44:55.539Z",
+        "reason": "Claude: teaching fixture for CSS cascade; purple is an intentional puzzle value, not product UI"
+      }
+    ]
+  }
+}

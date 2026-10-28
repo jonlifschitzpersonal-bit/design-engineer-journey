@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.2 — Box model y unidades</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            color: #1c1917;
+            background: #fafaf9;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        .label {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        /* --- Caso 1 y 2: box-sizing --- */
+        .box {
+            width: 200px;
+            padding: 20px;
+            border: 5px solid #1c1917;
+            background: #fde68a;
+        }
+
+        .box-a { box-sizing: content-box; }
+        .box-b { box-sizing: border-box; }
+
+        /* --- Caso 3: márgenes verticales --- */
+        .stack p {
+            background: #bfdbfe;
+            margin: 0;
+        }
+
+        .stack .first  { margin-bottom: 20px; }
+        .stack .second { margin-top: 30px; }
+
+        /* --- Caso 4: em vs rem --- */
+        .em-parent, .em-child   { font-size: 1.5em; }
+        .rem-parent, .rem-child { font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+    <section>
+        <p class="label">Caso 1 — content-box</p>
+        <div class="box box-a">A</div>
+    </section>
+
+    <section>
+        <p class="label">Caso 2 — border-box</p>
+        <div class="box box-b">B</div>
+    </section>
+
+    <section class="stack">
+        <p class="label">Caso 3 — dos párrafos apilados</p>
+        <p class="first">Primero (margin-bottom: 20px)</p>
+        <p class="second">Segundo (margin-top: 30px)</p>
+    </section>
+
+    <section>
+        <p class="label">Caso 4 — em vs rem (tamaño base del navegador: 16px)</p>
+        <div class="em-parent">
+            Padre em
+            <div class="em-child">Hijo em</div>
+        </div>
+        <div class="rem-parent">
+            Padre rem
+            <div class="rem-child">Hijo rem</div>
+        </div>
+    </section>
+</body>
+</html>
