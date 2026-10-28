@@ -3,8 +3,8 @@
 > Marcá `[x]` cuando una clase esté terminada (incluido el desafío).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 0.1
-**URL publicada:** —
+**Clase actual:** 1.1
+**URL publicada:** https://design-engineer-journey-00-setup.vercel.app/
 **Repo:** https://github.com/jonlifschitzpersonal-bit/design-engineer-journey.git
 
 ---
@@ -14,7 +14,7 @@
 ### Módulo 0 — Setup
 
 - [x] 0.1 Terminal y Git
-- [ ] 0.2 GitHub + Vercel + IA como tutor
+- [x] 0.2 GitHub + Vercel + IA como tutor
 
 ### Módulo 1 — CSS
 
