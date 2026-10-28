@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluido el desafío).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 1.2 (falta la pregunta 4: em vs rem)
+**Clase actual:** 1.3
 **URL publicada:** https://design-engineer-journey-00-setup.vercel.app/
 **Repo:** https://github.com/jonlifschitzpersonal-bit/design-engineer-journey.git
 
@@ -19,7 +19,7 @@
 ### Módulo 1 — CSS para juzgar y pulir
 
 - [x] 1.1 Cascada, especificidad, herencia
-- [ ] 1.2 Box model y unidades
+- [x] 1.2 Box model y unidades
 - [ ] 1.3 Flexbox = Auto Layout
 - [ ] 1.4 Grid
 - [ ] 1.5 Posicionamiento y stacking
@@ -115,6 +115,25 @@
 ---
 
 ## Bitácora
+
+### 2026-10-28 · Clase 1.2 — Box model y unidades
+- **Aprendí:** `content-box` suma padding y border por fuera (caja de 200px → 250px); `border-box` los resta desde adentro (contenido de 150px). Los márgenes verticales se colapsan (20 + 30 = 30). `rem` mira la raíz y `em` mira al padre, por eso se acumula (hijo em = 36px, hijo rem = 24px).
+- **Me costó:** em vs rem; lo entendí con el diagrama de cajas anidadas y verificándolo en DevTools (Computed). El colapso de márgenes (había respondido 50px).
+- **Sumado a la skill:** reset `border-box`, `rem` para texto y espaciado, `gap` en lugar de márgenes.
+
+### 2026-10-28 · Clase 1.1 — Cascada, especificidad y herencia
+- **Aprendí:** gana `!important`, después la especificidad (medallero: IDs 🥇, clases 🥈, elementos 🥉) y después el orden. La herencia es lo más débil: los controles de formulario no heredan porque el navegador ya les pone estilos propios.
+- **Me costó:** las dos trampas (`.card p` le gana a `.highlight`; el botón no hereda el violeta ni Georgia). Se entendió con la analogía del medallero olímpico y viendo las reglas tachadas en DevTools.
+- **Sumado a la skill:** estilar con clases, sin IDs ni `!important`; reset `font: inherit` en controles.
+
+### 2026-10-28 · Clase 0.2 — Deploy en Vercel
+- **Aprendí:** deploy continuo (cada `git push` publica solo); el *Root Directory* le dice a Vercel dónde está el `index.html`.
+- **Publicado:** https://design-engineer-journey-00-setup.vercel.app/
+
+### 2026-10-28 · Clase 0.1 — Terminal y Git
+- **Aprendí:** comandos básicos de terminal (PowerShell); el ciclo `git add → commit → push`; untracked vs staged; conectar el repo local con GitHub.
+- **Me costó:** los warnings de LF/CRLF (son avisos de saltos de línea entre Windows y Mac/Linux, no errores).
+
 
 <!-- Después de cada clase, agregá una entrada arriba de todo:
 

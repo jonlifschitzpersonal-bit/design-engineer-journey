@@ -85,6 +85,11 @@ Salario base publicado (NYC): USD 120k–250k + equity.
 
 **Para arrancar cada sesión** escribime: _"arranquemos la clase X.Y"_. Leo `PROGRESO.md` y seguimos.
 
+**Al cerrar cada clase, el tutor:**
+1. Marca la clase en `PROGRESO.md` y actualiza la clase actual.
+2. Escribe la entrada de la bitácora (qué aprendiste, qué te costó, qué se sumó a la skill).
+3. Agrega las reglas nuevas a la skill [`.claude/skills/design-implementation/SKILL.md`](.claude/skills/design-implementation/SKILL.md), que Claude Code usa cada vez que implementa un diseño en este repo. Al final del curso, esta skill es parte de tu design system agéntico (módulo 6) y una pieza más del portfolio.
+
 ### Cómo se usa la IA en cada etapa
 
 | Etapa | Módulos | Cómo trabajás |
