@@ -4,7 +4,7 @@
 
 **Material:**
 - Esta guía.
-- `proyectos/01-dashboard/`: el proyecto que creás vos en la práctica.
+- El proyecto que creás vos en la práctica. Se generó en `proyectos/01-dashboard/` y al cerrar la clase se movió a su propio repo: `D:\Escritorio\proyectos\dashboard-ai-visibility` (GitHub: `dashboard-ai-visibility`), para que el portfolio y los PRs de la 5.4 queden limpios.
 
 ---
 
