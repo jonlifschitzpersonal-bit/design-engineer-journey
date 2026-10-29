@@ -1,9 +1,10 @@
 # Progreso
 
-> Marcá `[x]` cuando una clase esté terminada (incluido el desafío).
+> Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 1.3
+**Clase actual:** 2.2
+**Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
 **URL publicada:** https://design-engineer-journey-00-setup.vercel.app/
 **Repo:** https://github.com/jonlifschitzpersonal-bit/design-engineer-journey.git
 
@@ -16,48 +17,19 @@
 - [x] 0.1 Terminal y Git
 - [x] 0.2 GitHub + Vercel + IA como tutor
 
-### Módulo 1 — CSS para juzgar y pulir
-
-- [x] 1.1 Cascada, especificidad, herencia
-- [x] 1.2 Box model y unidades
-- [ ] 1.3 Flexbox = Auto Layout
-- [ ] 1.4 Grid
-- [ ] 1.5 Posicionamiento y stacking
-- [ ] 1.6 Responsive fluido
-- [ ] 1.7 Tokens y tipografía web
-- [ ] 1.8 DevTools para QA visual
-
 ### Módulo 2 — Figma AI-ready y primer flujo con agente
 
-- [ ] 2.1 Estructura, nombres, componentes y variantes
+- [x] 2.1 Estructura, nombres, componentes y variantes
 - [ ] 2.2 Auto Layout + variables y tokens
 - [ ] 2.3 Estados, responsive, a11y, anotaciones
-- [ ] 2.4 IA en Figma + Figma MCP
+- [ ] 2.4 IA en Figma + Figma Console MCP
 - [ ] 2.5 Mini-proyecto: sección AI-ready en Figma
 - [ ] 2.6 Implementar con MCP + QA visual
 
-### Módulo 3 — Lógica y JavaScript para leer código
+### Módulo P — Puente: leer React lo justo
 
-- [ ] 3.1 Pensar en pasos
-- [ ] 3.2 Variables, condicionales, funciones
-- [ ] 3.3 Bucles, arrays y objetos
-- [ ] 3.4 map / filter / find
-- [ ] 3.5 DOM y eventos
-- [ ] 3.6 Estado: tabs y modal
-- [ ] 3.7 Datos remotos
-- [ ] 3.8 Leer código ajeno
-- [ ] Práctica semanal de lógica (opcional)
-
-### Módulo 4 — React y TypeScript
-
-- [ ] 4.1 Componentes y JSX
-- [ ] 4.2 Props y variantes
-- [ ] 4.3 Estado y eventos
-- [ ] 4.4 Listas, condicionales, estados de UI
-- [ ] 4.5 Efectos y datos
-- [ ] 4.6 Composición
-- [ ] 4.7 TypeScript para props
-- [ ] 4.8 Arquitectura y leer un diff
+- [ ] P.1 Componentes, props y JSX
+- [ ] P.2 Leer Tailwind y un diff de React
 
 ### Módulo 5 — Repo real con agente
 
@@ -84,15 +56,6 @@
 - [ ] 6.10 Prueba final del sistema
 - [ ] 6.11 Contratos de componentes (opcional)
 
-### Módulo 7 — Motion y craft
-
-- [ ] 7.1 Principios de animación
-- [ ] 7.2 Transitions, keyframes, performance
-- [ ] 7.3 Motion: variants, springs, AnimatePresence
-- [ ] 7.4 Layout animations, gestos, reduced motion
-- [ ] 7.5 Motion como tokens
-- [ ] 7.6 Craft lab
-
 ### Módulo 8 — QA y verificación
 
 - [ ] 8.1 Ledger de verificación
@@ -101,6 +64,48 @@
 - [ ] 8.4 Datos remotos, tablas, filtros
 - [ ] 8.5 Responsive, contenido extremo, performance
 - [ ] 8.6 Dashboard: slices finales
+
+### Módulo 1 — CSS para juzgar y pulir (1.3–1.8 después del módulo 8)
+
+- [x] 1.1 Cascada, especificidad, herencia
+- [x] 1.2 Box model y unidades
+- [ ] 1.3 Flexbox = Auto Layout
+- [ ] 1.4 Grid
+- [ ] 1.5 Posicionamiento y stacking
+- [ ] 1.6 Responsive fluido
+- [ ] 1.7 Tokens y tipografía web
+- [ ] 1.8 DevTools para QA visual
+
+### Módulo 3 — Lógica y JavaScript para leer código
+
+- [ ] 3.1 Pensar en pasos
+- [ ] 3.2 Variables, condicionales, funciones
+- [ ] 3.3 Bucles, arrays y objetos
+- [ ] 3.4 map / filter / find
+- [ ] 3.5 DOM y eventos
+- [ ] 3.6 Estado: tabs y modal
+- [ ] 3.7 Datos remotos
+- [ ] 3.8 Leer código ajeno
+
+### Módulo 4 — React y TypeScript
+
+- [ ] 4.1 Componentes y JSX
+- [ ] 4.2 Props y variantes
+- [ ] 4.3 Estado y eventos
+- [ ] 4.4 Listas, condicionales, estados de UI
+- [ ] 4.5 Efectos y datos
+- [ ] 4.6 Composición
+- [ ] 4.7 TypeScript para props
+- [ ] 4.8 Arquitectura y leer un diff
+
+### Módulo 7 — Motion y craft
+
+- [ ] 7.1 Principios de animación
+- [ ] 7.2 Transitions, keyframes, performance
+- [ ] 7.3 Motion: variants, springs, AnimatePresence
+- [ ] 7.4 Layout animations, gestos, reduced motion
+- [ ] 7.5 Motion como tokens
+- [ ] 7.6 Craft lab
 
 ### Módulo 9 — Portfolio y búsqueda
 
@@ -116,6 +121,15 @@
 ---
 
 ## Bitácora
+
+### 2026-10-29 · Clase 2.1 — Estructura, nombres, componentes y variantes
+- **Aprendí:** el agente lee el árbol de capas, no la imagen: los nombres de capa y las propiedades pasan casi directo al código (`MetricCard` → `<MetricCard>`, Variant → unión de strings, Instance swap → prop con un elemento). Las variantes se multiplican (3 × 2 × 4 = 24 en el Button), los booleanos no. `hover` y `focus` existen en Figma para dibujarlos, pero en código son `:hover` y `:focus-visible`.
+- **Me costó:** detalles de construcción que en pantalla no se ven: el texto `label` tenía la propiedad creada pero no conectada, el Icon tenía un frame de más y trazos llamados `Vector`, y el `secondary` usaba texto celeste sobre blanco (contraste ~1,6:1). Claude terminó el Button (estados + `loading`), corrigió el Icon (16×16, capas `path`) y armó la MetricCard con `trend: up | down`.
+- **Sumado a la skill:** traducción de cada tipo de propiedad de Figma, nombres de capa = nombres del código, leer la descripción del componente, variantes con significado en lugar de props de estilo, íconos con `currentColor`, no crear componentes para piezas de una sola vez.
+
+### 2026-10-29 · Cambio de orden del curso
+- **Decidí:** pasar primero al flujo Figma → código (módulos 2, P, 5, 6 y 8) y volver después a CSS, JavaScript y React en detalle. Claude escribe el código siguiendo la skill de buenas prácticas, que ampliamos con reglas de HTML, CSS, React y Tailwind.
+- **Herramientas:** el MCP oficial de Figma en plan Starter da 6 llamadas por mes, así que usamos Figma Console MCP (gratis). Code Connect se reemplaza por un mapeo documentado.
 
 ### 2026-10-28 · Clase 1.2 — Box model y unidades
 - **Aprendí:** `content-box` suma padding y border por fuera (caja de 200px → 250px); `border-box` los resta desde adentro (contenido de 150px). Los márgenes verticales se colapsan (20 + 30 = 30). `rem` mira la raíz y `em` mira al padre, por eso se acumula (hijo em = 36px, hijo rem = 24px).

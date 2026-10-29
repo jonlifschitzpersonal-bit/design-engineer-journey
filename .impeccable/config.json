@@ -20,6 +20,15 @@
         ],
         "createdAt": "2026-10-28T16:44:55.539Z",
         "reason": "Claude: teaching fixture for CSS cascade; purple is an intentional puzzle value, not product UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "clases/01-css/1.3-flexbox/index.html"
+        ],
+        "createdAt": "2026-10-29T12:49:12.449Z",
+        "reason": "Claude decided: .toolbar en el caso 3 va sin padding a propósito, porque el ejercicio pide calcular el ancho del buscador (600 - 100 - 120 - 2×16)"
       }
     ]
   }

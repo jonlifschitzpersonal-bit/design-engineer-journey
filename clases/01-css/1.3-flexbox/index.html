@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.3 — Flexbox = Auto Layout</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        button, input {
+            font: inherit;
+            color: inherit;
+        }
+
+        body {
+            font-family: system-ui, sans-serif;
+            color: #1c1917;
+            background: #fafaf9;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        .label {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        /* --- Caso 1: eje cruzado --- */
+        .cards {
+            display: flex;
+            gap: 1rem;
+            max-width: 40rem;
+        }
+
+        .card {
+            padding: 1rem;
+            background: #fde68a;
+            border: 1px solid #1c1917;
+        }
+
+        /* --- Caso 2: los ejes se dan vuelta --- */
+        .panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.5rem;
+            width: 20rem;
+            height: 240px;
+            padding: 1rem;
+            background: #bfdbfe;
+        }
+
+        /* --- Caso 3: Hug, Fill y Fixed --- */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            width: 600px;
+            background: #e7e5e4;
+        }
+
+        .logo {
+            width: 100px;
+            font-weight: 700;
+        }
+
+        .search {
+            flex: 1;
+        }
+
+        .cta {
+            width: 120px;
+        }
+
+        /* --- Caso 4: "Fixed" que se encoge --- */
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 260px;
+            padding: 12px;
+            background: #fecaca;
+            border: 1px solid #1c1917;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #1c1917;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <p class="label">Caso 1 — ¿Misma altura?</p>
+        <div class="cards">
+            <div class="card">Corto.</div>
+            <div class="card">Un texto un poco más largo que el anterior.</div>
+            <div class="card">Este es el texto más largo de los tres: ocupa varias líneas y empuja la altura de su card hacia abajo.</div>
+        </div>
+    </section>
+
+    <section>
+        <p class="label">Caso 2 — ¿Dónde quedan los botones?</p>
+        <div class="panel">
+            <button>Cancelar</button>
+            <button>Guardar</button>
+        </div>
+    </section>
+
+    <section>
+        <p class="label">Caso 3 — ¿Cuánto mide el buscador?</p>
+        <div class="toolbar">
+            <div class="logo">Logo</div>
+            <input class="search" type="search" placeholder="Buscar…">
+            <button class="cta">Crear</button>
+        </div>
+    </section>
+
+    <section>
+        <p class="label">Caso 4 — ¿El avatar mide 48px?</p>
+        <div class="user">
+            <div class="avatar"></div>
+            <p>nombre.apellido.muy.largo@empresa-ejemplo.com</p>
+        </div>
+    </section>
+</body>
+</html>

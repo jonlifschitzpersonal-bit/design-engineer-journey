@@ -40,7 +40,11 @@ Vos diseñás y tomás las decisiones; Claude Code implementa; vos revisás que 
 
 **Restricción del plan Free de Figma:**
 - **Code Connect** requiere plan Organization o Enterprise. Lo aprendés igual (concepto, archivos de mapeo y checklist) y en tus proyectos lo reemplazamos por un **mapeo documentado** Figma ↔ código que el agente lee. Si conseguís acceso a un plan Organization (por ejemplo, en un trabajo), lo aplicás directo.
-- **Figma MCP:** el plan gratuito tiene límites de uso. Lo verificamos con la documentación oficial en la clase 2.4.
+- **Figma MCP oficial:** en Starter da **6 llamadas por mes** y no puede escribir en el canvas (verificado el 29/10/2026). No alcanza para el curso.
+- **MCP principal del curso: [Figma Console MCP](https://docs.figma-console-mcp.southleft.com/introduction)** (Southleft, open source y gratis). Funciona con Figma Free a través del plugin Desktop Bridge: lee y escribe en el canvas, lee variables locales y, con un token personal de Figma, lee comentarios.
+- **Variables → código:** la API de variables de Figma es solo Enterprise. Las exportamos con Figma Console MCP (modo local) o con un plugin gratuito como Tokens Studio, y las compilamos con Style Dictionary.
+- **Modos de variables (dark mode):** las fuentes no coinciden sobre el límite de Starter; probablemente 1 modo por colección. Lo verificamos en la 2.2. Si es así, el dark mode se resuelve en código (6.5) y en Figma con una colección por tema.
+- **Todo el resto del stack es gratis:** GitHub, Vercel Hobby, Next.js, Tailwind, shadcn/ui, Radix, Base UI, Storybook, Style Dictionary y Motion. Lo único pago es Claude Code (suscripción de Claude).
 
 ---
 
@@ -79,9 +83,16 @@ Salario base publicado (NYC): USD 120k–250k + equity.
 
 ## 4. Cómo funciona la tutoría
 
-**Ritmo:** 2 clases por semana (~2 hs c/u) + ~2 hs de práctica. Duración estimada: **~38 semanas (9 meses)**, con margen.
+**Ritmo:** 2 clases por semana (~2 hs c/u) + ~2 hs de práctica. Duración estimada: **~39 semanas (9 meses)**, con margen.
 
-**Cada clase:** concepto corto → ejercicio → review al empezar la clase siguiente.
+**Orden de cursada (cambio del 29/10/2026):** primero el flujo Figma → código, después los fundamentos. Claude escribe el CSS, el JS y el React siguiendo la skill de buenas prácticas, y vos aprendés a dirigirlo y revisarlo. Al terminar el flujo volvemos a los fundamentos en detalle, porque los piden el puesto y las entrevistas de live coding.
+
+```
+0 Setup ✅ → 1.1–1.2 ✅ → 2 Figma AI-ready → P Puente React → 5 Repo real → 6 Design system → 8 QA
+→ 1.3–1.8 CSS → 3 JavaScript → 4 React y TS → 7 Motion → 9 Portfolio
+```
+
+**Cada clase:** el tutor explica el concepto con ejemplos resueltos → lo hacés directo donde corresponde (Figma, el repo, DevTools) → el tutor revisa lo que hiciste. Sin preguntas ni ejercicios para responder.
 
 **Para arrancar cada sesión** escribime: _"arranquemos la clase X.Y"_. Leo `PROGRESO.md` y seguimos.
 
@@ -94,11 +105,11 @@ Salario base publicado (NYC): USD 120k–250k + equity.
 
 | Etapa | Módulos | Cómo trabajás |
 |---|---|---|
-| **Fundamentos** | 1, 3, 4 (CSS, JS, React) | **Predecir → Claude genera → explicar → verificar en DevTools.** El objetivo es poder leer y juzgar código. |
+| **Fundamentos** | 1, 3, 4 (CSS, JS, React) | **El tutor explica → lo ves funcionando en el navegador y en DevTools → lo aplicás en un proyecto.** El objetivo es poder leer y juzgar código. |
 | **Workflow con agente** | 2, 5 a 8 | El flujo de la guía: **Figma → inspección con MCP → plan → aprobar → implementar → revisar el diff → QA con evidencia.** Vos decidís, el agente ejecuta. |
 | **Demostrar** | 9 | Live coding y take-home, **con y sin IA**, para simular entrevistas. |
 
-**Ejercicios a mano ✍️ (opcionales):** en cada clase de fundamentos hay uno corto y vos elegís si lo hacés. Antes de las entrevistas (módulo 9) conviene retomarlos.
+**Práctica a mano para entrevistas:** el live coding se prepara en el módulo 9.
 
 ### Review de cada slice (desde el módulo 5)
 1. **Plan** antes de código: resultado observable, alcance, estados, qué se reutiliza/extiende/crea, archivos afectados (guía §15).
@@ -111,27 +122,13 @@ Salario base publicado (NYC): USD 120k–250k + equity.
 
 ## 5. Módulos y clases
 
-### Módulo 0 — Setup ✅ (semana 1)
+### Módulo 0 — Setup ✅
 | Clase | Tema |
 |---|---|
 | 0.1 | Terminal y Git: repo, commit, push. |
 | 0.2 | Deploy en Vercel. IA como tutor. |
 
-### Módulo 1 — CSS para juzgar y pulir (semanas 2–5)
-Lo que más vas a corregir de lo que genera la IA. Es tu diferencial.
-
-| Clase | Tema |
-|---|---|
-| 1.1 | Cascada, especificidad, herencia. |
-| 1.2 | Box model y unidades. |
-| 1.3 | Flexbox = Auto Layout de Figma (dirección, gap, alineación, hug/fill). |
-| 1.4 | CSS Grid: layouts de página y de componentes. |
-| 1.5 | Posicionamiento, stacking context, `z-index`, `overflow`. |
-| 1.6 | Responsive fluido: media queries, `clamp()`, container queries. |
-| 1.7 | Tokens con custom properties + tipografía web. |
-| 1.8 | DevTools para QA visual: medir, comparar con Figma, encontrar por qué algo no se ve igual. |
-
-### Módulo 2 — Figma AI-ready y primer flujo con agente (semanas 6–8)
+### Módulo 2 — Figma AI-ready y primer flujo con agente
 Guía §5–8. Tu terreno: diseño estructurado para que humanos e IA lo entiendan.
 
 | Clase | Tema |
@@ -139,41 +136,19 @@ Guía §5–8. Tu terreno: diseño estructurado para que humanos e IA lo entiend
 | 2.1 | Estructura del archivo, nombres semánticos, componentes, propiedades y variantes (guía §6.1–6.4). |
 | 2.2 | Auto Layout con intención + variables y tokens en 3 niveles: primitivo, semántico, componente (guía §6.5–6.6). |
 | 2.3 | Estados, responsive, accesibilidad y anotaciones. Criterio de "Ready for development" (guía §6.7–6.11). |
-| 2.4 | IA dentro de Figma + conectar Figma MCP a Claude Code. Inspeccionar antes de implementar (guía §7–8). Extra: Figma Console MCP (MCP de la comunidad que suma la REST API: leer comentarios y consolidarlos en un backlog). |
+| 2.4 | IA dentro de Figma + conectar **Figma Console MCP** a Claude Code (plugin Desktop Bridge). Inspeccionar antes de implementar (guía §7–8). Leer comentarios de Figma y consolidarlos en un backlog. Probar una vez el MCP oficial para comparar. |
 | 2.5 | **Mini-proyecto:** diseñar una sección en tu Figma con estructura AI-ready. |
-| 2.6 | Implementarla con Figma MCP + Claude Code en HTML/CSS, y hacer QA visual contra Figma. Deploy. |
+| 2.6 | Implementarla con Figma Console MCP + Claude Code en HTML/CSS, y hacer QA visual contra Figma. Deploy. |
 
-### Módulo 3 — Lógica y JavaScript para leer código (semanas 9–12)
-Saber qué hace el código que genera la IA.
-
-| Clase | Tema |
-|---|---|
-| 3.1 | Pensar en pasos: descomponer un problema en pseudocódigo. |
-| 3.2 | Variables, tipos, condicionales y funciones. |
-| 3.3 | Bucles, arrays y objetos: modelar los datos de una UI. |
-| 3.4 | `map`, `filter`, `find`: transformar datos en interfaz. |
-| 3.5 | DOM y eventos: cómo una página reacciona al usuario. |
-| 3.6 | Estado: tabs y modal accesible. |
-| 3.7 | Datos remotos: `fetch`, `async/await`, JSON. Loading, error y vacío. |
-| 3.8 | Leer código ajeno: recorrer un archivo generado y explicarlo línea por línea. |
-
-**Práctica semanal de lógica ✍️ (opcional):** 2–3 ejercicios de 15 minutos, primero en pseudocódigo y después en JS. Van en `ejercicios-logica/`.
-
-### Módulo 4 — React y TypeScript para design engineers (semanas 13–16)
-El lenguaje en el que vive tu design system en código.
+### Módulo P — Puente: leer React lo justo (semana extra)
+Lo mínimo para revisar lo que Claude genera en los módulos 5 y 6. Solo leer, no escribir. En el módulo 4 lo vemos a fondo.
 
 | Clase | Tema |
 |---|---|
-| 4.1 | Componentes y JSX: el equivalente en código de un componente de Figma. |
-| 4.2 | Props y variantes: de las propiedades de Figma a las props de React. |
-| 4.3 | Estado (`useState`) y eventos: la UI como función del estado. |
-| 4.4 | Listas, condicionales y estados de UI (loading, empty, error). |
-| 4.5 | Efectos y datos: `useEffect`, y cuándo **no** usarlo. |
-| 4.6 | Composición: `children` y slots. |
-| 4.7 | TypeScript: leer y escribir los tipos de las props. |
-| 4.8 | Arquitectura: datos → feature → componente → pantalla (guía §16). Leer un diff de React. |
+| P.1 | Componentes, props y JSX: un componente de Figma y uno de React, lado a lado. Leer un componente generado y explicar qué hace. |
+| P.2 | Leer clases de Tailwind y un diff de React: qué cambió, en qué archivo y si respeta el diseño. |
 
-### Módulo 5 — Trabajar en un repo real con agente (semanas 17–20)
+### Módulo 5 — Trabajar en un repo real con agente
 Guía §4, 11–13, 15–16. Arranca el **proyecto ancla 1**.
 
 | Clase | Tema |
@@ -187,12 +162,12 @@ Guía §4, 11–13, 15–16. Arranca el **proyecto ancla 1**.
 | 5.7 | **Proyecto ancla 1** — Dashboard "AI visibility": Figma AI-ready + slice 1 (shell de la app). |
 | 5.8 | Slice 2 (metric cards) + deploy de preview en Vercel. |
 
-### Módulo 6 — Design system agéntico (semanas 21–25)
+### Módulo 6 — Design system agéntico
 Guía §9–11, 14. **Proyecto ancla 2.**
 
 | Clase | Tema |
 |---|---|
-| 6.1 | Tokens en código mapeados 1 a 1 con las variables de Figma (primitivo → semántico). Tokens en JSON compilados a CSS con Style Dictionary. |
+| 6.1 | Tokens en código mapeados 1 a 1 con las variables de Figma (primitivo → semántico). Exportar variables con Figma Console MCP o Tokens Studio (gratis) y compilarlas a CSS con Style Dictionary. |
 | 6.2 | Componentes con variantes en código (`cva`, shadcn/ui): API de componentes. |
 | 6.3 | Accesibilidad de componentes: semántica, teclado, foco, Radix. |
 | 6.4 | Storybook: stories por variante y estado, addon de accesibilidad (guía §10). |
@@ -202,21 +177,9 @@ Guía §9–11, 14. **Proyecto ancla 2.**
 | 6.8 | Skills y reglas: gobernar al agente con roles (Component Architect, Plan Reviewer, Slice Closer…) (guía §14). Regla de supuestos explícitos: si el agente asume algo, lo dice y nombra el riesgo. |
 | 6.9 | StorySync y drift Figma ↔ código: concepto y demo (opcional según requisitos) (guía §10.1). |
 | 6.10 | **Prueba final:** pedirle a Claude Code una pantalla nueva y verificar que use tu sistema sin indicaciones extra. |
-| 6.11 | Contratos de componentes (opcional): spec agnóstica del framework (anatomía, estados, intención), catálogo de props por framework y emitters que generan el código. El código generado no se edita: se edita el contrato. Ejercicio: escribir el contrato de un componente a partir de la API de Base UI. |
+| 6.11 | Contratos de componentes (opcional): spec agnóstica del framework (anatomía, estados, intención), catálogo de props por framework y emitters que generan el código. El código generado no se edita: se edita el contrato. Práctica: escribir el contrato de un componente a partir de la API de Base UI. |
 
-### Módulo 7 — Motion y craft (semanas 26–28)
-Lo que la guía no cubre y Profound pide explícitamente. **Proyecto ancla 3.**
-
-| Clase | Tema |
-|---|---|
-| 7.1 | Principios: cuándo animar, duración, easing, propósito. |
-| 7.2 | CSS transitions y keyframes + performance (`transform`/`opacity`). |
-| 7.3 | Motion (motion.dev): variants, springs, `AnimatePresence`. |
-| 7.4 | Layout animations, gestos y `prefers-reduced-motion`. |
-| 7.5 | Documentar motion como tokens (duraciones y curvas) en el design system. |
-| 7.6 | **Craft lab:** experimentos de micro-interacción publicados. |
-
-### Módulo 8 — QA y verificación con evidencia (semanas 29–31)
+### Módulo 8 — QA y verificación con evidencia
 Guía §17–18. Cerrar el **proyecto ancla 1** con nivel de producción.
 
 | Clase | Tema |
@@ -228,7 +191,62 @@ Guía §17–18. Cerrar el **proyecto ancla 1** con nivel de producción.
 | 8.5 | Responsive, contenido extremo y performance (Core Web Vitals). |
 | 8.6 | Dashboard: slices finales cerrados con ledger. |
 
-### Módulo 9 — Portfolio y búsqueda (semanas 32–35, +3 de margen)
+### Módulo 1 — CSS para juzgar y pulir (1.1–1.2 ✅ · 1.3–1.8 después del módulo 8)
+Lo que más vas a corregir de lo que genera la IA. Es tu diferencial.
+
+| Clase | Tema |
+|---|---|
+| 1.1 | Cascada, especificidad, herencia. |
+| 1.2 | Box model y unidades. |
+| 1.3 | Flexbox = Auto Layout de Figma (dirección, gap, alineación, hug/fill). |
+| 1.4 | CSS Grid: layouts de página y de componentes. |
+| 1.5 | Posicionamiento, stacking context, `z-index`, `overflow`. |
+| 1.6 | Responsive fluido: media queries, `clamp()`, container queries. |
+| 1.7 | Tokens con custom properties + tipografía web. |
+| 1.8 | DevTools para QA visual: medir, comparar con Figma, encontrar por qué algo no se ve igual. |
+
+### Módulo 3 — Lógica y JavaScript para leer código
+Saber qué hace el código que genera la IA.
+
+| Clase | Tema |
+|---|---|
+| 3.1 | Pensar en pasos: descomponer un problema en pseudocódigo. |
+| 3.2 | Variables, tipos, condicionales y funciones. |
+| 3.3 | Bucles, arrays y objetos: modelar los datos de una UI. |
+| 3.4 | `map`, `filter`, `find`: transformar datos en interfaz. |
+| 3.5 | DOM y eventos: cómo una página reacciona al usuario. |
+| 3.6 | Estado: tabs y modal accesible. |
+| 3.7 | Datos remotos: `fetch`, `async/await`, JSON. Loading, error y vacío. |
+| 3.8 | Leer código ajeno: recorrer un archivo generado y explicarlo línea por línea. |
+
+
+### Módulo 4 — React y TypeScript para design engineers
+El lenguaje en el que vive tu design system en código.
+
+| Clase | Tema |
+|---|---|
+| 4.1 | Componentes y JSX: el equivalente en código de un componente de Figma. |
+| 4.2 | Props y variantes: de las propiedades de Figma a las props de React. |
+| 4.3 | Estado (`useState`) y eventos: la UI como función del estado. |
+| 4.4 | Listas, condicionales y estados de UI (loading, empty, error). |
+| 4.5 | Efectos y datos: `useEffect`, y cuándo **no** usarlo. |
+| 4.6 | Composición: `children` y slots. |
+| 4.7 | TypeScript: leer y escribir los tipos de las props. |
+| 4.8 | Arquitectura: datos → feature → componente → pantalla (guía §16). Leer un diff de React. |
+
+### Módulo 7 — Motion y craft
+Lo que la guía no cubre y Profound pide explícitamente. **Proyecto ancla 3.**
+
+| Clase | Tema |
+|---|---|
+| 7.1 | Principios: cuándo animar, duración, easing, propósito. |
+| 7.2 | CSS transitions y keyframes + performance (`transform`/`opacity`). |
+| 7.3 | Motion (motion.dev): variants, springs, `AnimatePresence`. |
+| 7.4 | Layout animations, gestos y `prefers-reduced-motion`. |
+| 7.5 | Documentar motion como tokens (duraciones y curvas) en el design system. |
+| 7.6 | **Craft lab:** experimentos de micro-interacción publicados. |
+
+### Módulo 9 — Portfolio y búsqueda
 | Clase | Tema |
 |---|---|
 | 9.1 | Narrativa: mostrar el **proceso** (Figma AI-ready → MCP → slices → ledger), no solo el resultado. |
@@ -265,7 +283,8 @@ Guía §17–18. Cerrar el **proyecto ancla 1** con nivel de producción.
 | React | [react.dev/learn](https://react.dev/learn) |
 | TypeScript | [Total TypeScript](https://www.totaltypescript.com) (tutoriales gratis) |
 | Next.js / Tailwind | [nextjs.org/learn](https://nextjs.org/learn) · [tailwindcss.com/docs](https://tailwindcss.com/docs) · [ui.shadcn.com](https://ui.shadcn.com) · [radix-ui.com](https://www.radix-ui.com) · [Base UI](https://base-ui.com) |
-| Design systems | [Style Dictionary](https://styledictionary.com) · [Figma Console MCP](https://github.com/southleft/figma-console-mcp) |
+| Design systems | [Style Dictionary](https://styledictionary.com) · [Figma Console MCP](https://docs.figma-console-mcp.southleft.com/introduction) |
+| Figma MCP | [Figma Console MCP](https://docs.figma-console-mcp.southleft.com/introduction) · [Límites del MCP oficial](https://developers.figma.com/docs/figma-mcp-server/rate-limits-access/) · [Tokens Studio](https://tokens.studio) |
 | Storybook | [storybook.js.org/docs](https://storybook.js.org/docs) · [StorySync](https://github.com/brendanciccone/storysync) |
 | Motion | [motion.dev](https://motion.dev) · [Emil Kowalski](https://emilkowal.ski) (*animations.dev*) · [interfaces.rauno.me](https://interfaces.rauno.me) |
 | Calidad | [Vercel Web Interface Guidelines](https://vercel.com/design/guidelines) · [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) |
