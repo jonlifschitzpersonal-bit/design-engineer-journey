@@ -30,6 +30,14 @@ Ningún proyecto es igual. Antes de escribir código, averiguá:
 
 **Si una regla del proyecto contradice esta skill, gana la del proyecto**, y lo decís para que quede a la vista.
 
+### Si el proyecto todavía no existe
+
+- **Generalo con el generador oficial y la versión fija** (`create-next-app@16.4.3`, no `@latest`), con todas las opciones como flags para que no haga preguntas. Así el resultado se puede repetir y la guía o el plan coinciden con lo que aparece.
+- **Si va dentro de un repo que ya existe, sin Git propio** (`--disable-git` o similar). Un repo adentro de otro hace que el de afuera no vea los archivos del de adentro.
+- **La plantilla de bienvenida se reemplaza, no se construye encima.** Trae colores de la paleta del framework, hex entre corchetes, su propia fuente y un dark mode automático: nada de eso es del sistema. La página de ejemplo y los estilos globales se vacían antes de cargar los tokens.
+- **Ajustá lo que la plantilla trae genérico:** `lang` al idioma del contenido (el lector de pantalla elige la pronunciación con ese dato), el `title` y la `description` de la metadata, y la fuente a la de los text styles.
+- **Antes de dar el proyecto por creado, corré `lint` y `build`.** `dev` puede funcionar con errores que el deploy después rechaza.
+
 ---
 
 ## 1. HTML base
@@ -204,6 +212,8 @@ button, input, select, textarea {
 - En listas, `key` estable y única, nunca el índice si la lista cambia de orden.
 - Toda UI con datos tiene **loading, vacío y error**.
 - Next.js (App Router): componentes de servidor por default; `"use client"` solo donde hay estado, efectos o eventos, lo más abajo posible. `next/link` para navegar.
+- **Next.js (App Router), dónde va cada cosa:** cada carpeta de `app/` con un `page.tsx` es una URL; una carpeta sin `page.tsx` solo ordena. Lo que se repite en todas las pantallas (shell, header, fuente, `lang`, metadata) va en `layout.tsx`, que envuelve a cada página con `{children}`. Si se copia en cada `page.tsx`, se desincroniza.
+- **Archivos generados, no se editan a mano:** `node_modules/`, `.next/`, el lockfile (`package-lock.json`), `next-env.d.ts` y el bloque que el framework escribe en `AGENTS.md` (ese bloque se commitea tal cual: si se borra, `next dev` lo vuelve a crear). El lockfile cambia solo cuando se agrega o se actualiza una dependencia, y eso se dice.
 
 ## 14. Tailwind
 
@@ -247,7 +257,7 @@ Al terminar, contale al usuario qué reglas aplicaste o tuviste que resolver, en
 
 - **Primero el pedido, después el código.** Cada bloque del diff tiene que servir a lo pedido. Lo que no, es fuera de alcance aunque "mejore" algo (un color "más visible", un hover "más lindo"): se saca o se pide aparte.
 - **Leé las líneas borradas, no solo las agregadas.** Lo que se pierde no se ve en pantalla: textos para lector (`sr-only`), `aria-hidden`, tokens reemplazados por valores, estados.
-- **Señales de alarma:** valores sueltos o arbitrarios sin comentario, estados que no existen en el diseño, elementos no interactivos con `onClick` (`<div>`, `<article>`) en lugar de `<a href>` o `<button>`.
+- **Señales de alarma:** valores sueltos o arbitrarios sin comentario, estados que no existen en el diseño, elementos no interactivos con `onClick` (`<div>`, `<article>`) en lugar de `<a href>` o `<button>`, y cambios en archivos generados o de configuración (lockfile, `next.config`, `tsconfig`) sin un motivo que diga el pedido.
 - **Todo color nuevo se mide** (contraste contra su fondo), no se juzga a ojo.
 - **El resultado es un ledger por control y un veredicto** (aprobar o pedir cambios) con un comentario accionable: qué cambiar y por qué. Lo que es decisión de diseño (un estado nuevo) se devuelve a diseño, no se resuelve en el código.
 

@@ -29,6 +29,12 @@
         ],
         "createdAt": "2026-10-29T12:49:12.449Z",
         "reason": "Claude decided: .toolbar en el caso 3 va sin padding a propósito, porque el ejercicio pide calcular el ancho del buscador (600 - 100 - 120 - 2×16)"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-10-29T19:09:35.202Z",
+        "reason": "Claude: font comes from the Figma design system (all text styles in Design Engineer Journey use Inter); code must match the source design"
       }
     ]
   }

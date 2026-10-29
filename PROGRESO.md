@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 5.1
+**Clase actual:** 5.2
 **Pendiente de la 2.4:** comentarios de Figma → backlog (se retoma cuando haya comentarios reales) y probar una vez el MCP oficial (opcional)
 **Pendiente de la 2.6 (Figma):** activar números tabulares en el text style `heading/metric` y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button
 **Sección Resumen publicada:** https://design-engineer-journey-00-seccion.vercel.app/
@@ -36,7 +36,7 @@
 
 ### Módulos 5 y 6 — Repo real + design system agéntico (intercalados, en este orden)
 
-- [ ] 5.1 Next.js + Tailwind
+- [x] 5.1 Next.js + Tailwind
 - [ ] 5.2 Tailwind desde tokens
 - [ ] 5.3 Preparar el repo para el agente
 - [ ] 5.4 Git en equipo
@@ -121,6 +121,13 @@
 ---
 
 ## Bitácora
+
+### 2026-10-29 · Clase 5.1 — Next.js + Tailwind
+- **Aprendí:** Next.js es el marco que convierte componentes de React en una web: páginas, URLs, servidor local y armado para publicar. En `app/`, cada carpeta con un `page.tsx` es una URL; `layout.tsx` envuelve a todas las páginas con `{children}` (como un slot) y ahí va lo que se repite; `globals.css` tiene `@import "tailwindcss"` y el bloque `@theme`, donde cada variable se vuelve clases. El proyecto tiene tres zonas: lo que se toca (`app/`, `public/`, después `components/`), lo que se lee (`package.json`, `AGENTS.md`) y lo que no se toca (`node_modules/`, `.next/`, lockfile, configuraciones). `AGENTS.md` lo escribe Next.js para avisarle al agente que su versión cambió.
+- **Hice:** creé `proyectos/01-dashboard` con `create-next-app@16.4.3`, lo levanté con `npm run dev` y cambié el `<h1>` de `page.tsx` a "Dashboard AI visibility" viendo cómo se actualiza solo. Verificado: `npm run lint` sin errores y `npm run build` arma la página.
+- **Me costó / sorpresa:** dos problemas del entorno antes de empezar: un npm 6 viejo que le ganaba al de Node y rompía la instalación (se actualizó a 11.19.1), y PowerShell bloqueando `npx.ps1` (se habilitó con `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`). La plantilla de bienvenida usa colores de Tailwind y hex sueltos: las mismas señales de alarma de la P.2.
+- **Sumado a las skills:** cómo generar un proyecto (versión fija, sin Git propio dentro de otro repo, la plantilla se reemplaza, `lang`/metadata/fuente, `lint` + `build` antes de darlo por creado), dónde va cada cosa en el App Router, archivos generados que no se editan, y cambios en configuración sin motivo como señal de alarma en un diff. En `CLAUDE.md`: el proyecto y el entorno de Windows.
+- **Para la 5.2:** vaciar `page.tsx` y `globals.css` de la plantilla, cargar los tokens de Figma en `@theme` (solo los colores del sistema), cambiar Geist por Inter y `lang="en"` por `es`. Sigue pendiente decidir si las clases de color quedan con palabras repetidas (`text-text-muted`).
 
 ### 2026-10-29 · Clase P.2 — Leer Tailwind y un diff de React
 - **Aprendí:** Tailwind trae clases ya hechas que hacen una sola cosa cada una (`p-5` = padding 20) y se combinan directo en el elemento, en lugar de inventar un nombre y escribir su CSS en otro archivo. Se leen como el panel de Figma: `flex flex-col gap-3 p-5` = Auto Layout vertical, espaciado 12, padding 20. La escala es N × 4px, la misma que `space/N`. Los prefijos dicen cuándo: `hover:`, `disabled:`, y `sm:` = desde 640 (sin prefijo es mobile). Los corchetes son valores sueltos: válidos solo si no hay token y está explicado. Un diff muestra lo borrado (rojo) y lo agregado (verde); las líneas rojas también son cambios.

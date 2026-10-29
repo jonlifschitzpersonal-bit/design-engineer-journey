@@ -23,6 +23,8 @@ Repo del curso de Jonathan (product designer → design engineer). Las skills de
 
 ## Código
 - **Stack desde el módulo 5:** Next.js + React + **Tailwind v4**, con los tokens de Figma en `@theme` y solo los colores del sistema. Es la decisión de este repo, no de las skills. `proyectos/00-seccion-resumen` queda en HTML y CSS (es de la 2.6).
+- **Proyecto del dashboard y del sistema:** `proyectos/01-dashboard`, creado en la 5.1 con `create-next-app@16.4.3` (TypeScript, App Router, sin `src/`, alias `@/*`, ESLint, sin Git propio). Antes de cerrar un cambio: `npm run lint` y `npm run build`.
+- **Entorno (Windows):** npm global actualizado a 11.19.1 (había un npm 6 en `AppData\Roaming\npm` que le ganaba al de Node y fallaba con `cb() never called`). PowerShell con `ExecutionPolicy RemoteSigned` para el usuario, porque si no, bloquea `npm.ps1` y `npx.ps1`.
 - **Breakpoints:** los de Tailwind (`sm` 640, `md` 768, `lg` 1024, `xl` 1280).
 - **Tokens en código:** mismos nombres que en Figma, con las barras pasadas a guiones (`color/text/muted` → `--color-text-muted`, `space/8` → `--space-8`).
 - **Proyectos publicados:** `proyectos/` (cada uno con su propio proyecto de Vercel y su Root Directory).
