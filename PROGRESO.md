@@ -4,14 +4,27 @@
 > El tutor lee este archivo al empezar cada sesión.
 
 **Clase actual:** 5.2
-**Pendiente de la 2.4:** comentarios de Figma → backlog (se retoma cuando haya comentarios reales) y probar una vez el MCP oficial (opcional)
-**Pendiente de la 2.6 (Figma):** activar números tabulares en el text style `heading/metric` y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button
-**Dashboard:** `D:\Escritorio\proyectos\dashboard-ai-visibility` (repo: https://github.com/jonlifschitzpersonal-bit/dashboard-ai-visibility)
-**Para las skills (5.5 y 6.8):** sumar el proceso de trabajo con el agente (plan → aprobación → código → diff → ledger). Hoy está solo en `PLAN-DE-ESTUDIO.md` §4 ("Review de cada slice"), así que en otro proyecto no se conoce.
-**Sección Resumen publicada:** https://design-engineer-journey-00-seccion.vercel.app/
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
-**URL publicada:** https://design-engineer-journey-00-setup.vercel.app/
-**Repo:** https://github.com/jonlifschitzpersonal-bit/design-engineer-journey.git
+
+### Dónde está cada cosa
+
+| Qué | Dónde |
+|---|---|
+| Repo del curso | https://github.com/jonlifschitzpersonal-bit/design-engineer-journey |
+| Dashboard (proyecto ancla 1, y los componentes del sistema) | `D:\Escritorio\proyectos\dashboard-ai-visibility` · https://github.com/jonlifschitzpersonal-bit/dashboard-ai-visibility · sin publicar todavía (deploy en la 5.8) |
+| Sección Resumen (2.6) | https://design-engineer-journey-00-seccion.vercel.app/ |
+| Setup (0.2) | https://design-engineer-journey-00-setup.vercel.app/ |
+
+### Pendientes
+
+| Cuándo | Qué |
+|---|---|
+| **5.2** | En el dashboard: vaciar `page.tsx` y `globals.css` de la plantilla, cargar los tokens de Figma en `@theme` (solo los colores del sistema), cambiar Geist por Inter, `lang="en"` por `es` y la metadata (título y descripción). Decidir si las clases de color quedan con palabras repetidas (`text-text-muted`, viene de la P.2). |
+| **5.3** | Docs del dashboard para el agente: su propio `CLAUDE.md` (stack, tokens, convenciones), contexto, estado y ADRs. |
+| **5.4** | Instalar GitHub CLI (`gh`) y autenticarlo: hoy no está, y se necesita para crear PRs e issues desde la terminal. |
+| **5.5 y 6.8** | Sumar a las skills el proceso de trabajo con el agente (plan → aprobación → código → diff → ledger). Hoy está solo en `PLAN-DE-ESTUDIO.md` §4 ("Review de cada slice"), así que en otro proyecto no se conoce. |
+| **Figma (de la 2.6)** | Activar números tabulares en el text style `heading/metric` y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button. |
+| **Backlog (de la 2.4)** | Comentarios de Figma → backlog (cuando haya comentarios reales). Probar una vez el MCP oficial (opcional). |
 
 ---
 
@@ -128,7 +141,8 @@
 - **Aprendí:** Next.js es el marco que convierte componentes de React en una web: páginas, URLs, servidor local y armado para publicar. En `app/`, cada carpeta con un `page.tsx` es una URL; `layout.tsx` envuelve a todas las páginas con `{children}` (como un slot) y ahí va lo que se repite; `globals.css` tiene `@import "tailwindcss"` y el bloque `@theme`, donde cada variable se vuelve clases. El proyecto tiene tres zonas: lo que se toca (`app/`, `public/`, después `components/`), lo que se lee (`package.json`, `AGENTS.md`) y lo que no se toca (`node_modules/`, `.next/`, lockfile, configuraciones). `AGENTS.md` lo escribe Next.js para avisarle al agente que su versión cambió.
 - **Hice:** creé el proyecto con `create-next-app@16.4.3`, lo levanté con `npm run dev` y cambié el `<h1>` de `page.tsx` a "Dashboard AI visibility" viendo cómo se actualiza solo. Verificado: `npm run lint` sin errores y `npm run build` arma la página.
 - **Me costó / sorpresa:** dos problemas del entorno antes de empezar: un npm 6 viejo que le ganaba al de Node y rompía la instalación (se actualizó a 11.19.1), y PowerShell bloqueando `npx.ps1` (se habilitó con `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`). La plantilla de bienvenida usa colores de Tailwind y hex sueltos: las mismas señales de alarma de la P.2.
-- **Decidido:** el dashboard sale del repo del curso a su propia carpeta y su propio repo público (`D:\Escritorio\proyectos\dashboard-ai-visibility`): portfolio limpio, y en la 5.4 los PRs e issues son solo del proyecto. `proyectos/` del curso queda para los ejercicios. Las skills todavía no tienen el proceso con el agente: se suma en la 5.5 y la 6.8.
+- **Decidido:** el dashboard sale del repo del curso a su propia carpeta y su propio repo público (`D:\Escritorio\proyectos\dashboard-ai-visibility`, https://github.com/jonlifschitzpersonal-bit/dashboard-ai-visibility): portfolio limpio, y en la 5.4 los PRs e issues son solo del proyecto. Creé el repo vacío en GitHub y Claude conectó el proyecto y subió el primer commit. `proyectos/` del curso queda para los ejercicios. Las sesiones se siguen abriendo desde la carpeta del curso.
+- **Skills en otro proyecto:** llevan el *cómo* (Figma AI-ready, craft, Tailwind, React, Next.js, verificación, revisión de diffs); el *qué* de cada proyecto (stack, archivo de Figma, tokens) va en su `CLAUDE.md`. En un proyecto vacío preguntan el stack en lugar de elegir Next.js solas. Falta el proceso con el agente: se suma en la 5.5 y la 6.8.
 - **Sumado a las skills:** cómo generar un proyecto (versión fija, sin Git propio dentro de otro repo, la plantilla se reemplaza, `lang`/metadata/fuente, `lint` + `build` antes de darlo por creado), dónde va cada cosa en el App Router, archivos generados que no se editan, y cambios en configuración sin motivo como señal de alarma en un diff. En `CLAUDE.md`: el proyecto y el entorno de Windows.
 - **Para la 5.2:** vaciar `page.tsx` y `globals.css` de la plantilla, cargar los tokens de Figma en `@theme` (solo los colores del sistema), cambiar Geist por Inter y `lang="en"` por `es`. Sigue pendiente decidir si las clases de color quedan con palabras repetidas (`text-text-muted`).
 

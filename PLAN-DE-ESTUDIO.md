@@ -32,7 +32,7 @@ Vos diseñás y tomás las decisiones; Claude Code implementa; vos revisás que 
 | Rol actual | Product Designer |
 | Código | HTML/CSS ok · JavaScript poco · sin React |
 | Tiempo | 5–8 hs por semana |
-| Entorno | VS Code, Node.js, GitHub y Vercel listos |
+| Entorno | VS Code, Node.js 24 (npm 11), GitHub y Vercel listos. PowerShell habilitado para correr `npm`/`npx` (5.1). Falta GitHub CLI (`gh`, en la 5.4). |
 | Figma | Plan Free / Starter |
 | Estrategia | Prepararse primero, aplicar con portfolio de design engineering |
 
@@ -152,15 +152,15 @@ Lo mínimo para revisar lo que Claude genera en los módulos 5 y 6. Solo leer, n
 | P.2 | Leer clases de Tailwind y un diff de React: qué cambió, en qué archivo y si respeta el diseño. |
 
 ### Módulo 5 — Trabajar en un repo real con agente
-Guía §4, 11–13, 15–16. Arranca el **proyecto ancla 1**.
+Guía §4, 11–13, 15–16. Arranca el **proyecto ancla 1**, en su propio repo público: [`dashboard-ai-visibility`](https://github.com/jonlifschitzpersonal-bit/dashboard-ai-visibility) (carpeta `D:\Escritorio\proyectos\dashboard-ai-visibility`). Ahí viven también los componentes del sistema del módulo 6.
 
 | Clase | Tema |
 |---|---|
 | 5.1 | Next.js + Tailwind: crear el proyecto y entender su estructura. |
 | 5.2 | Tailwind desde los tokens: `@theme` con tus variables de Figma. |
 | 5.3 | Preparar el repo para el agente: `CLAUDE.md`, `PROJECT_CONTEXT`, `CURRENT_STATE`, `PENDING_TASKS` (guía §11). ADRs (*Architecture Decision Records*): `docs/adr/` con un README índice, más `docs/research/` para el contexto que lleva a cada decisión. |
-| 5.4 | Git en equipo: branches, diff, commits con intención, pull requests (guía §12). GitHub Issues: crear issues (también desde comentarios de Figma), agruparlos por alcance y vincularlos al PR (`Closes #12`). |
-| 5.5 | Trabajar por slices: plan → aprobación → implementación (guía §13, 15). Tip: iterar layout con wireframes en ASCII antes de diseñar o codear (gasta pocos tokens). |
+| 5.4 | Git en equipo: branches, diff, commits con intención, pull requests (guía §12). GitHub Issues: crear issues (también desde comentarios de Figma), agruparlos por alcance y vincularlos al PR (`Closes #12`). Instalar y autenticar GitHub CLI (`gh`) para hacerlo desde la terminal. |
+| 5.5 | Trabajar por slices: plan → aprobación → implementación (guía §13, 15). Tip: iterar layout con wireframes en ASCII antes de diseñar o codear (gasta pocos tokens). Al cerrar: el proceso pasa a la skill `design-implementation`, para que valga en cualquier proyecto. |
 | 5.6 | Revisar implementaciones: señales de código poco confiable (guía §16). |
 | 5.7 | **Proyecto ancla 1** — Dashboard "AI visibility": Figma AI-ready + slice 1 (shell de la app). *Se cursa después de 6.4.* |
 | 5.8 | Slice 2 (metric cards, con los componentes del sistema) + deploy de preview en Vercel. *Se cursa después de 6.4.* |
@@ -177,7 +177,7 @@ Guía §9–11, 14. **Proyecto ancla 2.** Se cursa en dos partes: 6.1–6.4 entr
 | 6.5 | Dark mode y modos de variables. |
 | 6.6 | Documentación para agentes: `docs/design-system/`, `AI_CONTEXT.md` y la regla en `CLAUDE.md` (guía §11.1). |
 | 6.7 | Code Connect: concepto, template files, checklist. En plan Free: **mapeo documentado** Figma ↔ código (guía §9). |
-| 6.8 | Skills y reglas: gobernar al agente con roles (Component Architect, Plan Reviewer, Slice Closer…) (guía §14). Regla de supuestos explícitos: si el agente asume algo, lo dice y nombra el riesgo. |
+| 6.8 | Skills y reglas: gobernar al agente con roles (Component Architect, Plan Reviewer, Slice Closer…) (guía §14). Regla de supuestos explícitos: si el agente asume algo, lo dice y nombra el riesgo. El proceso completo (plan → aprobación → código → diff → ledger) queda en las skills con sus roles. |
 | 6.9 | StorySync y drift Figma ↔ código: concepto y demo (opcional según requisitos) (guía §10.1). |
 | 6.10 | **Prueba final:** pedirle a Claude Code una pantalla nueva y verificar que use tu sistema sin indicaciones extra. |
 | 6.11 | Contratos de componentes (opcional): spec agnóstica del framework (anatomía, estados, intención), catálogo de props por framework y emitters que generan el código. El código generado no se edita: se edita el contrato. Práctica: escribir el contrato de un componente a partir de la API de Base UI. |
@@ -267,7 +267,7 @@ Lo que la guía no cubre y Profound pide explícitamente. **Proyecto ancla 3.**
 
 | Proyecto | Qué muestra | Módulos |
 |---|---|---|
-| **1. Dashboard "AI visibility"**: cómo aparece una marca en ChatGPT, Gemini, Perplexity y Claude (el dominio de Profound). Hecho con el workflow completo de la guía. | Product UI real, slices, QA con evidencia | 5, 8 |
+| **1. Dashboard "AI visibility"**: cómo aparece una marca en ChatGPT, Gemini, Perplexity y Claude (el dominio de Profound). Hecho con el workflow completo de la guía. Repo: [`dashboard-ai-visibility`](https://github.com/jonlifschitzpersonal-bit/dashboard-ai-visibility). | Product UI real, slices, QA con evidencia | 5, 8 |
 | **2. Design system agéntico**: tokens Figma ↔ código, componentes accesibles, Storybook, docs para agentes, mapeo de componentes. | Sistemas, gobernanza de IA, accesibilidad | 6 |
 | **3. Craft lab**: micro-interacciones publicadas. | Gusto, motion, detalle | 7 |
 | **4. Portfolio**: construido con tu propio design system. | Todo lo anterior | 9 |
