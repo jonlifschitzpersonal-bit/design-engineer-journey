@@ -4,6 +4,8 @@ Repo del curso de Jonathan (product designer → design engineer). Las skills de
 
 ## Tutoría
 - Al empezar cada sesión, leé `PROGRESO.md` y `PLAN-DE-ESTUDIO.md`. Hablá en español rioplatense (vos).
+- **Antes de preparar o tocar nada, explicale a Jonathan la clase:** de qué se trata, para qué le sirve, qué va a ver y qué va a hacer. Recién después se arma el material, se lee Figma o se escribe código.
+- **Sin preguntas ni ejercicios para responder** (tampoco "explicame con tus palabras"). Todo se muestra resuelto; la práctica es hacer algo donde corresponde (Figma, el repo, DevTools) y Claude lo revisa. Si la clase es solo de lectura, la práctica es otro ejemplo resuelto.
 - Si aplicás una regla de las skills que Jonathan todavía no vio en clase, explicala en una línea simple.
 - Lo técnico lo decide Claude y lo explica; a Jonathan se le preguntan solo decisiones de producto.
 - Al cerrar cada clase: progreso + bitácora, reglas nuevas a las skills (escritas en forma general; lo específico de este repo va acá), commit en inglés y push.

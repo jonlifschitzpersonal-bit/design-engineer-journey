@@ -1,0 +1,25 @@
+/* Agregados de la P.1 sobre el CSS de la 2.6 */
+
+/* El ícono de la card llega como prop (Instance swap), así que la card le da el tamaño: 20px como en Figma */
+.metric-card__icon-wrapper .icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Solo para la vista previa: la fila de estados */
+.preview-states {
+  max-width: 80rem;
+  margin: var(--space-8) auto 0;
+  padding-inline: var(--space-4);
+}
+
+@media (min-width: 40rem) {
+  .preview-states {
+    padding-inline: var(--space-8);
+  }
+}
+
+.preview-states__title {
+  margin-block-end: var(--space-4);
+  color: var(--color-text-muted);
+}

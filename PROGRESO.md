@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** P.1
+**Clase actual:** P.2
 **Pendiente de la 2.4:** comentarios de Figma → backlog (se retoma cuando haya comentarios reales) y probar una vez el MCP oficial (opcional)
 **Pendiente de la 2.6 (Figma):** activar números tabulares en el text style `heading/metric` y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button
 **Sección Resumen publicada:** https://design-engineer-journey-00-seccion.vercel.app/
@@ -31,7 +31,7 @@
 
 ### Módulo P — Puente: leer React lo justo
 
-- [ ] P.1 Componentes, props y JSX
+- [x] P.1 Componentes, props y JSX
 - [ ] P.2 Leer Tailwind y un diff de React
 
 ### Módulos 5 y 6 — Repo real + design system agéntico (intercalados, en este orden)
@@ -121,6 +121,13 @@
 ---
 
 ## Bitácora
+
+### 2026-10-29 · Clase P.1 — Componentes, props y JSX
+- **Aprendí:** un componente de React es una función que recibe props y devuelve interfaz: el componente principal de Figma se escribe una vez y cada instancia es `<MetricCard title="…" />` con sus overrides. Las props tienen los mismos nombres, valores y defaults que las propiedades de Figma. JSX se lee como HTML con llaves para los datos (`{title}`), `className` en lugar de `class` y mayúscula para los componentes propios. Los estados están en las condiciones (`if … return`, `? :`, `&&`), y en React lo que no va no se dibuja. Receta para leer cualquier componente: firma → reglas de arriba → condiciones → `return`.
+- **Hice:** leí la sección Resumen pasada a React (`Icon`, `MetricCard`, `StatusBadge`, `Button`, `Summary`). Los componentes se ejecutaron y generan el mismo HTML que la 2.6 (`vista-previa.html`).
+- **Me costó:** el JSX del StatusBadge; se entendió viendo qué entra (`status="paused"`) y qué sale (el HTML con "Pausado"). Pedí que cada clase se explique antes de preparar nada, y que no haya ejercicios para responder: el Button quedó como ejemplo resuelto.
+- **Verificado:** el ícono de la card salía de 16px (tamaño base del `Icon`) en lugar de 20: como llega por prop, lo dimensiona la card.
+- **Sumado a las skills:** Boolean + Instance swap → una sola prop opcional, Text principal → `children`, el componente que recibe un ícono por prop le pone el tamaño. En `CLAUDE.md`: explicar la clase antes de hacer nada y sin ejercicios para responder.
 
 ### 2026-10-29 · Clase 2.6 — De Figma a código: implementar, verificar y publicar
 - **Aprendí:** el ciclo completo de un slice: leer Figma por el MCP → plan → aprobación → código → verificación con evidencia → deploy. Todo lo del módulo 2 tuvo un destino en el código: nombres de capa → clases, variables → `tokens.css`, wrap + min width → grilla `auto-fill`, anotaciones → `h2`/`h3` y textos para el lector. El QA se hace midiendo en el navegador y comparando con Figma a la misma escala, y se registra en un ledger (PASS / FAIL / UNVERIFIED / OUT OF SCOPE).

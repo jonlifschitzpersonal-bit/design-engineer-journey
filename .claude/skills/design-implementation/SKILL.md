@@ -165,6 +165,7 @@ button, input, select, textarea {
 
 - **Los íconos usan `currentColor`** y heredan el color del texto: el mismo ícono sirve en cualquier estado sin props de color.
 - **Mismo trazo que en Figma a cualquier tamaño:** `stroke-width` en px reales y `vector-effect: non-scaling-stroke` en los trazos. Sin eso, un ícono de 24 achicado a 14 queda con un trazo más fino que el diseño.
+- **Si un ícono llega por prop (Instance swap), el tamaño lo pone el componente que lo recibe**, con CSS sobre su contenedor (`.card__icon-wrapper .icon`), y no quien lo usa. Si no, cada uso tiene que acordarse del tamaño y el ícono sale con el tamaño base del set (en Figma, el componente lo redimensiona adentro de la instancia).
 - **Usá la librería de íconos del proyecto**, con el nombre que indique la equivalencia documentada en Figma. No dibujes íconos a mano.
 - **Verificá la equivalencia por la forma, no por el nombre:** un `arrow-up` de Figma puede ser `move-up` en la librería. Compará la geometría antes de usarlo.
 
@@ -186,6 +187,8 @@ button, input, select, textarea {
   | Instance swap | prop que recibe un elemento (`iconStart={<Icon …/>}`) |
   | Slot | `children` |
 
+- **Un Boolean que solo muestra u oculta un Instance swap no pasa como prop aparte** (`showIconStart` + `iconStart` → `iconStart` opcional). En Figma el swap siempre tiene algo adentro y necesita el booleano; en código, no pasar la prop ya es "sin ícono". Dos props para lo mismo se pueden contradecir.
+- **El texto de un Text que es la etiqueta principal va como `children`** (`<Button>Exportar</Button>`), igual que en el elemento nativo.
 - **Los nombres de capa son los nombres del código** (clases, subcomponentes o `data-slot`). Si una capa se llama `Frame 438`, no adivines qué es: avisá.
 - **No todas las variantes de estado son props.** `hover`, `focus` y `pressed` son estilos (`:hover`, `:focus-visible`, `:active`); `disabled`, `loading`, `selected` o `error` son props.
 - **Leé la descripción del componente en Figma:** ahí van las reglas que Figma no puede expresar (por ejemplo, "con `loading`, el spinner reemplaza al ícono"). En código esa lógica sí se implementa.
