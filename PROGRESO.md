@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** P.2
+**Clase actual:** 5.1
 **Pendiente de la 2.4:** comentarios de Figma → backlog (se retoma cuando haya comentarios reales) y probar una vez el MCP oficial (opcional)
 **Pendiente de la 2.6 (Figma):** activar números tabulares en el text style `heading/metric` y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button
 **Sección Resumen publicada:** https://design-engineer-journey-00-seccion.vercel.app/
@@ -32,7 +32,7 @@
 ### Módulo P — Puente: leer React lo justo
 
 - [x] P.1 Componentes, props y JSX
-- [ ] P.2 Leer Tailwind y un diff de React
+- [x] P.2 Leer Tailwind y un diff de React
 
 ### Módulos 5 y 6 — Repo real + design system agéntico (intercalados, en este orden)
 
@@ -121,6 +121,14 @@
 ---
 
 ## Bitácora
+
+### 2026-10-29 · Clase P.2 — Leer Tailwind y un diff de React
+- **Aprendí:** Tailwind trae clases ya hechas que hacen una sola cosa cada una (`p-5` = padding 20) y se combinan directo en el elemento, en lugar de inventar un nombre y escribir su CSS en otro archivo. Se leen como el panel de Figma: `flex flex-col gap-3 p-5` = Auto Layout vertical, espaciado 12, padding 20. La escala es N × 4px, la misma que `space/N`. Los prefijos dicen cuándo: `hover:`, `disabled:`, y `sm:` = desde 640 (sin prefijo es mobile). Los corchetes son valores sueltos: válidos solo si no hay token y está explicado. Un diff muestra lo borrado (rojo) y lo agregado (verde); las líneas rojas también son cambios.
+- **Hice:** vi la sección Resumen en Tailwind (compilada, igual a la 2.6) y la revisión resuelta de un cambio de un agente: 1 PASS y 7 FAIL (color suelto con 2,28:1 de contraste, `<article onClick>` en lugar de `<a href>`, hover inventado, texto para lector borrado). Veredicto: pedir cambios.
+- **Me costó:** qué es Tailwind. Se entendió comparándolo con la 2.6 (nombre + CSS en otro archivo) y con el panel de propiedades de Figma.
+- **Decidido:** desde el módulo 5, los proyectos de este repo son Next.js + Tailwind (anotado en `CLAUDE.md`). La skill no obliga a usar Tailwind porque es reutilizable: lee el stack de cada proyecto.
+- **Sumado a las skills:** reglas de Tailwind (corchetes con comentario, tema solo con los colores del sistema, text styles como `--text-*`, escala N × 4, prefijos = estados y mobile first, `*:size-5` para hijos por prop) y una sección nueva para revisar diffs.
+- **Para la 5.2:** con los nombres de Figma, las clases de color repiten palabras (`text-text-muted`, `bg-bg-surface`). Decidir si queda así.
 
 ### 2026-10-29 · Clase P.1 — Componentes, props y JSX
 - **Aprendí:** un componente de React es una función que recibe props y devuelve interfaz: el componente principal de Figma se escribe una vez y cada instancia es `<MetricCard title="…" />` con sus overrides. Las props tienen los mismos nombres, valores y defaults que las propiedades de Figma. JSX se lee como HTML con llaves para los datos (`{title}`), `className` en lugar de `class` y mayúscula para los componentes propios. Los estados están en las condiciones (`if … return`, `? :`, `&&`), y en React lo que no va no se dibuja. Receta para leer cualquier componente: firma → reglas de arriba → condiciones → `return`.

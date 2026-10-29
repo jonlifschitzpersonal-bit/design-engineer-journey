@@ -22,6 +22,7 @@ Repo del curso de Jonathan (product designer → design engineer). Las skills de
 - **Componentes:** `Icon`, `Button`, `MetricCard`, `StatusBadge`. Sección `Resumen` en `05 - Screens`.
 
 ## Código
+- **Stack desde el módulo 5:** Next.js + React + **Tailwind v4**, con los tokens de Figma en `@theme` y solo los colores del sistema. Es la decisión de este repo, no de las skills. `proyectos/00-seccion-resumen` queda en HTML y CSS (es de la 2.6).
 - **Breakpoints:** los de Tailwind (`sm` 640, `md` 768, `lg` 1024, `xl` 1280).
 - **Tokens en código:** mismos nombres que en Figma, con las barras pasadas a guiones (`color/text/muted` → `--color-text-muted`, `space/8` → `--space-8`).
 - **Proyectos publicados:** `proyectos/` (cada uno con su propio proyecto de Vercel y su Root Directory).

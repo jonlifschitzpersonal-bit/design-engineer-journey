@@ -207,7 +207,12 @@ button, input, select, textarea {
 
 ## 14. Tailwind
 
-- Usá la escala y los tokens del tema (`@theme` en v4). Valores arbitrarios solo si no existe el token, y avisando.
+- Usá la escala y los tokens del tema (`@theme` en v4). **Valores arbitrarios (`p-[22px]`, `text-[#22c55e]`) solo si no existe el token, con un comentario que diga de dónde sale el valor.** Un corchete sin explicación es la primera señal de un valor suelto.
+- **En un design system, el tema deja solo los colores del sistema** (`--color-*: initial;` dentro de `@theme`, antes de los tokens). Así `text-green-600` directamente no existe y no se cuela un color de afuera.
+- **Text styles como `--text-<nombre>` con `--text-<nombre>--line-height` y `--text-<nombre>--font-weight`:** generan una utilidad (`text-label-md`) con los tres valores juntos, igual que el text style.
+- **La escala de espaciado de Tailwind es N × 4px:** si los tokens `space/N` de Figma siguen esa escala, no se redefinen; `gap-3` ya es `space/3`.
+- **Los estados de Figma son prefijos** (`hover:`, `focus-visible:`, `disabled:`) y el **responsive es mobile first**: sin prefijo es mobile y `sm:`, `md:`… suman desde ese ancho. El frame mobile es la base; el desktop, los prefijos.
+- **Si el componente dimensiona un hijo que llega por prop** (un ícono por Instance swap), usá la variante de hijos en el contenedor (`*:size-5`) en lugar de pedirle el tamaño a quien lo usa.
 - Variantes con **`cva`** y combinación con `cn()` (`clsx` + `tailwind-merge`).
 - **No concatenes clases dinámicas** (`` `bg-${color}-500` ``): Tailwind no las genera. Usá un mapa de clases completas.
 - Orden de clases consistente; si hay `prettier-plugin-tailwindcss`, que lo haga él.
@@ -235,6 +240,16 @@ Revisá esto y, si algo no se cumple, corregilo o explicá por qué:
 - [ ] **Después del deploy, los controles se repiten sobre la URL publicada** y los archivos publicados se comparan con el repo. Hay errores que solo aparecen en producción (por ejemplo, un 404 de `favicon.ico` que abriendo el archivo local no se pide).
 
 Al terminar, contale al usuario qué reglas aplicaste o tuviste que resolver, en lenguaje simple, para que pueda revisar el código con ese criterio.
+
+---
+
+## 16. Revisar un diff (propio o de otro agente)
+
+- **Primero el pedido, después el código.** Cada bloque del diff tiene que servir a lo pedido. Lo que no, es fuera de alcance aunque "mejore" algo (un color "más visible", un hover "más lindo"): se saca o se pide aparte.
+- **Leé las líneas borradas, no solo las agregadas.** Lo que se pierde no se ve en pantalla: textos para lector (`sr-only`), `aria-hidden`, tokens reemplazados por valores, estados.
+- **Señales de alarma:** valores sueltos o arbitrarios sin comentario, estados que no existen en el diseño, elementos no interactivos con `onClick` (`<div>`, `<article>`) en lugar de `<a href>` o `<button>`.
+- **Todo color nuevo se mide** (contraste contra su fondo), no se juzga a ojo.
+- **El resultado es un ledger por control y un veredicto** (aprobar o pedir cambios) con un comentario accionable: qué cambiar y por qué. Lo que es decisión de diseño (un estado nuevo) se devuelve a diseño, no se resuelve en el código.
 
 ---
 

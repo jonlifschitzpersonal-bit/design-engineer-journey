@@ -1,0 +1,43 @@
+diff --git a/componentes/MetricCard.jsx b/componentes/MetricCard.jsx
+index ae26a98..75df723 100644
+--- a/componentes/MetricCard.jsx
++++ b/componentes/MetricCard.jsx
+@@ -11,7 +11,7 @@ const TREND_ICON = {
+ 
+ // Clases completas en un mapa: Tailwind solo genera las clases que encuentra escritas enteras.
+ const TREND_COLOR = {
+-  up: "text-feedback-positive",
++  up: "text-[#22c55e]",
+   down: "text-feedback-negative",
+   neutral: "text-feedback-neutral",
+ };
+@@ -32,6 +32,7 @@ export function MetricCard({
+   showTrend = true,
+   state = "default",
+   trend = "up",
++  href,
+ }) {
+   if (state === "loading") {
+     return (
+@@ -46,7 +47,10 @@ export function MetricCard({
+   }
+ 
+   return (
+-    <article className={CARD}>
++    <article
++      className={`${CARD} cursor-pointer hover:shadow-lg`}
++      onClick={() => (window.location.href = href)}
++    >
+       <div
+         className="grid size-10 place-items-center rounded-full bg-bg-accent-subtle text-icon-accent *:size-5"
+         aria-hidden="true"
+@@ -68,8 +72,7 @@ export function MetricCard({
+           {showTrend && (
+             <p className={`flex items-center gap-1 text-label-sm ${TREND_COLOR[trend]}`}>
+               <Icon name={TREND_ICON[trend]} className="size-3.5" />
+-              <span aria-hidden="true">{trendValue}</span>
+-              <span className="sr-only">{trendText(trend, trendValue)}</span>
++              <span>{trendValue}</span>
+             </p>
+           )}
+         </>
