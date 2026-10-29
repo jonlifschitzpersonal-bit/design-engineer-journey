@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 2.3
+**Clase actual:** 2.4
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
 **URL publicada:** https://design-engineer-journey-00-setup.vercel.app/
 **Repo:** https://github.com/jonlifschitzpersonal-bit/design-engineer-journey.git
@@ -21,7 +21,7 @@
 
 - [x] 2.1 Estructura, nombres, componentes y variantes
 - [x] 2.2 Auto Layout + variables y tokens
-- [ ] 2.3 Estados, responsive, a11y, anotaciones
+- [x] 2.3 Estados, responsive, a11y, anotaciones
 - [ ] 2.4 IA en Figma + Figma Console MCP
 - [ ] 2.5 Mini-proyecto: sección AI-ready en Figma
 - [ ] 2.6 Implementar con MCP + QA visual
@@ -121,6 +121,12 @@
 ---
 
 ## Bitácora
+
+### 2026-10-29 · Clase 2.3 — Estados, responsive, accesibilidad y anotaciones
+- **Aprendí:** los estados se eligen por lo que el componente hace, no de una lista: la MetricCard necesita `loading` (skeleton del mismo tamaño), `error`, `neutral` y `showTrend`, pero no `hover`. No se crean combinaciones que no existen (5, no 9). Responsive que no se dibuja, se anota. Contraste medido de verdad: todos los tokens pasan; un borde bajo solo vale si es decorativo (un input necesita 3:1). Las anotaciones dicen qué tiene que pasar, no cómo programarlo.
+- **Me costó:** no veía las anotaciones: en Starter las nativas solo se muestran en Dev Mode. Ahora van dos veces: nativas (para Claude) y como notas visibles en un frame `annotations`.
+- **Nueva skill:** `figma-ai-ready`, con todas las buenas prácticas de Figma de la 2.1 a la 2.3 y el flujo de trabajo con el MCP (incluida una auditoría al terminar). Crece con cada clase, igual que la de código.
+- **Sumado a la skill de código:** leer anotaciones antes de implementar, skeleton del mismo tamaño que el contenido, contraste de bordes de inputs, tendencias anunciadas como texto, variantes "de relleno" que no se implementan.
 
 ### 2026-10-29 · Clase 2.2 — Auto Layout con intención + variables y tokens
 - **Aprendí:** tokens en tres niveles: primitivo (cómo se ve, `blue/200`), semántico (para qué sirve, `color/action/primary/bg`) y componente (solo si hace falta). Los componentes usan semánticos; los primitivos van sin scopes para no aparecer en el selector. Mismo color no significa mismo token: `blue/200` es fondo primario y borde secundario, dos decisiones. Al tokenizar aparecen duplicados que nadie decidió (`#EEF6FF` y `#EAF4FF` → `blue/50`). Auto Layout con intención: el ancho fijo de la card es de muestra; lo que importa es su min width (240).

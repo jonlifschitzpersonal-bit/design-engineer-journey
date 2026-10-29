@@ -112,8 +112,8 @@ Traducí el Auto Layout de Figma así:
 - **Tipografía: un estilo de texto de Figma = una clase o utilidad en código** (`label/md` → tamaño, interlineado y peso juntos). No copies `font-size` y `font-weight` sueltos de cada capa. *(2.2)*
 - El archivo del curso está en Figma Starter, que permite **1 modo por colección**: el dark mode no viene de modos de Figma, se define en código redefiniendo los tokens semánticos. *(2.2, ref → 6.5)*
 - Si no existe un token para el valor que necesitás, **no lo inventes en silencio**: avisá y proponé uno. *(guía §16)*
-- Contraste mínimo WCAG AA: **4.5:1** para texto normal, **3:1** para texto grande (desde 24px, o 18.66px en bold) y para bordes de controles e íconos con significado. *(ref → 8.3)*
-- No comuniques información **solo con color** (error en rojo sin ícono ni texto). *(ref → 8.3)*
+- Contraste mínimo WCAG AA: **4.5:1** para texto normal, **3:1** para texto grande (desde 24px, o 18.66px en bold) y para bordes de controles e íconos con significado. Los controles deshabilitados están exentos. Un borde de bajo contraste vale solo si es decorativo: el borde de un input vacío es lo único que dice "acá se escribe" y necesita 3:1. *(2.3)*
+- No comuniques información **solo con color** (error en rojo sin ícono ni texto). Y lo visual tampoco alcanza para el lector de pantalla: una tendencia "↑ 12%" se anuncia como texto ("Subió 12% respecto del período anterior") y la flecha se oculta. *(2.3)*
 
 ## 10. Accesibilidad e interacción
 
@@ -124,6 +124,9 @@ Traducí el Auto Layout de Figma así:
 - Imágenes con `alt` descriptivo; si son decorativas, `alt=""`. *(ref → 8.3)*
 - Áreas táctiles de al menos **24×24px**, idealmente 44×44px en mobile. Si el ícono es chico, agrandá el área con padding. *(ref → 6.3)*
 - Diseñá **todos los estados** de un control: default, hover, focus-visible, active, disabled y, si aplica, loading y error. No inventes estados que el diseño no tiene: si faltan, preguntá. *(guía §6.7)*
+- **Leé las anotaciones de Figma antes de implementar** (por el MCP). Ahí está lo que el dibujo no muestra: estados como pressed que no tienen variante, la grilla responsive, el formato de los datos y los textos para lector de pantalla. Si una anotación contradice el dibujo, preguntá. *(2.3)*
+- **El skeleton de loading ocupa lo mismo que el contenido final** (cada barra con la altura del interlineado que reemplaza), para que el layout no salte al llegar los datos. Anunciá la carga al lector (`aria-busy` en el contenedor). *(2.3)*
+- **Una variante de Figma que existe solo por obligación no es un caso a implementar.** Si la descripción dice que `state=loading` ignora `trend`, el componente con `loading` no renderiza tendencia, sin importar qué `trend` reciba. *(2.3)*
 - `hover` solo en dispositivos con mouse: en Tailwind v4 `hover:` ya lo respeta; en CSS puro usá `@media (hover: hover)`. *(ref → 7.2)*
 - Componentes interactivos complejos (dialog, menu, tabs, combobox, tooltip) **no se escriben desde cero**: usá una librería headless accesible (Radix, Base UI) o shadcn/ui. Manejar foco, teclado y ARIA a mano es donde más errores se cometen. *(ref → 6.3)*
 - Respetá `prefers-reduced-motion`: animaciones grandes o de desplazamiento se reducen o se desactivan (`motion-safe:` / `motion-reduce:` en Tailwind). *(ref → 7.4)*
