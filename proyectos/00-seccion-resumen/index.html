@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resumen · Design Engineer Journey</title>
+  <meta name="description" content="Sección Resumen de un dashboard, implementada desde un archivo de Figma AI-ready.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="demo.js" defer></script>
+</head>
+<body>
+  <main>
+    <!-- Control de demo: no es parte del diseño. Aparece solo si carga demo.js. -->
+    <div class="demo" role="group" aria-labelledby="demo-label" hidden>
+      <p id="demo-label" class="demo__label text-label-xs">Demo · Estado de la sección</p>
+      <div class="demo__options">
+        <label class="demo__option"><input type="radio" name="state" value="default" checked><span class="text-label-sm">Normal</span></label>
+        <label class="demo__option"><input type="radio" name="state" value="loading"><span class="text-label-sm">Cargando</span></label>
+        <label class="demo__option"><input type="radio" name="state" value="partial-error"><span class="text-label-sm">Error parcial</span></label>
+        <label class="demo__option"><input type="radio" name="state" value="no-history"><span class="text-label-sm">Sin datos previos</span></label>
+      </div>
+    </div>
+
+    <!-- Figma: 05 - Screens › Resumen › summary · desktop / mobile / loading / partial-error -->
+    <section class="summary" aria-labelledby="summary-title" data-state="default">
+      <header class="summary__header">
+        <div class="summary__heading">
+          <h2 id="summary-title" class="summary__title text-heading-section">
+            Resumen
+            <span class="status-badge text-label-xs" data-status="active">
+              <span class="status-badge__dot" aria-hidden="true"></span>
+              <span class="status-badge__label"><span class="visually-hidden">, proyecto </span>Activo</span>
+            </span>
+          </h2>
+          <p class="summary__period text-body-sm">Últimos 30 días</p>
+        </div>
+        <button type="button" class="button button--secondary summary__export text-label-md">Exportar</button>
+      </header>
+
+      <div class="summary__metrics">
+        <article class="metric-card" data-metric="activeUsers" data-state="default" data-trend="up">
+          <div class="metric-card__icon-wrapper" aria-hidden="true">
+            <svg class="icon metric-card__icon" viewBox="0 0 24 24" focusable="false"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <span class="metric-card__skeleton metric-card__skeleton--title" aria-hidden="true"></span>
+          <h3 class="metric-card__title text-body-sm">Usuarios activos</h3>
+          <span class="metric-card__skeleton metric-card__skeleton--value" aria-hidden="true"></span>
+          <p class="metric-card__value text-heading-metric">1.284</p>
+          <p class="metric-card__empty text-heading-metric" aria-hidden="true">—</p>
+          <span class="metric-card__skeleton metric-card__skeleton--trend" aria-hidden="true"></span>
+          <p class="metric-card__trend text-label-sm">
+            <svg class="icon metric-card__trend-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 6l4-4 4 4"/><path d="M12 2v20"/></svg>
+            <span class="metric-card__trend-value" aria-hidden="true">12%</span>
+            <span class="visually-hidden">Subió 12% respecto del período anterior</span>
+          </p>
+          <p class="metric-card__error text-body-sm">No se pudo cargar</p>
+          <p class="metric-card__loading visually-hidden">Cargando</p>
+        </article>
+
+        <article class="metric-card" data-metric="revenue" data-state="default" data-trend="up">
+          <div class="metric-card__icon-wrapper" aria-hidden="true">
+            <svg class="icon metric-card__icon" viewBox="0 0 24 24" focusable="false"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <span class="metric-card__skeleton metric-card__skeleton--title" aria-hidden="true"></span>
+          <h3 class="metric-card__title text-body-sm">Ingresos</h3>
+          <span class="metric-card__skeleton metric-card__skeleton--value" aria-hidden="true"></span>
+          <p class="metric-card__value text-heading-metric">$ 48.920</p>
+          <p class="metric-card__empty text-heading-metric" aria-hidden="true">—</p>
+          <span class="metric-card__skeleton metric-card__skeleton--trend" aria-hidden="true"></span>
+          <p class="metric-card__trend text-label-sm">
+            <svg class="icon metric-card__trend-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 6l4-4 4 4"/><path d="M12 2v20"/></svg>
+            <span class="metric-card__trend-value" aria-hidden="true">8%</span>
+            <span class="visually-hidden">Subió 8% respecto del período anterior</span>
+          </p>
+          <p class="metric-card__error text-body-sm">No se pudo cargar</p>
+          <p class="metric-card__loading visually-hidden">Cargando</p>
+        </article>
+
+        <article class="metric-card" data-metric="conversion" data-state="default" data-trend="down">
+          <div class="metric-card__icon-wrapper" aria-hidden="true">
+            <svg class="icon metric-card__icon" viewBox="0 0 24 24" focusable="false"><path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+          </div>
+          <span class="metric-card__skeleton metric-card__skeleton--title" aria-hidden="true"></span>
+          <h3 class="metric-card__title text-body-sm">Conversión</h3>
+          <span class="metric-card__skeleton metric-card__skeleton--value" aria-hidden="true"></span>
+          <p class="metric-card__value text-heading-metric">3,2%</p>
+          <p class="metric-card__empty text-heading-metric" aria-hidden="true">—</p>
+          <span class="metric-card__skeleton metric-card__skeleton--trend" aria-hidden="true"></span>
+          <p class="metric-card__trend text-label-sm">
+            <svg class="icon metric-card__trend-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 18l4 4 4-4"/><path d="M12 2v20"/></svg>
+            <span class="metric-card__trend-value" aria-hidden="true">0,4%</span>
+            <span class="visually-hidden">Bajó 0,4% respecto del período anterior</span>
+          </p>
+          <p class="metric-card__error text-body-sm">No se pudo cargar</p>
+          <p class="metric-card__loading visually-hidden">Cargando</p>
+        </article>
+
+        <article class="metric-card" data-metric="orders" data-state="default" data-trend="neutral">
+          <div class="metric-card__icon-wrapper" aria-hidden="true">
+            <svg class="icon metric-card__icon" viewBox="0 0 24 24" focusable="false"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
+          </div>
+          <span class="metric-card__skeleton metric-card__skeleton--title" aria-hidden="true"></span>
+          <h3 class="metric-card__title text-body-sm">Pedidos</h3>
+          <span class="metric-card__skeleton metric-card__skeleton--value" aria-hidden="true"></span>
+          <p class="metric-card__value text-heading-metric">356</p>
+          <p class="metric-card__empty text-heading-metric" aria-hidden="true">—</p>
+          <span class="metric-card__skeleton metric-card__skeleton--trend" aria-hidden="true"></span>
+          <p class="metric-card__trend text-label-sm">
+            <svg class="icon metric-card__trend-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14"/></svg>
+            <span class="metric-card__trend-value" aria-hidden="true">0%</span>
+            <span class="visually-hidden">Sin cambios (0%) respecto del período anterior</span>
+          </p>
+          <p class="metric-card__error text-body-sm">No se pudo cargar</p>
+          <p class="metric-card__loading visually-hidden">Cargando</p>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

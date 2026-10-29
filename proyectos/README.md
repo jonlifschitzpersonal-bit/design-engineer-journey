@@ -4,7 +4,7 @@ Acá van a vivir los proyectos ancla. Cada uno va a tener su propia carpeta (y p
 
 | Proyecto | Arranca en | Estado |
 |---|---|---|
-| 0. Sección AI-ready (mini-proyecto) | Clase 2.5 | Pendiente |
+| 0. Sección AI-ready (mini-proyecto) | Clase 2.5 | Implementada (`00-seccion-resumen/`) |
 | 1. Dashboard "AI visibility" | Clase 5.7 | Pendiente |
 | 2. Design system agéntico | Módulo 6 | Pendiente |
 | 3. Craft lab | Clase 7.6 | Pendiente |
