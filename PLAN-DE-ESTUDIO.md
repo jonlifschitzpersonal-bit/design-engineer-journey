@@ -43,7 +43,7 @@ Vos diseñás y tomás las decisiones; Claude Code implementa; vos revisás que 
 - **Figma MCP oficial:** en Starter da **6 llamadas por mes** y no puede escribir en el canvas (verificado el 29/10/2026). No alcanza para el curso.
 - **MCP principal del curso: [Figma Console MCP](https://docs.figma-console-mcp.southleft.com/introduction)** (Southleft, open source y gratis). Funciona con Figma Free a través del plugin Desktop Bridge: lee y escribe en el canvas, lee variables locales y, con un token personal de Figma, lee comentarios.
 - **Variables → código:** la API de variables de Figma es solo Enterprise. Las exportamos con Figma Console MCP (modo local) o con un plugin gratuito como Tokens Studio, y las compilamos con Style Dictionary.
-- **Modos de variables (dark mode):** las fuentes no coinciden sobre el límite de Starter; probablemente 1 modo por colección. Lo verificamos en la 2.2. Si es así, el dark mode se resuelve en código (6.5) y en Figma con una colección por tema.
+- **Modos de variables (dark mode):** verificado el 2026-10-29 en el archivo del curso: Starter permite **1 modo por colección** (Figma responde "Limited to 1 modes only"). El dark mode se resuelve en código (6.5) y en Figma con una colección por tema.
 - **Todo el resto del stack es gratis:** GitHub, Vercel Hobby, Next.js, Tailwind, shadcn/ui, Radix, Base UI, Storybook, Style Dictionary y Motion. Lo único pago es Claude Code (suscripción de Claude).
 
 ---

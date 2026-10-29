@@ -92,6 +92,7 @@ Traducí el Auto Layout de Figma así:
 - **Un texto dentro de un flex no se achica por debajo de su palabra más larga** (`min-width: auto`). Si puede recibir contenido largo (mails, URLs, nombres), agregá `min-width: 0` al hijo y `overflow-wrap: anywhere` o `truncate`. *(ref → 1.3)*
 - Usá **Flexbox** para una dimensión (una fila o una columna) y **Grid** para dos dimensiones o para alinear columnas entre filas (cards en grilla, layouts de página, formularios con labels alineados). *(ref → 1.4)*
 - Para grillas de cards responsivas sin media queries: `grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr))`. *(ref → 1.4)*
+- **El ancho fijo de un componente en Figma suele ser solo el de muestra.** Mirá su *min/max width*: eso es lo que pasa a código. Una card de 280px con min width 240 no lleva `width: 280px`; la dimensiona su contenedor (`minmax(15rem, 1fr)` en una grilla). *(2.2)*
 - **No fijes alturas** en contenedores con texto (`height: 200px`). Si el contenido crece, se desborda. Usá `min-height` o dejá que el contenido defina la altura. *(ref → 1.6)*
 
 ## 8. Responsive
@@ -105,7 +106,11 @@ Traducí el Auto Layout de Figma así:
 ## 9. Color y tokens
 
 - **No escribas colores, espaciados ni radios sueltos** (`#3b82f6`, `13px`). Usá los tokens del proyecto: custom properties (`var(--color-text-muted)`) o la escala de Tailwind definida en `@theme`. Un valor suelto no cambia cuando cambia el sistema, y rompe el dark mode. *(ref → 1.7, 5.2)*
-- Usá tokens **semánticos** en los componentes (`--color-surface`, `--color-text-muted`), no primitivos (`--blue-500`). El primitivo dice cómo se ve; el semántico dice para qué sirve, y es lo que cambia entre modos. *(ref → 2.2, 6.1)*
+- Usá tokens **semánticos** en los componentes (`--color-surface`, `--color-text-muted`), no primitivos (`--blue-500`). El primitivo dice cómo se ve; el semántico dice para qué sirve, y es lo que cambia entre modos. *(2.2)*
+- **Los nombres de variables de Figma se traducen sin reinterpretar:** las barras pasan a guiones (`color/text/muted` → `--color-text-muted`) y la escala `space/N` es la de Tailwind (`space/4` → `p-4`; `space/1-5` → `p-1.5`, porque Figma no acepta puntos en los nombres). Si la variable tiene *code syntax* en Dev Mode, usá esa. *(2.2)*
+- **No fusiones tokens semánticos porque hoy tengan el mismo valor.** `color/action/primary/bg` y `color/action/secondary/border` apuntan los dos a `blue/200`, pero son decisiones distintas: si se unifican en código, cambiar una rompe la otra. *(2.2)*
+- **Tipografía: un estilo de texto de Figma = una clase o utilidad en código** (`label/md` → tamaño, interlineado y peso juntos). No copies `font-size` y `font-weight` sueltos de cada capa. *(2.2)*
+- El archivo del curso está en Figma Starter, que permite **1 modo por colección**: el dark mode no viene de modos de Figma, se define en código redefiniendo los tokens semánticos. *(2.2, ref → 6.5)*
 - Si no existe un token para el valor que necesitás, **no lo inventes en silencio**: avisá y proponé uno. *(guía §16)*
 - Contraste mínimo WCAG AA: **4.5:1** para texto normal, **3:1** para texto grande (desde 24px, o 18.66px en bold) y para bordes de controles e íconos con significado. *(ref → 8.3)*
 - No comuniques información **solo con color** (error en rojo sin ícono ni texto). *(ref → 8.3)*

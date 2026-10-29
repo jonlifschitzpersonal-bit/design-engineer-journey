@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 2.2
+**Clase actual:** 2.3
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
 **URL publicada:** https://design-engineer-journey-00-setup.vercel.app/
 **Repo:** https://github.com/jonlifschitzpersonal-bit/design-engineer-journey.git
@@ -20,7 +20,7 @@
 ### Módulo 2 — Figma AI-ready y primer flujo con agente
 
 - [x] 2.1 Estructura, nombres, componentes y variantes
-- [ ] 2.2 Auto Layout + variables y tokens
+- [x] 2.2 Auto Layout + variables y tokens
 - [ ] 2.3 Estados, responsive, a11y, anotaciones
 - [ ] 2.4 IA en Figma + Figma Console MCP
 - [ ] 2.5 Mini-proyecto: sección AI-ready en Figma
@@ -121,6 +121,12 @@
 ---
 
 ## Bitácora
+
+### 2026-10-29 · Clase 2.2 — Auto Layout con intención + variables y tokens
+- **Aprendí:** tokens en tres niveles: primitivo (cómo se ve, `blue/200`), semántico (para qué sirve, `color/action/primary/bg`) y componente (solo si hace falta). Los componentes usan semánticos; los primitivos van sin scopes para no aparecer en el selector. Mismo color no significa mismo token: `blue/200` es fondo primario y borde secundario, dos decisiones. Al tokenizar aparecen duplicados que nadie decidió (`#EEF6FF` y `#EAF4FF` → `blue/50`). Auto Layout con intención: el ancho fijo de la card es de muestra; lo que importa es su min width (240).
+- **Me costó:** nada en particular; pedí que Claude hiciera la carga por el MCP (22 primitivos, 16 semánticos, 4 text styles, todo aplicado y auditado sin valores sueltos).
+- **Verificado:** Figma Starter permite 1 modo por colección, así que el dark mode se resuelve en código (6.5).
+- **Sumado a la skill:** traducción de nombres de variables a código, no fusionar semánticos con igual valor, text styles como utilidades, dark mode en código, min width en lugar del ancho de muestra.
 
 ### 2026-10-29 · Clase 2.1 — Estructura, nombres, componentes y variantes
 - **Aprendí:** el agente lee el árbol de capas, no la imagen: los nombres de capa y las propiedades pasan casi directo al código (`MetricCard` → `<MetricCard>`, Variant → unión de strings, Instance swap → prop con un elemento). Las variantes se multiplican (3 × 2 × 4 = 24 en el Button), los booleanos no. `hover` y `focus` existen en Figma para dibujarlos, pero en código son `:hover` y `:focus-visible`.
