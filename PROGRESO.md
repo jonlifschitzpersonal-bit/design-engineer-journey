@@ -6,7 +6,7 @@
 **Clase actual:** 5.2
 **Pendiente de la 2.4:** comentarios de Figma → backlog (se retoma cuando haya comentarios reales) y probar una vez el MCP oficial (opcional)
 **Pendiente de la 2.6 (Figma):** activar números tabulares en el text style `heading/metric` y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button
-**Dashboard:** `D:\Escritorio\proyectos\dashboard-ai-visibility` (repo propio en GitHub: `dashboard-ai-visibility`)
+**Dashboard:** `D:\Escritorio\proyectos\dashboard-ai-visibility` (repo: https://github.com/jonlifschitzpersonal-bit/dashboard-ai-visibility)
 **Para las skills (5.5 y 6.8):** sumar el proceso de trabajo con el agente (plan → aprobación → código → diff → ledger). Hoy está solo en `PLAN-DE-ESTUDIO.md` §4 ("Review de cada slice"), así que en otro proyecto no se conoce.
 **Sección Resumen publicada:** https://design-engineer-journey-00-seccion.vercel.app/
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
