@@ -102,7 +102,7 @@ Salario base publicado (NYC): USD 120k–250k + equity.
 **Al cerrar cada clase, el tutor:**
 1. Marca la clase en `PROGRESO.md` y actualiza la clase actual.
 2. Escribe la entrada de la bitácora (qué aprendiste, qué te costó, qué se sumó a la skill).
-3. Agrega las reglas nuevas a la skill [`.claude/skills/design-implementation/SKILL.md`](.claude/skills/design-implementation/SKILL.md), que Claude Code usa cada vez que implementa un diseño en este repo. Al final del curso, esta skill es parte de tu design system agéntico (módulo 6) y una pieza más del portfolio.
+3. Agrega las reglas nuevas a las skills: [`design-implementation`](.claude/skills/design-implementation/SKILL.md) (código) y [`figma-ai-ready`](.claude/skills/figma-ai-ready/SKILL.md) (Figma). **Las skills son reutilizables:** se escriben para cualquier proyecto, sin datos de este repo. Lo específico de este repo (archivo de Figma, plan, convenciones) va en [`CLAUDE.md`](CLAUDE.md). Para usarlas en otro proyecto, se copia la carpeta de la skill a su `.claude/skills/` (o a `~/.claude/skills/` para tenerlas en todos). Al final del curso son parte de tu design system agéntico (módulo 6) y una pieza más del portfolio.
 
 ### Cómo se usa la IA en cada etapa
 
