@@ -19,24 +19,29 @@ La marca al final de cada regla indica la clase del curso donde Jonathan la apre
 - **Las instancias también se renombran por su rol.** Al insertar un `Icon`, la capa se llama `Icon`; renombrala por lo que hace ahí (`iconStart`, `trendIcon`). Si hay dos íconos en un componente, el nombre es lo único que los distingue. *(2.1)*
 - **Nombres de propiedades en camelCase y con el nombre que tendrá la prop en código** (`showIconStart`, `iconStart`, `trendValue`), y valores de variantes en minúscula (`primary`, `arrow-right`). Así la API de Figma y la de React son la misma. *(2.1)*
 - **No dejes frames intermedios sin función.** Un ícono es `componente > path`, no `componente > frame > vector`: cada nivel extra es un `<div>` más que el agente tiene que interpretar. *(2.1)*
+- **Una sección o pantalla es un frame, no un componente:** vive en `05 - Screens`, dentro de una Section con su nombre (`Resumen`), y sus frames se llaman `summary · desktop`, `summary · mobile`, `summary · loading`, etc. *(2.5)*
+- **En una sección, las instancias se nombran por el dato que muestran** (`activeUsers`, `revenue`, `orders`), no `MetricCard 1`. En código pasan a ser las claves de los datos. *(2.5)*
 
 ## 2. Componentes, propiedades y variantes
 
 - **Componente solo con reutilización real.** Lo que aparece una vez (un hero, una ilustración) queda como capa bien nombrada. *(2.1)*
 - **Tipo de propiedad correcto:** Variant para diferencias discretas (`variant`, `size`, `state`); Text para textos editables; Boolean para mostrar u ocultar; Instance swap para íconos o subcomponentes. *(2.1)*
 - **Conectá cada capa a su propiedad.** Crear la propiedad no alcanza: el texto tiene que estar vinculado (`componentPropertyReferences.characters`), el booleano a la visibilidad y el instance swap a la instancia. Una propiedad sin vincular no hace nada y es fácil no notarlo. *(2.1)*
+- **Las conexiones se revisan en todas las variantes, no solo en la default.** Al crear variantes duplicando o por código, las conexiones se pueden perder: en la 2.5 aparecieron 18 variantes del Button y 3 de la MetricCard sin ninguna conexión, y la instancia mostraba el texto de muestra ("Guardar", "Menciones en ChatGPT") aunque se le cambiara la propiedad. Si una variante deja algo sin conectar **a propósito** (texto fijo "—" en `error`, tendencia oculta en `loading`), escribilo en la descripción. *(2.5)*
 - **Las variantes se multiplican, los booleanos no.** 3 × 2 × 4 = 24 en el Button. Usá booleanos para lo que solo se muestra u oculta. *(2.1)*
 - **No crees combinaciones que no existen en la realidad.** Si `state=loading` no muestra tendencia, no hagas `loading × up/down/neutral`: creá solo `state=loading, trend=up` (Figma exige un valor para cada propiedad) y aclaralo en la descripción del componente. *(2.3)*
 - **Si el texto depende del estado, no lo hagas editable.** En el `StatusBadge`, `status=active` siempre dice "Activo": sin propiedad de texto, un badge rojo nunca puede decir "Activo". Aclaralo en la descripción y en una anotación de *Content*. *(2.4)*
 - **Si un componente necesita un tamaño que los text styles no permiten, creá el estilo** (`label/xs` 12/16 para un badge de 24px) en lugar de forzar el padding a 0 o escribir el tamaño suelto. *(2.4)*
 - **Lo que Figma no puede expresar va en la descripción del componente.** Ejemplo: un booleano no puede apagar a otro, así que "con `loading`, apagá `showIconStart`" va en la descripción. *(2.1)*
 - **Íconos:** un component set `Icon` con `name` como variante, 16×16, trazo de 1,5px con puntas redondeadas y constraints *Scale*. Todas las capas de trazo se llaman igual (`path`): así el color que se le cambia a una instancia se mantiene al cambiar de ícono, porque Figma conserva los cambios entre capas con el mismo nombre. *(2.1)*
+- **Íconos nuevos: de Lucide, no dibujados a mano.** Lucide usa una grilla de 24 y trazo de 2; para llevarlo a 16 con trazo de 1,5, importá el SVG con `width/height=16` y `stroke-width=2.25`, aplaná círculos y líneas a vectores, y renombrá cada capa `path`. Nombrá la variante por su significado (`currency`) y, si difiere del nombre de Lucide (`dollar-sign`), anotá la equivalencia en la descripción del `Icon`. *(2.5)*
 - **Los estados `hover`, `focus` y `pressed` son para dibujar y documentar**; en código los maneja el navegador. Un estado de un instante (pressed) puede resolverse con una anotación en lugar de sumar variantes. *(2.1, 2.3)*
 
 ## 3. Auto Layout con intención
 
 - Para cada contenedor, decidí a propósito: dirección, gap, padding, alineación, Hug/Fill/Fixed y min/max width. *(2.2)*
 - **El ancho fijo de un componente es el de muestra; lo que importa es el min width.** Una card que va en grilla lleva min width (240) para que el código use `minmax()` en lugar de un ancho fijo. *(2.2)*
+- **Una grilla de cards en Figma es una fila con *wrap* y las cards en Fill con min width.** Así las cards se reparten solas según el ancho, igual que `repeat(auto-fill, minmax())` en código. Un header con título y acción en los extremos usa espaciado "Auto" (space-between), no un gap fijo. *(2.5)*
 - **Probá con contenido extremo antes de dar algo por terminado:** título de dos líneas, número de muchos dígitos, el ancho mínimo. Si se rompe en Figma, el agente no puede deducir cómo adaptarlo. Hacelo con una instancia temporal y borrala después. *(2.2)*
 
 ## 4. Variables y tokens
@@ -57,12 +62,16 @@ La marca al final de cada regla indica la clase del curso donde Jonathan la apre
 - **Responsive:** si no se dibuja cada tamaño, se anota (qué se apila, cuántas columnas, ancho completo en mobile). Breakpoints de Tailwind: 640 / 768 / 1024 / 1280. *(2.3)*
 - **Contraste:** 4.5:1 texto normal, 3:1 texto grande, íconos con significado y anillo de foco. Los controles deshabilitados están exentos. Un borde bajo solo es válido si es decorativo: el borde de un input tiene que llegar a 3:1. Calculá el contraste, no lo estimes a ojo. *(2.3)*
 - **Ningún significado solo con color:** la tendencia lleva flecha + color, y su texto para lector se anota. *(2.3)*
+- **Antes de dibujar una sección, escribí el brief:** problema, usuario, contenido representativo (formato argentino, un caso de cada variante: sube, baja, sin cambio) y lo que queda **fuera de alcance**. Lo que no está escrito, el agente lo completa con lo más genérico. *(2.5)*
+- **Estados de una sección, además de los de cada componente:** `default`, `loading` (todo en skeleton, con las acciones que dependen de los datos deshabilitadas) y `partial-error` (un bloque falla, el resto sigue). El error parcial es el que más se olvida y el que más pasa. *(2.5)*
+- **Responsive de una sección: se dibuja el ancho donde cambia el orden** (mobile, si el header se apila) y se anota el que resuelve la grilla sola (tablet). *(2.5)*
 
 ## 6. Anotaciones y "ready for dev"
 
 - **Anotá lo que no se deduce mirando**, con las categorías nativas: *Development* (grilla, comportamiento técnico), *Interaction* (qué pasa al tocar), *Accessibility* (roles, textos para lector), *Content* (formato de datos, vacíos). *(2.3)*
 - **En el plan Starter, las anotaciones nativas no se ven** (se muestran en Dev Mode, que Starter no incluye): Jonathan no las ve aunque estén guardadas y el MCP las lea. Por eso, cada anotación va **dos veces**: nativa (para el agente) y como nota visible en un frame `annotations` dentro de la Section, debajo del componente (encabezado "Anotaciones · Componente" y, por nota, categoría + texto, con tokens y text styles). Si cambiás una, actualizá la otra. *(2.3)*
 - **No digas que algo "funciona" en Figma si solo verificaste que la API lo aceptó.** Confirmá que se ve en pantalla (captura) o aclará qué no pudiste verificar. *(2.3)*
+- **En una sección, cada anotación nativa va sobre el nodo exacto al que se refiere** (la grilla sobre `metrics`, la del botón sobre `exportButton`, la de error parcial sobre su frame), no todas sobre el frame principal. Así el agente sabe a qué parte del código aplica cada una. *(2.5)*
 - **Una anotación dice qué tiene que pasar, no cómo programarlo.** "La tendencia se anuncia como texto" sí; "usar `sr-only`" no. *(2.3)*
 - **"Ready for dev" solo si se cumple el checklist:** estados necesarios, responsive definido o anotado, contenido representativo, sin valores sueltos ni nombres genéricos. Se marca con `devStatus = { type: 'READY_FOR_DEV' }` en la Section (funciona en Starter). *(2.3)*
 
@@ -79,23 +88,41 @@ La marca al final de cada regla indica la clase del curso donde Jonathan la apre
 - **Plan Starter:** 1 modo por colección (el dark mode va en código o en una colección aparte). "Ready for dev" funciona. Las anotaciones nativas se guardan y el MCP las lee, pero no se ven sin Dev Mode: duplicalas como notas visibles (ver sección 6).
 - **Si el MCP pierde la conexión** ("Cannot connect to Figma Desktop"), probá `figma_reconnect` una vez; si sigue, pedile a Jonathan que reabra el plugin (Plugins → Development → Figma Desktop Bridge) en el archivo correcto. No reintentes en loop.
 - **Después de cada cambio visual: captura y revisión** (alineación, espaciado, proporciones). Si algo falla a mitad de camino, borrá lo que quedó a medias antes de reintentar.
-- **Al terminar, corré una auditoría** sobre los component sets que tocaste y no des el trabajo por cerrado si encuentra algo:
+- **`setProperties` sobre una instancia no avisa si la propiedad no está conectada en esa variante:** devuelve OK y la instancia sigue con el texto de muestra. Por eso la captura después de armar es obligatoria: así aparecieron los bugs de conexión de la 2.5. *(2.5)*
+- **Al terminar, corré una auditoría** sobre los component sets y las Sections que tocaste, y no des el trabajo por cerrado si encuentra algo. Las únicas excepciones válidas son las que figuran en la descripción del componente:
 
 ```js
-// Devuelve [] si todo está bien
+// ROOT_IDS: component sets y Sections tocadas. Devuelve [] si todo está bien.
 const issues = [];
-for (const id of SET_IDS) {
-  const set = await figma.getNodeByIdAsync(id);
-  for (const n of set.findAll(() => true)) {
+for (const id of ROOT_IDS) {
+  const root = await figma.getNodeByIdAsync(id);
+  // No entrar en instancias (se auditan en su componente) ni en el marco del component set
+  const nodes = root.findAll(n => {
+    let p = n.parent;
+    while (p && p.id !== root.id) { if (p.type === 'INSTANCE') return false; p = p.parent; }
+    return n.type !== 'COMPONENT_SET';
+  });
+  for (const n of nodes) {
     for (const k of ['fills', 'strokes'])
       if (k in n && n[k] !== figma.mixed)
         for (const p of n[k])
           if (p.type === 'SOLID' && !p.boundVariables?.color) issues.push([n.name, k, 'color suelto']);
     if (n.layoutMode && n.layoutMode !== 'NONE')
       for (const f of ['paddingTop', 'paddingLeft', 'itemSpacing'])
-        if (n[f] > 0 && !n.boundVariables?.[f]) issues.push([n.name, f, 'espaciado suelto']);
+        if (n[f] > 0 && !n.boundVariables?.[f] && !(f === 'itemSpacing' && n.primaryAxisAlignItems === 'SPACE_BETWEEN'))
+          issues.push([n.name, f, 'espaciado suelto']);
     if (n.type === 'TEXT' && !n.textStyleId) issues.push([n.name, 'sin text style']);
     if (/^(Frame|Group|Rectangle|Vector|Ellipse)\b/.test(n.name)) issues.push([n.name, 'nombre genérico']);
+  }
+  // Cada variante tiene que tener las mismas conexiones que la default
+  if (root.type === 'COMPONENT_SET') {
+    const refs = v => new Set(v.findAll(n => n.componentPropertyReferences && Object.keys(n.componentPropertyReferences).length)
+      .flatMap(n => Object.keys(n.componentPropertyReferences).map(f => n.name + '.' + f)));
+    const base = refs(root.defaultVariant);
+    for (const v of root.children) {
+      const miss = [...base].filter(x => !refs(v).has(x));
+      if (miss.length) issues.push([v.name, 'sin conectar: ' + miss.join(', ')]);
+    }
   }
 }
 return issues;

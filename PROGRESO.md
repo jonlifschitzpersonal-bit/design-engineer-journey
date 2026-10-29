@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 2.5
+**Clase actual:** 2.6
 **Pendiente de la 2.4:** comentarios de Figma → backlog (se retoma cuando haya comentarios reales) y probar una vez el MCP oficial (opcional)
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
 **URL publicada:** https://design-engineer-journey-00-setup.vercel.app/
@@ -24,7 +24,7 @@
 - [x] 2.2 Auto Layout + variables y tokens
 - [x] 2.3 Estados, responsive, a11y, anotaciones
 - [x] 2.4 IA en Figma + Figma Console MCP
-- [ ] 2.5 Mini-proyecto: sección AI-ready en Figma
+- [x] 2.5 Mini-proyecto: sección AI-ready en Figma
 - [ ] 2.6 Implementar con MCP + QA visual
 
 ### Módulo P — Puente: leer React lo justo
@@ -122,6 +122,12 @@
 ---
 
 ## Bitácora
+
+### 2026-10-29 · Clase 2.5 — Mini-proyecto: sección AI-ready
+- **Aprendí:** una sección no es un componente: es un frame en `05 - Screens` armado con instancias, con un brief antes de dibujar (problema, usuario, contenido real, fuera de alcance). Las instancias se nombran por su dato (`activeUsers`, `revenue`). Se dibuja mobile porque cambia el orden del header; la tablet se anota porque la grilla la resuelve sola. Estados propios de la sección: `loading` y `partial-error` (falla una métrica, no todo).
+- **Hice:** dirigí la sección "Resumen" con el brief de ejemplo. Decidí: "Exportar" deshabilitado mientras carga, 4 íconos nuevos de Lucide y dejar afuera las métricas donde bajar es bueno. Claude armó los 4 frames, las anotaciones y los tokens que faltaban (`space/6`, `space/8`, `heading/section`), y la Section quedó *ready for dev*.
+- **Me costó / sorpresa:** al usar los componentes de verdad aparecieron bugs de la 2.1 y la 2.3 que en pantalla no se veían: 18 variantes del Button y 3 de la MetricCard tenían las propiedades sin conectar. La auditoría de antes no los detectaba; ahora compara cada variante con la default.
+- **Sumado a las skills:** secciones como frames y como slices en código, instancias nombradas por su dato, grilla con wrap → `grid auto-fill`, brief antes de dibujar, estados de sección, anotaciones sobre el nodo exacto, íconos de Lucide, revisar conexiones en todas las variantes y auditoría ampliada.
 
 ### 2026-10-29 · Clase 2.4 — IA en Figma + Figma Console MCP
 - **Aprendí:** el MCP le da a Claude la estructura del archivo (capas, propiedades, tokens, anotaciones), no una imagen ni código. Con el Button se vio el resultado de las clases anteriores: Claude recibe los estados ya traducidos a CSS y solo las diferencias de cada variante, en tokens. Para pedir cambios en Figma: inspeccionar → proponer → decisiones pendientes → aprobación → recién ahí tocar. Separar evidencia, decisión aprobada y suposición.
