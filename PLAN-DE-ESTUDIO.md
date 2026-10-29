@@ -88,9 +88,12 @@ Salario base publicado (NYC): USD 120k–250k + equity.
 **Orden de cursada (cambio del 29/10/2026):** primero el flujo Figma → código, después los fundamentos. Claude escribe el CSS, el JS y el React siguiendo la skill de buenas prácticas, y vos aprendés a dirigirlo y revisarlo. Al terminar el flujo volvemos a los fundamentos en detalle, porque los piden el puesto y las entrevistas de live coding.
 
 ```
-0 Setup ✅ → 1.1–1.2 ✅ → 2 Figma AI-ready → P Puente React → 5 Repo real → 6 Design system → 8 QA
+0 Setup ✅ → 1.1–1.2 ✅ → 2 Figma AI-ready ✅ → P Puente React
+→ 5.1–5.6 Repo real → 6.1–6.4 Componentes del sistema → 5.7–5.8 Dashboard → 6.5–6.11 Sistema agéntico → 8 QA
 → 1.3–1.8 CSS → 3 JavaScript → 4 React y TS → 7 Motion → 9 Portfolio
 ```
+
+**Módulos 5 y 6 intercalados (cambio del 29/10/2026, al cerrar el módulo 2):** el dashboard (5.7–5.8) se construye **después** de los componentes del sistema en código (6.1–6.4), no antes. Así se arma con piezas que ya existen y están probadas en Storybook, en lugar de programar la MetricCard y el Button "a mano" y rehacerlos en el módulo 6. El 6 no va entero antes del 5 porque sus componentes viven en el repo de Next.js + Tailwind que se arma en 5.1–5.4.
 
 **Cada clase:** el tutor explica el concepto con ejemplos resueltos → lo hacés directo donde corresponde (Figma, el repo, DevTools) → el tutor revisa lo que hiciste. Sin preguntas ni ejercicios para responder.
 
@@ -159,11 +162,11 @@ Guía §4, 11–13, 15–16. Arranca el **proyecto ancla 1**.
 | 5.4 | Git en equipo: branches, diff, commits con intención, pull requests (guía §12). GitHub Issues: crear issues (también desde comentarios de Figma), agruparlos por alcance y vincularlos al PR (`Closes #12`). |
 | 5.5 | Trabajar por slices: plan → aprobación → implementación (guía §13, 15). Tip: iterar layout con wireframes en ASCII antes de diseñar o codear (gasta pocos tokens). |
 | 5.6 | Revisar implementaciones: señales de código poco confiable (guía §16). |
-| 5.7 | **Proyecto ancla 1** — Dashboard "AI visibility": Figma AI-ready + slice 1 (shell de la app). |
-| 5.8 | Slice 2 (metric cards) + deploy de preview en Vercel. |
+| 5.7 | **Proyecto ancla 1** — Dashboard "AI visibility": Figma AI-ready + slice 1 (shell de la app). *Se cursa después de 6.4.* |
+| 5.8 | Slice 2 (metric cards, con los componentes del sistema) + deploy de preview en Vercel. *Se cursa después de 6.4.* |
 
 ### Módulo 6 — Design system agéntico
-Guía §9–11, 14. **Proyecto ancla 2.**
+Guía §9–11, 14. **Proyecto ancla 2.** Se cursa en dos partes: 6.1–6.4 entre 5.6 y 5.7, y 6.5–6.11 después del dashboard.
 
 | Clase | Tema |
 |---|---|

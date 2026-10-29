@@ -34,7 +34,7 @@
 - [ ] P.1 Componentes, props y JSX
 - [ ] P.2 Leer Tailwind y un diff de React
 
-### Módulo 5 — Repo real con agente
+### Módulos 5 y 6 — Repo real + design system agéntico (intercalados, en este orden)
 
 - [ ] 5.1 Next.js + Tailwind
 - [ ] 5.2 Tailwind desde tokens
@@ -42,15 +42,12 @@
 - [ ] 5.4 Git en equipo
 - [ ] 5.5 Trabajar por slices
 - [ ] 5.6 Revisar implementaciones
-- [ ] 5.7 Dashboard: Figma + slice 1
-- [ ] 5.8 Dashboard: slice 2 + deploy
-
-### Módulo 6 — Design system agéntico
-
 - [ ] 6.1 Tokens Figma ↔ código
 - [ ] 6.2 Componentes con variantes
 - [ ] 6.3 Accesibilidad de componentes
 - [ ] 6.4 Storybook
+- [ ] 5.7 Dashboard: Figma + slice 1
+- [ ] 5.8 Dashboard: slice 2 + deploy
 - [ ] 6.5 Dark mode y modos
 - [ ] 6.6 Docs para agentes
 - [ ] 6.7 Code Connect / mapeo documentado
