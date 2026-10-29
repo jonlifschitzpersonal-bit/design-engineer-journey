@@ -139,7 +139,7 @@ Guía §5–8. Tu terreno: diseño estructurado para que humanos e IA lo entiend
 | 2.1 | Estructura del archivo, nombres semánticos, componentes, propiedades y variantes (guía §6.1–6.4). |
 | 2.2 | Auto Layout con intención + variables y tokens en 3 niveles: primitivo, semántico, componente (guía §6.5–6.6). |
 | 2.3 | Estados, responsive, accesibilidad y anotaciones. Criterio de "Ready for development" (guía §6.7–6.11). |
-| 2.4 | IA dentro de Figma + conectar Figma MCP a Claude Code. Inspeccionar antes de implementar (guía §7–8). |
+| 2.4 | IA dentro de Figma + conectar Figma MCP a Claude Code. Inspeccionar antes de implementar (guía §7–8). Extra: Figma Console MCP (MCP de la comunidad que suma la REST API: leer comentarios y consolidarlos en un backlog). |
 | 2.5 | **Mini-proyecto:** diseñar una sección en tu Figma con estructura AI-ready. |
 | 2.6 | Implementarla con Figma MCP + Claude Code en HTML/CSS, y hacer QA visual contra Figma. Deploy. |
 
@@ -180,9 +180,9 @@ Guía §4, 11–13, 15–16. Arranca el **proyecto ancla 1**.
 |---|---|
 | 5.1 | Next.js + Tailwind: crear el proyecto y entender su estructura. |
 | 5.2 | Tailwind desde los tokens: `@theme` con tus variables de Figma. |
-| 5.3 | Preparar el repo para el agente: `CLAUDE.md`, `PROJECT_CONTEXT`, `CURRENT_STATE`, `PENDING_TASKS` (guía §11). |
-| 5.4 | Git en equipo: branches, diff, commits con intención, pull requests (guía §12). |
-| 5.5 | Trabajar por slices: plan → aprobación → implementación (guía §13, 15). |
+| 5.3 | Preparar el repo para el agente: `CLAUDE.md`, `PROJECT_CONTEXT`, `CURRENT_STATE`, `PENDING_TASKS` (guía §11). ADRs (*Architecture Decision Records*): `docs/adr/` con un README índice, más `docs/research/` para el contexto que lleva a cada decisión. |
+| 5.4 | Git en equipo: branches, diff, commits con intención, pull requests (guía §12). GitHub Issues: crear issues (también desde comentarios de Figma), agruparlos por alcance y vincularlos al PR (`Closes #12`). |
+| 5.5 | Trabajar por slices: plan → aprobación → implementación (guía §13, 15). Tip: iterar layout con wireframes en ASCII antes de diseñar o codear (gasta pocos tokens). |
 | 5.6 | Revisar implementaciones: señales de código poco confiable (guía §16). |
 | 5.7 | **Proyecto ancla 1** — Dashboard "AI visibility": Figma AI-ready + slice 1 (shell de la app). |
 | 5.8 | Slice 2 (metric cards) + deploy de preview en Vercel. |
@@ -192,16 +192,17 @@ Guía §9–11, 14. **Proyecto ancla 2.**
 
 | Clase | Tema |
 |---|---|
-| 6.1 | Tokens en código mapeados 1 a 1 con las variables de Figma (primitivo → semántico). |
+| 6.1 | Tokens en código mapeados 1 a 1 con las variables de Figma (primitivo → semántico). Tokens en JSON compilados a CSS con Style Dictionary. |
 | 6.2 | Componentes con variantes en código (`cva`, shadcn/ui): API de componentes. |
 | 6.3 | Accesibilidad de componentes: semántica, teclado, foco, Radix. |
 | 6.4 | Storybook: stories por variante y estado, addon de accesibilidad (guía §10). |
 | 6.5 | Dark mode y modos de variables. |
 | 6.6 | Documentación para agentes: `docs/design-system/`, `AI_CONTEXT.md` y la regla en `CLAUDE.md` (guía §11.1). |
 | 6.7 | Code Connect: concepto, template files, checklist. En plan Free: **mapeo documentado** Figma ↔ código (guía §9). |
-| 6.8 | Skills y reglas: gobernar al agente con roles (Component Architect, Plan Reviewer, Slice Closer…) (guía §14). |
+| 6.8 | Skills y reglas: gobernar al agente con roles (Component Architect, Plan Reviewer, Slice Closer…) (guía §14). Regla de supuestos explícitos: si el agente asume algo, lo dice y nombra el riesgo. |
 | 6.9 | StorySync y drift Figma ↔ código: concepto y demo (opcional según requisitos) (guía §10.1). |
 | 6.10 | **Prueba final:** pedirle a Claude Code una pantalla nueva y verificar que use tu sistema sin indicaciones extra. |
+| 6.11 | Contratos de componentes (opcional): spec agnóstica del framework (anatomía, estados, intención), catálogo de props por framework y emitters que generan el código. El código generado no se edita: se edita el contrato. Ejercicio: escribir el contrato de un componente a partir de la API de Base UI. |
 
 ### Módulo 7 — Motion y craft (semanas 26–28)
 Lo que la guía no cubre y Profound pide explícitamente. **Proyecto ancla 3.**
@@ -263,7 +264,8 @@ Guía §17–18. Cerrar el **proyecto ancla 1** con nivel de producción.
 | JavaScript | [javascript.info](https://javascript.info) · MDN |
 | React | [react.dev/learn](https://react.dev/learn) |
 | TypeScript | [Total TypeScript](https://www.totaltypescript.com) (tutoriales gratis) |
-| Next.js / Tailwind | [nextjs.org/learn](https://nextjs.org/learn) · [tailwindcss.com/docs](https://tailwindcss.com/docs) · [ui.shadcn.com](https://ui.shadcn.com) · [radix-ui.com](https://www.radix-ui.com) |
+| Next.js / Tailwind | [nextjs.org/learn](https://nextjs.org/learn) · [tailwindcss.com/docs](https://tailwindcss.com/docs) · [ui.shadcn.com](https://ui.shadcn.com) · [radix-ui.com](https://www.radix-ui.com) · [Base UI](https://base-ui.com) |
+| Design systems | [Style Dictionary](https://styledictionary.com) · [Figma Console MCP](https://github.com/southleft/figma-console-mcp) |
 | Storybook | [storybook.js.org/docs](https://storybook.js.org/docs) · [StorySync](https://github.com/brendanciccone/storysync) |
 | Motion | [motion.dev](https://motion.dev) · [Emil Kowalski](https://emilkowal.ski) (*animations.dev*) · [interfaces.rauno.me](https://interfaces.rauno.me) |
 | Calidad | [Vercel Web Interface Guidelines](https://vercel.com/design/guidelines) · [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) |

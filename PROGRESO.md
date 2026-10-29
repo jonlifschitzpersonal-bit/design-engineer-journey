@@ -82,6 +82,7 @@
 - [ ] 6.8 Skills y reglas
 - [ ] 6.9 StorySync (opcional)
 - [ ] 6.10 Prueba final del sistema
+- [ ] 6.11 Contratos de componentes (opcional)
 
 ### Módulo 7 — Motion y craft
 
