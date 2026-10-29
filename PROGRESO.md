@@ -3,7 +3,8 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 2.4
+**Clase actual:** 2.5
+**Pendiente de la 2.4:** comentarios de Figma → backlog (se retoma cuando haya comentarios reales) y probar una vez el MCP oficial (opcional)
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
 **URL publicada:** https://design-engineer-journey-00-setup.vercel.app/
 **Repo:** https://github.com/jonlifschitzpersonal-bit/design-engineer-journey.git
@@ -22,7 +23,7 @@
 - [x] 2.1 Estructura, nombres, componentes y variantes
 - [x] 2.2 Auto Layout + variables y tokens
 - [x] 2.3 Estados, responsive, a11y, anotaciones
-- [ ] 2.4 IA en Figma + Figma Console MCP
+- [x] 2.4 IA en Figma + Figma Console MCP
 - [ ] 2.5 Mini-proyecto: sección AI-ready en Figma
 - [ ] 2.6 Implementar con MCP + QA visual
 
@@ -121,6 +122,12 @@
 ---
 
 ## Bitácora
+
+### 2026-10-29 · Clase 2.4 — IA en Figma + Figma Console MCP
+- **Aprendí:** el MCP le da a Claude la estructura del archivo (capas, propiedades, tokens, anotaciones), no una imagen ni código. Con el Button se vio el resultado de las clases anteriores: Claude recibe los estados ya traducidos a CSS y solo las diferencias de cada variante, en tokens. Para pedir cambios en Figma: inspeccionar → proponer → decisiones pendientes → aprobación → recién ahí tocar. Separar evidencia, decisión aprobada y suposición.
+- **Hice:** dirigí la creación del `StatusBadge`. Claude propuso el plan y yo decidí las tres cosas de producto: `paused` en gris, texto fijo por estado y punto decorativo.
+- **Me costó:** escribir el pedido con un resultado observable (lo pedí en tres palabras). No sabía qué dudas dejar como comentarios; lo de comentarios → backlog quedó pendiente.
+- **Sumado a las skills:** flujo de propuesta antes de tocar Figma, comentarios → backlog, texto fijo por estado (en Figma y en código), crear text styles en lugar de forzar tamaños, leer component sets con `figma_analyze_component_set`.
 
 ### 2026-10-29 · Clase 2.3 — Estados, responsive, accesibilidad y anotaciones
 - **Aprendí:** los estados se eligen por lo que el componente hace, no de una lista: la MetricCard necesita `loading` (skeleton del mismo tamaño), `error`, `neutral` y `showTrend`, pero no `hover`. No se crean combinaciones que no existen (5, no 9). Responsive que no se dibuja, se anota. Contraste medido de verdad: todos los tokens pasan; un borde bajo solo vale si es decorativo (un input necesita 3:1). Las anotaciones dicen qué tiene que pasar, no cómo programarlo.

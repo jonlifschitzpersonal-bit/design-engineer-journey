@@ -27,6 +27,8 @@ La marca al final de cada regla indica la clase del curso donde Jonathan la apre
 - **Conectá cada capa a su propiedad.** Crear la propiedad no alcanza: el texto tiene que estar vinculado (`componentPropertyReferences.characters`), el booleano a la visibilidad y el instance swap a la instancia. Una propiedad sin vincular no hace nada y es fácil no notarlo. *(2.1)*
 - **Las variantes se multiplican, los booleanos no.** 3 × 2 × 4 = 24 en el Button. Usá booleanos para lo que solo se muestra u oculta. *(2.1)*
 - **No crees combinaciones que no existen en la realidad.** Si `state=loading` no muestra tendencia, no hagas `loading × up/down/neutral`: creá solo `state=loading, trend=up` (Figma exige un valor para cada propiedad) y aclaralo en la descripción del componente. *(2.3)*
+- **Si el texto depende del estado, no lo hagas editable.** En el `StatusBadge`, `status=active` siempre dice "Activo": sin propiedad de texto, un badge rojo nunca puede decir "Activo". Aclaralo en la descripción y en una anotación de *Content*. *(2.4)*
+- **Si un componente necesita un tamaño que los text styles no permiten, creá el estilo** (`label/xs` 12/16 para un badge de 24px) en lugar de forzar el padding a 0 o escribir el tamaño suelto. *(2.4)*
 - **Lo que Figma no puede expresar va en la descripción del componente.** Ejemplo: un booleano no puede apagar a otro, así que "con `loading`, apagá `showIconStart`" va en la descripción. *(2.1)*
 - **Íconos:** un component set `Icon` con `name` como variante, 16×16, trazo de 1,5px con puntas redondeadas y constraints *Scale*. Todas las capas de trazo se llaman igual (`path`): así el color que se le cambia a una instancia se mantiene al cambiar de ícono, porque Figma conserva los cambios entre capas con el mismo nombre. *(2.1)*
 - **Los estados `hover`, `focus` y `pressed` son para dibujar y documentar**; en código los maneja el navegador. Un estado de un instante (pressed) puede resolverse con una anotación en lugar de sumar variantes. *(2.1, 2.3)*
@@ -66,6 +68,10 @@ La marca al final de cada regla indica la clase del curso donde Jonathan la apre
 
 ## 7. Trabajar con Figma Console MCP
 
+- **Antes de crear o modificar, inspeccioná y proponé; no toques nada sin aprobación**, aunque el pedido sea corto ("hacé un StatusBadge"). La propuesta tiene: qué encontraste, el plan (árbol de capas y API), qué vas a reutilizar, extender o crear (tokens, estilos, componentes), y las **decisiones pendientes con tu recomendación** y su porqué. Las decisiones de producto (colores con significado, si algo es editable, si un componente merece existir) son de Jonathan. *(2.4)*
+- **Separá evidencia, decisión aprobada y suposición** cuando informes lo que leíste. Las suposiciones que nadie ve son las que terminan en bugs. *(2.4)*
+- **Si un pedido no tiene resultado observable, tomalo del contexto (README de la clase, anotaciones) y decilo explícitamente**, para que Jonathan lo confirme o lo corrija. *(2.4)*
+- **Comentarios → backlog:** al leer comentarios de Figma, juntá los duplicados, clasificá (bug, pregunta de diseño, contenido, componente nuevo), convertí cada pregunta en una tarea y marcá quién decide. No respondas vos las preguntas de diseño. *(2.4)*
 - **Al empezar, chequeá el estado** (`figma_get_status` con `probe: true`) y confirmá el nombre del archivo antes de cualquier cambio.
 - **Leé antes de tocar:** recorré el árbol de la página (nombres, tipos, Auto Layout, propiedades, referencias) y sacá una captura. Los IDs de nodos cambian entre sesiones: no reutilices IDs de otra conversación.
 - **Con `documentAccess: dynamic-page`** usá las versiones async: `getNodeByIdAsync`, `getMainComponentAsync`, `getLocalVariablesAsync`, `setTextStyleIdAsync`.
