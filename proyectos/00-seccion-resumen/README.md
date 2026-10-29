@@ -5,6 +5,7 @@ Sección de un dashboard implementada en HTML y CSS a partir de un archivo de Fi
 - **Fuente de diseño:** Figma "Design Engineer Journey" › `05 - Screens` › Section `Resumen` (ready for dev).
 - **Leída con:** Figma Console MCP (frames, variables, text styles, componentes y anotaciones).
 - **Sin dependencias:** HTML, CSS y un JavaScript chico solo para el control de demo.
+- **Publicada:** https://design-engineer-journey-00-seccion.vercel.app/
 
 ## Archivos
 
@@ -32,7 +33,8 @@ Chrome headless, a 1280 / 700 / 375 / 320 px, comparado con capturas de Figma a 
 | Teclado | PASS | Tab: control de demo → "Exportar" con anillo de 2px `focus/ring`; en Cargando, Tab saltea el botón |
 | Estados | PASS | loading (skeleton + `aria-busy`), error parcial (solo Ingresos), sin datos previos |
 | Semántica | PASS | `section` nombrada por su `h2` ("Resumen, proyecto Activo"), 4 `h3`, `button`, íconos `aria-hidden` |
-| Consola | PASS | sin errores ni avisos |
+| Consola | PASS | sin errores ni avisos. En producción apareció un 404 de `favicon.ico` que en local no salía → se declaró un favicon vacío → PASS |
+| Producción = repo | PASS | los 4 archivos publicados son idénticos al repo; los controles de arriba repetidos sobre la URL de Vercel |
 | Números tabulares | PASS, con diferencia conocida | La anotación los pide; el text style de Figma no los tiene activados, así que en la página los números salen un poco más anchos que en la captura de Figma |
 | Lector de pantalla real | UNVERIFIED | No se probó con NVDA; se revisaron los textos ocultos y los nombres en el HTML |
 | Exportar real, cambiar período | OUT OF SCOPE | Anotado en Figma |

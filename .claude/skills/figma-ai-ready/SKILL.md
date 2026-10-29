@@ -34,13 +34,14 @@ La marca al final de cada regla indica la clase del curso donde Jonathan la apre
 - **Si un componente necesita un tamaño que los text styles no permiten, creá el estilo** (`label/xs` 12/16 para un badge de 24px) en lugar de forzar el padding a 0 o escribir el tamaño suelto. *(2.4)*
 - **Lo que Figma no puede expresar va en la descripción del componente.** Ejemplo: un booleano no puede apagar a otro, así que "con `loading`, apagá `showIconStart`" va en la descripción. *(2.1)*
 - **Íconos:** un component set `Icon` con `name` como variante, 16×16, trazo de 1,5px con puntas redondeadas y constraints *Scale*. Todas las capas de trazo se llaman igual (`path`): así el color que se le cambia a una instancia se mantiene al cambiar de ícono, porque Figma conserva los cambios entre capas con el mismo nombre. *(2.1)*
-- **Íconos nuevos: de Lucide, no dibujados a mano.** Lucide usa una grilla de 24 y trazo de 2; para llevarlo a 16 con trazo de 1,5, importá el SVG con `width/height=16` y `stroke-width=2.25`, aplaná círculos y líneas a vectores, y renombrá cada capa `path`. Nombrá la variante por su significado (`currency`) y, si difiere del nombre de Lucide (`dollar-sign`), anotá la equivalencia en la descripción del `Icon`. *(2.5)*
+- **Íconos nuevos: de Lucide, no dibujados a mano.** Lucide usa una grilla de 24 y trazo de 2; para llevarlo a 16 con trazo de 1,5, importá el SVG con `width/height=16` y `stroke-width=2.25`, aplaná círculos y líneas a vectores, y renombrá cada capa `path`. Nombrá la variante por su significado (`currency`) y, si difiere del nombre de Lucide (`dollar-sign`), anotá la equivalencia en la descripción del `Icon`. *(2.5)* **Verificá la equivalencia por la forma, no por el nombre:** las flechas del archivo resultaron ser `move-up`, `move-down` y `move-right` de Lucide, no `arrow-*`. *(2.6)*
 - **Los estados `hover`, `focus` y `pressed` son para dibujar y documentar**; en código los maneja el navegador. Un estado de un instante (pressed) puede resolverse con una anotación en lugar de sumar variantes. *(2.1, 2.3)*
 
 ## 3. Auto Layout con intención
 
 - Para cada contenedor, decidí a propósito: dirección, gap, padding, alineación, Hug/Fill/Fixed y min/max width. *(2.2)*
 - **El ancho fijo de un componente es el de muestra; lo que importa es el min width.** Una card que va en grilla lleva min width (240) para que el código use `minmax()` en lugar de un ancho fijo. *(2.2)*
+- **Decidí a propósito si el stroke suma al layout** (*include stroke in layout*). Cambia el alto real (la card mide 194 con el borde incluido; el botón, 40 sin incluirlo) y se traduce distinto en código (`border` o borde interno). Si dos componentes lo tienen distinto, que sea por una razón. *(2.6)*
 - **Una grilla de cards en Figma es una fila con *wrap* y las cards en Fill con min width.** Así las cards se reparten solas según el ancho, igual que `repeat(auto-fill, minmax())` en código. Un header con título y acción en los extremos usa espaciado "Auto" (space-between), no un gap fijo. *(2.5)*
 - **Probá con contenido extremo antes de dar algo por terminado:** título de dos líneas, número de muchos dígitos, el ancho mínimo. Si se rompe en Figma, el agente no puede deducir cómo adaptarlo. Hacelo con una instancia temporal y borrala después. *(2.2)*
 
@@ -53,6 +54,7 @@ La marca al final de cada regla indica la clase del curso donde Jonathan la apre
 - **Escala de espaciado `space/N` = N × 4px**, la misma de Tailwind. **Figma no acepta puntos en los nombres de variables:** `space/1-5`, no `space/1.5`. *(2.2)*
 - **Code syntax WEB en los semánticos** (`var(--color-text-muted)`): las barras pasan a guiones. *(2.2)*
 - **Tipografía con text styles** (`label/md`, `body/sm`, `heading/metric`), no con tamaño y peso sueltos en cada capa. *(2.2)*
+- **Si una anotación pide algo del texto, ponelo en el text style.** Los números tabulares de las métricas van activados en `heading/metric` (Type details → Numbers → Tabular); si solo están en la anotación, Figma y el código se ven distintos y el QA lo marca. *(2.6)*
 - Si un estado necesita un color que no existe (neutral, skeleton), **creá el token** (primitivo + semántico) antes de usarlo; no pongas el hex directo. *(2.3)*
 
 ## 5. Estados, responsive y accesibilidad

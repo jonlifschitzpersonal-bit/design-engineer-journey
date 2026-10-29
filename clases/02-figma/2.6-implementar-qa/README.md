@@ -160,7 +160,24 @@ Igual que en la 0.2: cada carpeta publicada es un **proyecto de Vercel** apuntan
 
 ---
 
-## 9. Para ir más lejos (opcional)
+## 9. Resultado (2026-10-29)
+
+- **Código:** `proyectos/00-seccion-resumen/` (HTML, `tokens.css`, `styles.css`, `demo.js`). El ledger completo está en su README.
+- **Publicada:** https://design-engineer-journey-00-seccion.vercel.app/
+- **Decisiones:** control de demo para los estados (Normal · Cargando · Error parcial · Sin datos previos); estado al apretar fuera de alcance hasta que exista su token.
+
+**Lo que encontró el QA:**
+
+| Hallazgo | Qué pasó |
+|---|---|
+| El borde de la card suma al alto (194 = 1 + 20 + 152 + 20 + 1) y el del botón no (40 = 10 + 20 + 10) | En Figma la card tiene *include stroke in layout* y el botón no. En código: `border` en la card y borde interno (`box-shadow: inset`) en el botón. Con `border` en los dos, el botón mediría 42. |
+| Las flechas del `Icon` no son `arrow-*` de Lucide | Por la forma, son `move-up`, `move-down` y `move-right`. Se corrigió la descripción del `Icon` en Figma. |
+| Los números grandes salen un poco más anchos que en Figma | La anotación pide números tabulares y el text style `heading/metric` no los tiene. Queda pendiente activarlos en Figma. |
+| 404 de `favicon.ico` solo en producción | Abriendo el archivo local, el navegador no pide favicon; en Vercel sí. Se declaró un favicon vacío. Por eso el QA se repite sobre la URL publicada. |
+
+---
+
+## 10. Para ir más lejos (opcional)
 - MDN: [Using CSS custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
 - MDN: [`repeat()` y `minmax()` en Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/repeat)
 - Guía del curso: §16 "Implementar dentro del código real" y §17 "Verificación obligatoria"

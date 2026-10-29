@@ -95,6 +95,7 @@ Traducí el Auto Layout de Figma así:
 - **El ancho fijo de un componente en Figma suele ser solo el de muestra.** Mirá su *min/max width*: eso es lo que pasa a código. Una card de 280px con min width 240 no lleva `width: 280px`; la dimensiona su contenedor (`minmax(15rem, 1fr)` en una grilla). *(2.2)*
 - **Una fila con *wrap* de Figma cuyos hijos van en Fill con min width es una grilla, no un `flex-wrap`.** Pasala a `grid-template-columns: repeat(auto-fill, minmax(<min width>, 1fr))`. Con `flex-wrap`, la última fila estira sus cards y quedan de otro ancho que las de arriba. *(2.5)*
 - **Un header con el título a un lado y la acción al otro (Auto Layout "Auto" en Figma) es `justify-between`**, sin un espacio fijo en el medio. Si en mobile el diseño lo apila, la base es la columna y el breakpoint lo pasa a fila (`flex-col sm:flex-row`). *(2.5)*
+- **Un stroke de Figma se traduce según si suma al layout.** Si el frame tiene *include stroke in layout* (`strokesIncludedInLayout`), es un `border` real: la card de 194 = 1 + 20 + 152 + 20 + 1. Si no lo tiene (stroke *inside* que no suma), es un borde interno con `box-shadow: inset 0 0 0 1px …`: el botón de 40 mediría 42 con `border`. Un stroke *outside* (anillo de foco) es `outline`. Leelo por el MCP, no lo supongas. *(2.6)*
 - **No fijes alturas** en contenedores con texto (`height: 200px`). Si el contenido crece, se desborda. Usá `min-height` o dejá que el contenido defina la altura. *(ref → 1.6)*
 
 ## 8. Responsive
@@ -131,6 +132,8 @@ Traducí el Auto Layout de Figma así:
 - **Una variante de Figma que existe solo por obligación no es un caso a implementar.** Si la descripción dice que `state=loading` ignora `trend`, el componente con `loading` no renderiza tendencia, sin importar qué `trend` reciba. *(2.3)*
 - **Una sección se nombra por su título:** `<section aria-labelledby="…">` apuntando a su `<h2>`, y los títulos de las cards de adentro son `<h3>`. Si hay un estado junto al título (un badge), se lee con él. *(2.5)*
 - **En una sección con varias fuentes de datos, cada bloque maneja su propio loading y error.** Si una métrica falla, solo esa card muestra error; no se reemplaza toda la sección por un mensaje global. Las acciones que dependen de los datos (Exportar) quedan deshabilitadas mientras cargan. *(2.5)*
+- **En HTML sin framework, los estados se arman como en Figma:** todas las capas de la card en el markup (skeletons, mensaje de error, texto "Cargando") y un atributo `data-state` en el contenedor que decide cuáles se ven con CSS. Lo oculto va con `display: none`, así tampoco lo lee el lector de pantalla. En React, lo mismo se resuelve renderizando según la prop. *(2.6)*
+- **Si la página no tiene datos reales, los estados se muestran con un control de demo** marcado como "Demo", fuera de la sección y oculto si no carga JavaScript (`hidden` que el script saca). Sin JavaScript, la sección se ve en su estado normal. *(2.6)*
 - `hover` solo en dispositivos con mouse: en Tailwind v4 `hover:` ya lo respeta; en CSS puro usá `@media (hover: hover)`. *(ref → 7.2)*
 - Componentes interactivos complejos (dialog, menu, tabs, combobox, tooltip) **no se escriben desde cero**: usá una librería headless accesible (Radix, Base UI) o shadcn/ui. Manejar foco, teclado y ARIA a mano es donde más errores se cometen. *(ref → 6.3)*
 - Respetá `prefers-reduced-motion`: animaciones grandes o de desplazamiento se reducen o se desactivan (`motion-safe:` / `motion-reduce:` en Tailwind). *(ref → 7.4)*
@@ -152,6 +155,8 @@ Traducí el Auto Layout de Figma así:
 - **Para leer un component set de Figma, usá `figma_analyze_component_set`:** devuelve los estados ya mapeados a CSS (`hover` → `:hover`, `focus` → `:focus-visible`, `disabled` → `:disabled`) y, por variante, solo lo que cambia respecto de la base, en tokens. Implementá una base + diferencias (con `cva` en Tailwind), no un bloque por variante. *(2.4)*
 - **Si en Figma el texto es fijo por variante, en código sale del estado.** `<StatusBadge status="active" />` decide adentro que dice "Activo" (un mapa `status → label`); no recibe `label` como prop. El punto o ícono decorativo lleva `aria-hidden`. *(2.4)*
 - **Una variante con significado decide el estilo; no pases el estilo como prop.** `trend: "up" | "down"` elige flecha y color adentro del componente. No uses `trendColor="green"`: el color es una consecuencia del significado, no una decisión de quien usa el componente. *(2.1)*
+- **Íconos con el mismo trazo que en Figma a cualquier tamaño:** `stroke-width: 1.5px` en el `<svg>` y `vector-effect: non-scaling-stroke` en sus trazos. Sin eso, un ícono de 24 achicado a 14px queda con un trazo más fino que el diseño. *(2.6)*
+- **Equivalencias de íconos por forma, no por nombre:** antes de usar un ícono de Lucide, compará su geometría con la de Figma. Las flechas del curso son `move-up`, `move-down` y `move-right`, no `arrow-*`. *(2.6)*
 - **Los íconos usan `currentColor`** (`stroke="currentColor"`) y heredan el color del texto del padre: el mismo `Icon` sirve en un botón primario, en uno deshabilitado o en una tendencia roja sin props de color. Es el equivalente de nombrar igual las capas del ícono en Figma para que el color se mantenga al cambiarlo. *(2.1)*
 - **Una sección de Figma (frame en `05 - Screens`) se implementa como un *slice*:** markup de página armado con los componentes existentes, sin crear un componente nuevo para ella. Leé **todos** sus frames antes de escribir (desktop, mobile y los de estado, como `loading` o `partial-error`) más sus anotaciones: cada frame es un caso a cubrir. *(2.5)*
 - **Los nombres de las instancias en una sección son las claves de los datos.** `activeUsers`, `revenue` y `orders` pasan a un array de objetos con esa clave (`{ id: "activeUsers", title: "Usuarios activos", … }`) que se recorre con `map` y usa el `id` como `key`. *(2.5)*
@@ -190,7 +195,9 @@ Revisá esto y, si algo no se cumple, corregilo o explicá por qué:
 - [ ] Responsive probado a 320px sin scroll horizontal.
 - [ ] Si es una sección: cada frame de Figma (desktop, mobile, estados) tiene su caso en código, y los errores son por bloque.
 - [ ] React: componentes reutilizados antes que creados, props tipadas con los nombres de Figma, sin `useEffect` para datos derivados.
-- [ ] Si hay diseño de referencia: medidas, tipografía y espaciados comparados contra Figma.
+- [ ] Si hay diseño de referencia: medidas, tipografía y espaciados comparados contra Figma. **Medidos en el navegador** (`getBoundingClientRect`, `getComputedStyle`) en los anchos de los frames, con capturas a la misma escala que las de Figma; no a ojo. *(2.6)*
+- [ ] Ledger de verificación con PASS / FAIL / UNVERIFIED / OUT OF SCOPE y su evidencia; lo que no se pudo probar es UNVERIFIED, nunca PASS. *(2.6)*
+- [ ] Después del deploy: los controles repetidos sobre la URL publicada y los archivos publicados comparados con el repo. Hay errores que solo aparecen en producción (un 404 de `favicon.ico` que en `file://` no se pide). *(2.6)*
 
 Cuando termines, contale a Jonathan qué reglas de esta skill aplicaste o tuviste que resolver, para que pueda revisar el código con ese criterio. Si aplicaste una regla marcada *(ref → …)*, explicala en una línea simple: todavía no la vio en clase.
 

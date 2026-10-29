@@ -3,8 +3,10 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 2.6
+**Clase actual:** P.1
 **Pendiente de la 2.4:** comentarios de Figma → backlog (se retoma cuando haya comentarios reales) y probar una vez el MCP oficial (opcional)
+**Pendiente de la 2.6 (Figma):** activar números tabulares en el text style `heading/metric` y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button
+**Sección Resumen publicada:** https://design-engineer-journey-00-seccion.vercel.app/
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
 **URL publicada:** https://design-engineer-journey-00-setup.vercel.app/
 **Repo:** https://github.com/jonlifschitzpersonal-bit/design-engineer-journey.git
@@ -25,7 +27,7 @@
 - [x] 2.3 Estados, responsive, a11y, anotaciones
 - [x] 2.4 IA en Figma + Figma Console MCP
 - [x] 2.5 Mini-proyecto: sección AI-ready en Figma
-- [ ] 2.6 Implementar con MCP + QA visual
+- [x] 2.6 Implementar con MCP + QA visual
 
 ### Módulo P — Puente: leer React lo justo
 
@@ -122,6 +124,12 @@
 ---
 
 ## Bitácora
+
+### 2026-10-29 · Clase 2.6 — De Figma a código: implementar, verificar y publicar
+- **Aprendí:** el ciclo completo de un slice: leer Figma por el MCP → plan → aprobación → código → verificación con evidencia → deploy. Todo lo del módulo 2 tuvo un destino en el código: nombres de capa → clases, variables → `tokens.css`, wrap + min width → grilla `auto-fill`, anotaciones → `h2`/`h3` y textos para el lector. El QA se hace midiendo en el navegador y comparando con Figma a la misma escala, y se registra en un ledger (PASS / FAIL / UNVERIFIED / OUT OF SCOPE).
+- **Hice:** pedí el plan y aprobé un control de demo para ver los estados sin datos reales. Publiqué la sección en Vercel.
+- **Me costó / sorpresa:** que las decisiones técnicas me las preguntara; quedó acordado que Claude decide lo técnico y me pregunta solo lo de producto. Detalles que solo aparecen midiendo: en Figma el borde de la card suma al alto y el del botón no; las flechas del `Icon` son `move-*` en Lucide; los números tabulares de la anotación no están en el text style. Y en producción apareció un 404 del favicon que en local no salía.
+- **Sumado a las skills:** cómo traducir un stroke de Figma según si suma al layout, trazo de 1,5px reales en íconos, estados con capas que se muestran por `data-state`, control de demo marcado y oculto sin JavaScript, QA midiendo en el navegador y repetido en producción; en Figma, decidir a propósito si el stroke suma al layout, tabulares en el text style y equivalencias de íconos por geometría.
 
 ### 2026-10-29 · Clase 2.5 — Mini-proyecto: sección AI-ready
 - **Aprendí:** una sección no es un componente: es un frame en `05 - Screens` armado con instancias, con un brief antes de dibujar (problema, usuario, contenido real, fuera de alcance). Las instancias se nombran por su dato (`activeUsers`, `revenue`). Se dibuja mobile porque cambia el orden del header; la tablet se anota porque la grilla la resuelve sola. Estados propios de la sección: `loading` y `partial-error` (falla una métrica, no todo).
