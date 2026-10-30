@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 5.6
+**Clase actual:** 6.1
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
 
 ### Dónde está cada cosa
@@ -23,7 +23,9 @@
 |---|---|
 | **6.8** | Sumar a las skills los roles del agente (Plan Reviewer, Slice Closer…). El proceso de slices ya está en `design-implementation` §18 y en el `CLAUDE.md` del dashboard (5.5). |
 | **Dashboard (de la 5.4)** | Al abrir el próximo PR desde la web, confirmar que la plantilla se carga (UNVERIFIED: todos los PRs se abrieron desde la terminal). |
-| **5.6** | Instalar Impeccable desde su web (https://impeccable.style/docs), sin depender de la versión que haya hoy, y arrancar con `init`, `document` y los hooks (plan de estudio §4). |
+| **6.1** | `/tokens` como referencia completa: valores, grupos, guía de uso y generada desde `globals.css` (issue #31 del dashboard). |
+| **5.9** | Configurar `live` de Impeccable al usarlo por primera vez (inyecta un script en la app; no se hizo en la 5.6 a propósito). |
+| **Impeccable (de la 5.6)** | UNVERIFIED: la pasada completa del hook al final de cada turno (la de cada edición sí se vio funcionar). Confirmarla la primera vez que aparezca. |
 | **Figma (de la 2.6)** | Activar números tabulares en el text style `heading/metric` (issue #5) y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button (issue #14). |
 | **Backlog (de la 2.4)** | Comentarios de Figma → issues cuando haya comentarios reales (el flujo quedó listo en la 5.4: plantilla *Task* con *Source* y ejemplo resuelto en su README). Probar una vez el MCP oficial (opcional). |
 
@@ -57,7 +59,7 @@
 - [x] 5.3 Preparar el repo para el agente
 - [x] 5.4 Git en equipo
 - [x] 5.5 Trabajar por slices
-- [ ] 5.6 Revisar implementaciones
+- [x] 5.6 Revisar implementaciones
 - [ ] 6.1 Tokens Figma ↔ código
 - [ ] 6.2 Componentes con variantes
 - [ ] 6.3 Accesibilidad de componentes
@@ -138,6 +140,34 @@
 ---
 
 ## Bitácora
+
+### 2026-10-30 · Clase 5.6 — Revisar implementaciones
+- **Aprendí:** una implementación se revisa con tres preguntas.
+  1. ¿Es igual a Figma? Lo responde el ledger.
+  2. ¿El código es confiable? Lo responden las 10 señales de la guía §16, que se ven en un diff sin leer toda la sintaxis: valores sin token, duplicados, `<div>` que hace de botón, estados inventados, `PASS` sin prueba, checks apagados…
+  3. ¿El diseño está bien? Lo responde una revisión de diseño (Impeccable).
+
+  Cada señal termina en "no aparece", "aparece justificada" o "aparece sin justificar". Un nombre que asusta (`dangerouslySetInnerHTML`) no es una señal: importa qué entra. La evidencia de una fila del ledger tiene que probar su título, no algo parecido. El ledger prueba que se construyó bien; la revisión de diseño, que se construyó lo correcto.
+- **Hice:** revisé el PR #24 con las 10 señales: aprobable, con una fila del ledger que prometía más que su evidencia. Vi el mismo aviso hecho mal, con 7 señales.
+- **Decidí (producto):**
+  - Voseo uruguayo, sin marca por ahora y herramienta interna.
+  - "The Honest Count" como idea guía y "sereno y preciso" como carácter.
+  - Para el aviso: marca fija "Datos ficticios" en la barra superior (#30), el texto nuevo que dice que lo que se carga no se guarda, y un borde con un token nuevo.
+  - En `/tokens`, lo mínimo ahora y el resto en la 6.1 (#31).
+  - Pedí un PR por clase en lugar de uno por cosa.
+- **Claude hizo:**
+  - Puso a punto Impeccable en el dashboard: `PRODUCT.md`, `DESIGN.md` desde Figma y `globals.css`, y el hook (PR #28, mergeado).
+  - Corrió `critique` con dos revisiones separadas (aviso 17/28, `/tokens` 16/28) y `audit` (16/20). También `polish`, `harden` y `clarify` sobre el aviso.
+  - En Figma: el token `color/border/accent`, el borde, el texto y las anotaciones.
+  - En el código: el aviso como región "Aviso de datos ficticios" y `/tokens` en español. Todo en el PR de la clase (#29).
+- **Sorpresa:** el hook estaba "activado" y no avisaba nada. Ignora los archivos fuera de la carpeta de la sesión, y abrimos las sesiones desde el curso. Se arregló con un puente en `.claude/` del curso, que aprobé, y se probó con un error puesto a propósito. También:
+  - El detector no encontró nada en el aviso: todo lo valioso salió de la revisión de diseño.
+  - Claude se había olvidado `space/0-5` en `DESIGN.md`.
+  - El texto de muestra de `/tokens` y de la `MetricCard` en Figma venía de otro proyecto.
+- **Verificado:** el aviso a 1280 (41px) y a 320 (3 líneas, 81px) contra Figma, teclado, foco, árbol de accesibilidad y consola. `doctor` sin desfasajes. UNVERIFIED: la pasada del hook al final de cada turno.
+- **Sumado a las skills:**
+  - En `design-implementation`: las 10 señales y cómo decidir cada una; silenciar un aviso solo si es puntual, con motivo y guía oficial; "un nombre que asusta: mirá qué entra"; una clase que no existe falla en silencio; la evidencia prueba el título de la fila; el aviso como región con nombre específico (corrige la regla de la 5.5); superficies tintadas casi iguales al fondo llevan borde con token propio; la opción de un PR por sesión; y una sección nueva, §19 "Revisión de diseño, además del ledger".
+  - En `figma-ai-ready`: el texto de muestra es del producto; la Section no crece sola; y cómo hacer un borde de un solo lado que mida igual que en código.
 
 ### 2026-10-30 · Clase 5.5 — Trabajar por slices
 - **Aprendí:** un slice es una porción chica con un resultado observable y un "done when"; si no se puede probar ni cerrar sola, no es un slice. El flujo tiene dos controles míos: aprobar el plan y mergear el PR. Del plan me tocan el resultado, el alcance, los estados, lo ficticio y las decisiones de producto; lo técnico lo decide Claude y lo explica. Un plan se revisa buscando lo que falta (fuera de alcance, estados, supuestos). Los wireframes en ASCII sirven para decidir dónde va cada cosa antes de Figma o del código, y gastan pocos tokens.

@@ -167,6 +167,7 @@ button, input, select, textarea {
 - **Modos (dark mode):** si las variables de Figma tienen varios modos, cada modo redefine los semánticos en código. Si el plan de Figma no permite modos (Starter: 1 por colección), el dark mode se define solo en código, redefiniendo los semánticos.
 - Si no existe un token para lo que necesitás, **no lo inventes en silencio**: avisá y proponé uno.
 - Contraste WCAG AA: **4.5:1** texto normal, **3:1** texto grande (24px, o 18.66px bold) y bordes de controles e íconos con significado. Los controles deshabilitados están exentos. Un borde de bajo contraste vale solo si es decorativo: el de un input vacío necesita 3:1.
+- **Una superficie tintada casi igual al fondo se pierde** (un celeste muy claro sobre blanco mide ~1,1:1): en un proyector o una pantalla con mucho brillo desaparece. Si tiene que verse (un aviso, una franja), dale un borde con un token propio (`color/border/accent`), no uno de acción que casualmente tiene el mismo valor.
 - **Ningún significado solo con color**, y lo visual tampoco alcanza para el lector: una tendencia "↑ 12%" se anuncia como texto ("Subió 12% respecto del período anterior") y la flecha se oculta.
 
 ## 10. Accesibilidad e interacción
@@ -186,7 +187,7 @@ button, input, select, textarea {
 - **En HTML sin framework, los estados se arman como en Figma:** todas las capas en el markup (skeletons, mensaje de error, texto "Cargando") y un `data-state` en el contenedor que decide con CSS cuáles se ven. Lo oculto va con `display: none`, así tampoco lo lee el lector. En React, se renderiza según la prop.
 - **Si no hay datos reales, los estados se muestran con un control de demo** marcado como tal, fuera del diseño y oculto si no carga JavaScript.
 - `hover` solo con mouse: Tailwind v4 ya lo respeta; en CSS puro, `@media (hover: hover)`.
-- **Un aviso que se puede cerrar** es una región con nombre (`<aside aria-label="Aviso">`), no una alerta (`role="alert"` interrumpe al lector). La X es un `<button>` con `aria-label`. **Al cerrarlo, el foco va a un destino lógico** (el contenido de la página, con `tabIndex={-1}`), no se pierde en el `<body>`. Ese destino no es interactivo, así que puede ir sin anillo de foco: es la única excepción a "nunca `outline: none`".
+- **Un aviso que se puede cerrar** es una región con un nombre que diga de qué trata (`<section aria-label="Aviso de datos ficticios">`), no una alerta (`role="alert"` interrumpe al lector). Tampoco un `<aside>`: es un landmark "complementario", contenido accesorio, y el aviso es parte de la página. Un nombre genérico ("Aviso") no le dice al lector de pantalla si le importa. La X es un `<button>` con `aria-label`. **Al cerrarlo, el foco va a un destino lógico** (el contenido de la página, con `tabIndex={-1}`), no se pierde en el `<body>`. Ese destino no es interactivo, así que puede ir sin anillo de foco: es la única excepción a "nunca `outline: none`".
 - Componentes interactivos complejos (dialog, menu, tabs, combobox, tooltip): **librería headless accesible** (Radix, Base UI) o shadcn/ui, no desde cero.
 - Respetá `prefers-reduced-motion`.
 - Animá solo `transform` y `opacity`. Nunca `transition: all`.
@@ -274,6 +275,7 @@ Revisá esto y, si algo no se cumple, corregilo o explicá por qué:
 - [ ] Componentes reutilizados antes que creados; props con los nombres de Figma.
 - [ ] **Comparado contra Figma midiendo en el navegador** (`getBoundingClientRect`, `getComputedStyle`) en los anchos de los frames, con capturas a la misma escala que las de Figma. No a ojo.
 - [ ] **Ledger de verificación** con PASS / FAIL / UNVERIFIED / OUT OF SCOPE y su evidencia. Lo que no se pudo probar es UNVERIFIED, nunca PASS.
+- [ ] **Revisión de diseño** (sección 19) en los cambios de UI, con cada hallazgo corregido, pasado a un issue o rechazado con motivo.
 - [ ] **Después del deploy, los controles se repiten sobre la URL publicada** y los archivos publicados se comparan con el repo. Hay errores que solo aparecen en producción (por ejemplo, un 404 de `favicon.ico` que abriendo el archivo local no se pide).
 
 Al terminar, contale al usuario qué reglas aplicaste o tuviste que resolver, en lenguaje simple, para que pueda revisar el código con ese criterio.
@@ -285,6 +287,11 @@ Al terminar, contale al usuario qué reglas aplicaste o tuviste que resolver, en
 - **Primero el pedido, después el código.** Cada bloque del diff tiene que servir a lo pedido. Lo que no, es fuera de alcance aunque "mejore" algo (un color "más visible", un hover "más lindo"): se saca o se pide aparte.
 - **Leé las líneas borradas, no solo las agregadas.** Lo que se pierde no se ve en pantalla: textos para lector (`sr-only`), `aria-hidden`, tokens reemplazados por valores, estados.
 - **Señales de alarma:** valores sueltos o arbitrarios sin comentario, estados que no existen en el diseño, elementos no interactivos con `onClick` (`<div>`, `<article>`) en lugar de `<a href>` o `<button>`, y cambios en archivos generados o de configuración (lockfile, `next.config`, `tsconfig`) sin un motivo que diga el pedido.
+- **Las 10 señales de código poco confiable**, para recorrer con el diff abierto: valores sin token, componentes duplicados, un archivo enorme con todo junto, estados inventados, botones que no son `<button>`, texto interactivo hecho con `<div>`, datos remotos sin loading/error/vacío, `PASS` sin la prueba, cambios ajenos "de paso" y checks apagados para que dé verde. Cada una termina en "no aparece", "aparece justificada" (motivo escrito, chica, con issue si es deuda) o "aparece sin justificar" (pedir cambios).
+- **Silenciar un aviso o un check** (`suppressHydrationWarning`, `eslint-disable`, `@ts-expect-error`) se acepta solo si es **puntual** (un elemento o una línea, no el proyecto), tiene el **motivo escrito al lado** y sigue una **guía oficial**. `ignoreBuildErrors` o una regla apagada en todo el proyecto, nunca.
+- **Un nombre que asusta no es una señal: mirá qué entra.** `dangerouslySetInnerHTML` es peligroso con texto que escribe una persona (comentarios, URLs); con una constante del mismo archivo, no. Un `catch {}` vacío puede ser a propósito ("si falla, se muestra igual"), pero lleva el porqué en un comentario.
+- **Una clase que no existe falla en silencio.** Si el tema apagó la paleta de Tailwind, `text-gray-700` no genera nada y el texto hereda el color del padre: se ve "bien" de casualidad. Revisá que cada clase de color, tamaño o radio sea del sistema.
+- **En el ledger, la evidencia prueba el título de la fila, no algo parecido.** "Se oculta antes de pintarse" no se prueba con "el script va antes y al final está oculto": eso prueba el orden y el estado final. Achicá el título a lo que mediste o dejalo UNVERIFIED.
 - **Todo color nuevo se mide** (contraste contra su fondo), no se juzga a ojo.
 - **El resultado es un ledger por control y un veredicto** (aprobar o pedir cambios) con un comentario accionable: qué cambiar y por qué. Lo que es decisión de diseño (un estado nuevo) se devuelve a diseño, no se resuelve en el código.
 
@@ -298,6 +305,7 @@ Si el proyecto tiene su propio flujo (en `CLAUDE.md`, `CONTRIBUTING.md` o planti
 - **Confirmá el repo y la branch** (`git status`, `git branch`). Si estás en la branch principal de un proyecto compartido, no trabajes ahí: actualizala (`git pull`) y creá una branch desde ella.
 - **Nombre de la branch: `tipo/issue-tema`** (`feat/15-app-shell`, `fix/`, `docs/`, `chore/`, `refactor/`). Dice qué tipo de cambio es y de qué tarea sale, sin abrir nada.
 - **Una branch, un issue.** Lo que aparece en el camino y no es del pedido (un refactor, otro bug) va a un issue nuevo, no a este PR: mezclado, el diff no se puede revisar.
+- **Si revisar y mergear seguido cuesta más de lo que aporta** (una sola persona revisa, muchos cambios chicos), el proyecto puede pasar a **un PR por sesión de trabajo**: una branch con un commit o más por slice, que cierra varios issues (`Closes #12`, `Closes #13`) y se mergea una vez. Los slices se siguen revisando de a uno, por commit. Lo que no tiene que ver con la sesión igual lleva su issue y se nombra en el PR.
 
 **Mientras trabajás**
 - **Leé el diff antes de cada commit** (`git diff --staged`), no solo antes del PR. Ahí aparecen archivos generados, secretos o cambios de configuración que no pidió nadie.
@@ -323,7 +331,7 @@ Si el proyecto tiene su propio flujo (en `CLAUDE.md`, `CONTRIBUTING.md` o planti
 
 ## 18. Trabajar por slices: plan, aprobación y cierre
 
-Un **slice** es una porción chica del producto con un **resultado observable** y un **criterio de cierre** ("done when"). "Hacer la mitad de la pantalla" no es un slice: no se puede probar ni cerrar sola. Si el proyecto usa issues: un slice = un issue = una branch = un PR. Chico, porque un diff corto se revisa entero.
+Un **slice** es una porción chica del producto con un **resultado observable** y un **criterio de cierre** ("done when"). "Hacer la mitad de la pantalla" no es un slice: no se puede probar ni cerrar sola. Si el proyecto usa issues: un slice = un issue, con su branch y su PR, o con sus commits dentro del PR de la sesión si el proyecto trabaja así (sección 17). Chico, porque un diff corto se revisa entero.
 
 **Antes:** leé el estado del proyecto y la tarea, el nodo exacto de Figma (con descripción y anotaciones) y los componentes y tokens que ya existen.
 
@@ -357,7 +365,19 @@ Un **slice** es una porción chica del producto con un **resultado observable** 
 - Checks estáticos, runtime medido contra Figma, accesibilidad, consola y contenido extremo, con un ledger (sección 15).
 - **Un slice no se cierra con un FAIL**, ni con un control que la tarea exige en UNVERIFIED.
 - Docs de estado actualizados en el mismo PR. La deuda que deja el slice (un SVG en línea hasta que exista el componente de íconos) se anota en el issue que la va a resolver.
-- **Frená.** No empieces el siguiente slice hasta que el PR esté mergeado y te lo pidan.
+- **Frená.** No empieces el siguiente slice hasta que te lo pidan (y, con un PR por slice, hasta que esté mergeado).
+
+---
+
+## 19. Revisión de diseño, además del ledger
+
+El ledger prueba que **se construyó bien** (igual a Figma). No prueba que **se construyó lo correcto**: algo idéntico al diseño puede contradecir un principio del producto, tener un texto que no cumple lo que promete un ADR o perderse contra el fondo. Para eso va una revisión de diseño aparte (por ejemplo, [Impeccable](https://impeccable.style): `critique` y `audit`) al cerrar cada slice de UI.
+
+- **Dos miradas separadas:** el juicio de diseño (jerarquía, textos, accesibilidad, qué pasa cuando algo falla, a quién le falla) y la evidencia mecánica (detector, mediciones). El juicio va primero y sin ver al detector, para que no se ancle en lo que el detector encontró. Un detector limpio no significa un buen diseño, y sus hallazgos se clasifican: real o falso positivo, con el motivo (por ejemplo, "una sola tipografía" es una decisión del sistema, no un error).
+- **Cada hallazgo termina en uno de tres lugares:** se corrige en el slice, va a un issue con su "done when", o se rechaza con el motivo escrito. Ninguno queda en el aire.
+- **La revisión puede mejorar el sistema, no saltearlo.** Si pide un color, un tamaño o un estilo que no existe, se crea el token en Figma primero y después en código. Lo que es producto (qué se muestra, qué dice un texto) lo propone y lo decide la persona dueña del producto; el texto aprobado se actualiza en Figma y en los docs del proyecto.
+- **Los archivos de contexto que usa la herramienta** (por ejemplo `PRODUCT.md` y `DESIGN.md`) **son copias derivadas**, no una segunda fuente de verdad: se arman desde los docs del proyecto, Figma y los tokens del código, y se regeneran cuando esos cambian. Lo nuevo que aparezca al armarlos (una decisión de voz, de marca) se escribe primero en la fuente.
+- **Una automatización "activada" no es evidencia.** Un hook, un check o un detector se prueba haciéndolo fallar a propósito (un archivo con un error conocido) y viendo que avise. Si no avisa, el registro de la herramienta dice por qué (por ejemplo, un hook que ignora archivos fuera de la carpeta donde se abrió la sesión).
 
 ---
 

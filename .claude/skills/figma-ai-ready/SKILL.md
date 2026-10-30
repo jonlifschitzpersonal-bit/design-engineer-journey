@@ -32,7 +32,7 @@ La skill `design-implementation` cubre la otra mitad: cómo se traduce todo esto
 ## 1. Estructura y nombres
 
 - **Páginas con orden obvio.** Si no hay convención: `00 - Cover`, `01 - Foundations`, `02 - Components`, `05 - Screens`, `99 - Archive`. Antes de crear una página, revisá que no exista.
-- **Cada componente vive dentro de una Section con su nombre**, nunca suelto en el canvas. Ubicá lo nuevo al costado de lo existente, sin superponer.
+- **Cada componente vive dentro de una Section con su nombre**, nunca suelto en el canvas. Ubicá lo nuevo al costado de lo existente, sin superponer. Si un texto crece (un copy más largo, una nota de anotaciones), la Section no se agranda sola: revisá en la captura que siga conteniendo todo.
 - **Nombrá por lo que es, no por cómo se dibujó:** PascalCase para componentes (`MetricCard`) y camelCase con el rol para capas internas (`icon`, `title`, `trendValue`). Ninguna capa puede llamarse `Frame …`, `Group …`, `Rectangle …`, `Vector` ni `Ellipse`.
 - **Las instancias se renombran por su rol** (`iconStart`, `trendIcon`). Si hay dos íconos en un componente, el nombre es lo único que los distingue.
 - **Propiedades en camelCase, con el nombre que tendrá la prop en código** (`showIconStart`, `iconStart`), y valores de variantes en minúscula (`primary`, `arrow-right`). Así la API de Figma y la del código son la misma.
@@ -49,6 +49,7 @@ La skill `design-implementation` cubre la otra mitad: cómo se traduce todo esto
 - **Revisá las conexiones en todas las variantes, no solo en la default.** Al crear variantes duplicando o por código, las conexiones se pierden sin aviso: la instancia sigue mostrando el texto de muestra aunque se le cambie la propiedad. Si una variante deja algo sin conectar **a propósito** (un texto fijo por estado, una capa oculta en `loading`), escribilo en la descripción.
 - **Las variantes se multiplican, los booleanos no** (3 × 2 × 4 = 24). Usá booleanos para lo que solo se muestra u oculta.
 - **No crees combinaciones que no existen.** Si `loading` no muestra tendencia, no hagas `loading × up/down/neutral`: creá una sola (Figma exige un valor por propiedad) y aclaralo en la descripción.
+- **El texto de muestra es del producto**, no de otro proyecto ni lorem ipsum: el agente lo copia tal cual al código, a las historias y a las páginas de referencia. Un título de muestra de otro dominio termina en producción.
 - **Si el texto depende del estado, no lo hagas editable** (un badge `active` siempre dice "Activo"). Aclaralo en la descripción y en una anotación de *Content*.
 - **Si un componente necesita un tamaño que los text styles no tienen, creá el estilo**, en lugar de forzar el padding o escribir el tamaño suelto.
 - **Lo que Figma no puede expresar va en la descripción del componente** (por ejemplo, que un booleano apaga a otro).
@@ -60,7 +61,7 @@ La skill `design-implementation` cubre la otra mitad: cómo se traduce todo esto
 
 - Para cada contenedor, decidí a propósito: dirección, gap, padding, alineación, Hug/Fill/Fixed y min/max width.
 - **El ancho fijo de un componente es el de muestra; lo que importa es el min width.** Una card que va en grilla lleva min width para que el código use `minmax()`.
-- **Decidí a propósito si el stroke suma al layout** (*include stroke in layout*): cambia el alto real y se traduce distinto en código (`border` o borde interno). Si dos componentes lo tienen distinto, que sea por una razón.
+- **Decidí a propósito si el stroke suma al layout** (*include stroke in layout*): cambia el alto real y se traduce distinto en código (`border` o borde interno). Si dos componentes lo tienen distinto, que sea por una razón. **Un borde de un solo lado** (el de abajo de una franja) va con pesos individuales (`strokeBottomWeight = 1`, el resto en 0) y, si en código es un `border-b` que suma al alto, con *include stroke in layout* activado: así Figma y el navegador miden lo mismo.
 - **Una grilla de cards es una fila con *wrap* y las cards en Fill con min width;** se reparten solas como `repeat(auto-fill, minmax())`. Título y acción en los extremos usan espaciado "Auto", no un gap fijo.
 - **Probá con contenido extremo** (título de dos líneas, número largo, el ancho mínimo) con una instancia temporal, y borrala después.
 

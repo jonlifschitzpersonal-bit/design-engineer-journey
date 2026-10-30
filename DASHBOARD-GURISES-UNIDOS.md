@@ -122,6 +122,27 @@ En el archivo "Design Engineer Journey" se armó el design system que usa el das
 - **El proceso quedó en el repo:** el PR #26 (mergeado, cerró el #25) pasa al `CLAUDE.md` qué responde un plan, qué hacer si cambia, cuándo se cierra un slice y que el agente frena después. La plantilla de PR suma "Differences with the approved plan", para los cambios técnicos hechos después de aprobar.
 - **Evidencia:** medido en Chrome contra Figma a 1280 y 320px. También se probaron teclado y foco, recargar, cambiar de pantalla, el navegador sin `localStorage`, el árbol de accesibilidad, el contraste y la consola. Quedó UNVERIFIED un lector de pantalla real.
 
+### Clase 5.6 — Revisar implementaciones: Impeccable (30/10/2026)
+
+- **Qué se hizo:** al ledger, que prueba que el código es igual a Figma, se le sumó una revisión de diseño que pregunta si el diseño está bien. Se hizo con [Impeccable](https://impeccable.style).
+  - **Puesta a punto (#27, PR #28):**
+    - `PRODUCT.md`, armado desde `PROJECT_CONTEXT.md` y los ADRs.
+    - `DESIGN.md`, armado desde `globals.css` y Figma. La idea guía es "The Honest Count" (cada número dice solo lo que mide) y el carácter, "sereno y preciso".
+    - Un hook que revisa cada cambio de UI mientras el agente edita.
+  - **Revisión (#29):** `critique` y `audit` sobre el aviso y `/tokens`, y después `polish`, `harden` y `clarify` sobre el aviso.
+- **Decidí (producto):**
+  - Voseo uruguayo en los textos.
+  - Sin marca hasta que haya un logo real.
+  - El dashboard es una herramienta interna.
+  - El aviso dice ahora "Demo con datos ficticios: no son cifras reales de Gurises Unidos y lo que cargues no se guarda.", porque el ADR 0006 pedía que cubriera las acciones que no guardan.
+  - La franja tiene un borde con un token nuevo, `color/border/accent`, creado primero en Figma.
+  - Cuando exista la barra superior, va una marca fija "Datos ficticios" que no se cierra (#30).
+- **Por qué la marca fija:** el aviso se puede cerrar para siempre en ese navegador. `critique` lo marcó como prioridad alta, porque choca con el principio "la demo es honesta". La franja se sigue cerrando, pero queda una marca chica que no se va.
+- **Por qué el borde:** el celeste de la franja contra el blanco mide 1,09:1. Era fiel a Figma, pero en un proyector desaparece. Se usa un token propio y no el de un botón que casualmente tiene el mismo valor.
+- **Lo que apareció:** el hook estaba "activado" y no avisaba. Ignoraba los archivos de fuera de la carpeta donde se abre la sesión, y las sesiones se abren desde el curso. Se resolvió con un puente en el repo del curso. Se probó con un error puesto a propósito.
+- **Cambio de proceso:** un PR por clase en lugar de uno por cosa, con commits por slice. Lo pedí porque mergear a cada rato era tiempo perdido.
+- **Evidencia:** medido en Chrome contra Figma: 41px en desktop y 3 líneas (81px) a 320. También teclado, foco, árbol de accesibilidad ("región Aviso de datos ficticios") y consola sin errores. `critique` dio 17/28 al aviso y 16/28 a `/tokens`; `audit`, 16/20. Lo que quedó de `/tokens` (valores, grupos, guía de uso) va a la 6.1 (#31).
+
 ---
 
 ## 6. El repo, archivo por archivo
@@ -153,8 +174,14 @@ gurises-unidos-dashboard/
 │   └── research/
 │       ├── figma-mcp-options.md
 │       └── v1-case-study.md
+├── .impeccable/
+│   ├── config.json
+│   ├── design.json
+│   └── critique/
 ├── CLAUDE.md
 ├── AGENTS.md
+├── PRODUCT.md
+├── DESIGN.md
 ├── README.md
 ├── package.json
 ├── package-lock.json
@@ -175,7 +202,7 @@ gurises-unidos-dashboard/
 | `app/page.tsx` | La home (`/`) | Por ahora, un título y un link a `/tokens`. El dashboard la reemplaza en los próximos slices. |
 | `app/tokens/page.tsx` | La página `/tokens` | Muestra cada token con la clase que lo usa: colores, text styles, radios y espaciado. Sirve para comparar con Figma hasta que exista Storybook. Las clases están escritas completas en una lista, porque Tailwind arma el CSS buscando clases en el texto de los archivos. |
 | `app/globals.css` | Los tokens del sistema | El corazón del sistema en código (ver sección 7). También tiene la variante `demo-dismissed:`, que oculta el aviso cuando está cerrado. |
-| `components/DemoNotice.tsx` | El aviso de datos ficticios | Un `<aside>` con nombre "Aviso", el texto fijo y el botón "Cerrar aviso". Es *client component* porque tiene un clic. Al cerrarse, guarda `dismissed` en `localStorage` y pasa el foco al contenido. Un script en línea lo oculta antes de pintar si ya estaba cerrado. Los íconos son SVG de Lucide hasta que exista `Icon` (#12). |
+| `components/DemoNotice.tsx` | El aviso de datos ficticios | Una región con nombre "Aviso de datos ficticios" (desde la 5.6; antes era un `<aside>` genérico), con un borde inferior `border-accent`, el texto fijo y el botón "Cerrar aviso". Es *client component* porque tiene un clic. Al cerrarse, guarda `dismissed` en `localStorage` y pasa el foco al contenido. Un script en línea lo oculta antes de pintar si ya estaba cerrado. Los íconos son SVG de Lucide hasta que exista `Icon` (#12). |
 | `app/favicon.ico` | El ícono de la pestaña | Todavía es el de Next.js; está anotado como pendiente. |
 
 **Cómo funcionan las rutas:** en `app/`, cada carpeta con un `page.tsx` adentro es una URL. `app/page.tsx` es `/` y `app/tokens/page.tsx` es `/tokens`. No hay que configurar nada más.
@@ -195,6 +222,9 @@ gurises-unidos-dashboard/
 | `docs/adr/0001` … `0006` | Una decisión por archivo (sección 8). | No se editan: si una decisión cambia, se escribe otro que la reemplaza |
 | `docs/research/figma-mcp-options.md` | Comparación del MCP oficial de Figma con Figma Console MCP en el plan Starter, más los límites del plan. Respalda el ADR 0003. | Se suman notas |
 | `docs/research/v1-case-study.md` | Qué decisiones de v1 se mantienen, qué quedó sin medir y qué cambia en v2. | Se suman notas |
+| `PRODUCT.md` | Para Impeccable: para quién es el producto, para qué sirve, qué no se puede inventar y sus principios. Es una copia derivada de `PROJECT_CONTEXT.md` y los ADRs, no una fuente de verdad (5.6). | Cuando cambian los docs de producto: se regenera |
+| `DESIGN.md` y `.impeccable/design.json` | Para Impeccable: los tokens, cómo se usa cada uno, los componentes y las reglas con nombre ("The Quiet Blue Rule"…). Derivados de Figma y `globals.css` (5.6). | Cuando cambian Figma o los tokens: se regeneran, y `impeccable doctor` avisa si quedaron viejos |
+| `.impeccable/config.json` y `.impeccable/critique/` | El hook de Impeccable prendido para el proyecto, y los informes de `critique` con su puntaje (para ver si mejora con el tiempo). | Con cada revisión |
 | `README.md` | La presentación del repo en GitHub: qué es, qué hace, cómo correrlo, estructura, cómo se trabaja (issues, PRs, plantilla), tokens y roadmap. | Cuando cambia algo visible |
 
 ### Configuración (se lee, no se toca sin motivo)
@@ -280,24 +310,25 @@ Un ADR (*Architecture Decision Record*) es una decisión por archivo: contexto, 
 
 ## 9. Cómo se trabaja con un agente en este repo
 
-Se trabaja por **slices**: un pedazo chico con un resultado que se ve y un "done when". Un slice = un issue = una branch = un PR.
+Se trabaja por **slices**: un pedazo chico con un resultado que se ve y un "done when". Un slice = un issue, con uno o más commits. **Desde la 5.6, un PR por sesión de trabajo (una clase):** todo lo de la sesión va en una branch y se mergea una vez, al final.
 
 1. **El agente lee primero:** `CLAUDE.md`, el issue, el estado, los pendientes, los ADR y el nodo de Figma.
 2. **Plan antes de código, y espera mi aprobación.** Responde: resultado observable, qué entra y qué queda afuera, estados, evidencia de Figma, decisiones ya aprobadas, supuestos con su riesgo, qué se reutiliza, extiende, crea o queda interno, tokens, archivos, qué es ficticio, verificaciones y decisiones de producto abiertas (esas me las pregunta). Si la duda es de layout, primero muestra wireframes en ASCII.
 3. **Implementa solo lo aprobado.** Si el plan tiene que cambiar el resultado, pregunta antes; un cambio técnico menor lo anota en el PR.
 4. **Checks:** `npm run lint` y `npm run build`.
 5. **Verificación con evidencia:** mide en el navegador contra Figma y marca cada control como PASS, FAIL, UNVERIFIED u OUT OF SCOPE. Lo que no se probó es UNVERIFIED, nunca PASS.
-6. **Cierra:** actualiza `CURRENT_STATE` y `PENDING_TASKS`; si hubo una decisión de arquitectura, escribe un ADR. No hay cierre con un FAIL.
-7. **Frena:** no empieza el siguiente slice hasta que yo mergeo y se lo pido.
+6. **Revisión de diseño (desde la 5.6):** en los cambios de UI corre `critique` y `audit` de Impeccable. Cada hallazgo se corrige, va a un issue o se rechaza con motivo.
+7. **Cierra:** actualiza `CURRENT_STATE` y `PENDING_TASKS`; si hubo una decisión de arquitectura, escribe un ADR. No hay cierre con un FAIL.
+8. **Frena:** no empieza el siguiente slice hasta que se lo pido. El PR de la sesión lo abre al final.
 
 **El camino de cada cambio por Git (desde la 5.4):**
 
 ```
-issue #N  →  branch tipo/N-tema  →  commits (uno por intención)  →  PR con "Closes #N"  →  yo reviso y mergeo  →  el #N se cierra solo
+issue(s)  →  branch tipo/N-tema  →  commits (uno por intención, por slice)  →  PR al final de la sesión con "Closes #N"  →  yo reviso y mergeo  →  los issues se cierran solos
 ```
 
 - **Siempre sale de un issue.** Si no existe, el agente lo crea antes de la branch.
-- **Una branch por issue.** Lo que aparece en el camino y no es del pedido va a otro issue.
+- **Una branch por sesión de trabajo** (desde la 5.6). Lo que aparece en el camino y no es del pedido va a otro issue y se nombra en el PR.
 - **El agente lee el diff antes de cada commit** y abre el PR con la plantilla completa.
 - **El agente no mergea.** El merge es mío, después de leer *Files changed*.
 - **`main` no acepta nada que no venga de un PR**, así que esto no depende de que alguien se acuerde.
@@ -306,7 +337,7 @@ issue #N  →  branch tipo/N-tema  →  commits (uno por intención)  →  PR co
 
 ## 10. Estado hoy y lo que sigue
 
-**Hecho y verificado:** proyecto creado, tokens del sistema en el tema, Inter, `lang`, metadata, página `/tokens`, documentación para agentes, el flujo de equipo (issues, `main` protegido, plantillas de PR e issue) y el aviso de datos ficticios en todas las pantallas (#20).
+**Hecho y verificado:** proyecto creado, tokens del sistema en el tema, Inter, `lang`, metadata, página `/tokens`, documentación para agentes, el flujo de equipo (issues, `main` protegido, plantillas de PR e issue), el aviso de datos ficticios en todas las pantallas (#20, revisado y mejorado en el #29) e Impeccable puesto a punto (#27).
 
 **El backlog está en GitHub Issues:** https://github.com/jonlifschitzpersonal-bit/gurises-unidos-dashboard/issues (el orden de trabajo, en `docs/PENDING_TASKS.md`).
 
@@ -314,7 +345,7 @@ issue #N  →  branch tipo/N-tema  →  commits (uno por intención)  →  PR co
 
 | Clase | Qué se suma al dashboard |
 |---|---|
-| 5.6 | Revisar implementaciones |
+| 6.1 | Tokens Figma ↔ código, y `/tokens` como referencia completa (#31) |
 | 6.1–6.4 | Componentes del sistema en código (`Icon`, `Button`, `MetricCard`, `StatusBadge`) con variantes, accesibilidad y Storybook |
 | 5.7 | Pantallas de Gurises Unidos en Figma + slice 1: el shell (sidebar, barra superior, tabs) |
 | 5.8 | Slice 2: los indicadores de alcance + deploy de preview en Vercel |
@@ -324,11 +355,31 @@ issue #N  →  branch tipo/N-tema  →  commits (uno por intención)  →  PR co
 
 **Desde la 5.6, Impeccable** (impeccable.style) revisa y mejora el diseño en cada slice. `critique` y `audit` corren al cerrar cada slice de UI, y los hooks revisan cada cambio mientras el agente edita. Puede mejorar el sistema, pero no saltearlo: lo que cambia el estilo se vuelve token, primero en Figma.
 
-**Pendiente de producto:** el set de datos ficticios (#6: cuántos proyectos y años, nombres y estados). **Antes del primer deploy:** el favicon (#16). **Deuda conocida:** números tabulares en `heading/metric` (#5), el token del Button al apretar (#14), el dark mode (#11), los SVG del aviso que pasan a `Icon` (#12) y su X, que pasa a `Button` con un segundo uso (#3).
+**Pendiente de producto:** el set de datos ficticios (#6: cuántos proyectos y años, nombres y estados). **Antes del primer deploy:** el favicon (#16). **Deuda conocida:** números tabulares en `heading/metric` (#5), el token del Button al apretar (#14), el dark mode (#11), los SVG del aviso que pasan a `Icon` (#12) y su X, que pasa a `Button` con un segundo uso (#3). **De la revisión de la 5.6:** la marca fija "Datos ficticios" en la barra superior (#30, con el slice 1) y `/tokens` como referencia completa (#31, en la 6.1).
 
 ---
 
 ## 11. Preguntas que te pueden hacer, con la respuesta
+
+**¿Cómo sabés que el código que te dio la IA está bien?**
+Con tres preguntas distintas.
+1. ¿Es igual al diseño? Lo responde un ledger con medidas en el navegador.
+2. ¿El código es confiable? Lo responden diez señales de alarma que se ven en el diff: valores sin token, un `<div>` que hace de botón, checks apagados, un `PASS` sin la prueba…
+3. ¿El diseño está bien? Lo responde una revisión de diseño, con Impeccable.
+
+En el aviso de datos ficticios, el ledger dio todo en verde y la revisión de diseño encontró tres cosas que el ledger no podía ver:
+- se apagaba para siempre con un clic;
+- el texto no cumplía lo que pedía un ADR;
+- la franja casi no se distinguía del fondo.
+
+**¿Impeccable no te cambia el diseño a su gusto?**
+No, porque tiene reglas.
+- Puede mejorar el sistema, pero no saltearlo: si propone un color que no existe, se crea el token en Figma primero.
+- Lo que es producto, como un texto o qué se muestra, lo propone y lo decido yo.
+- `PRODUCT.md` y `DESIGN.md` son copias derivadas de Figma y los docs, no una segunda fuente de verdad.
+
+**¿Qué aprendiste de configurar herramientas para el agente?**
+Que "está activado" no es evidencia. El hook de Impeccable estaba prendido y no avisaba nada, porque ignoraba los archivos fuera de la carpeta de la sesión. Lo descubrí haciéndolo fallar a propósito con un error conocido. Desde ahí, toda automatización se prueba así.
 
 **¿Por qué Tailwind y no CSS común?**
 Porque los tokens de Figma pasan al tema y se vuelven clases. Con el tema limitado al sistema, lo que no está en Figma no existe en el código, y eso se ve en cualquier revisión. Es también el estándar de los equipos que usan Next.js.
