@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 5.3
+**Clase actual:** 5.4
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
 
 ### Dónde está cada cosa
@@ -11,7 +11,7 @@
 | Qué | Dónde |
 |---|---|
 | Repo del curso | https://github.com/jonlifschitzpersonal-bit/design-engineer-journey |
-| Dashboard (proyecto ancla 1, y los componentes del sistema) | `D:\Escritorio\proyectos\dashboard-ai-visibility` · https://github.com/jonlifschitzpersonal-bit/dashboard-ai-visibility · sin publicar todavía (deploy en la 5.8) |
+| Dashboard de Gurises Unidos (proyecto ancla 1, y los componentes del sistema) | `D:\Escritorio\proyectos\gurises-unidos-dashboard` · https://github.com/jonlifschitzpersonal-bit/gurises-unidos-dashboard · sin publicar todavía (deploy en la 5.8) |
 | Sección Resumen (2.6) | https://design-engineer-journey-00-seccion.vercel.app/ |
 | Setup (0.2) | https://design-engineer-journey-00-setup.vercel.app/ |
 
@@ -19,7 +19,7 @@
 
 | Cuándo | Qué |
 |---|---|
-| **5.3** | Docs del dashboard para el agente: su propio `CLAUDE.md` (stack, tokens, convenciones), contexto, estado y ADRs. |
+| **Antes de la 5.4** | Renombrar el repo del dashboard en GitHub (Settings → Rename → `gurises-unidos-dashboard`) y la carpeta local (`dashboard-ai-visibility` → `gurises-unidos-dashboard`); después, actualizar el remoto de Git. |
 | **5.4** | Instalar GitHub CLI (`gh`) y autenticarlo: hoy no está, y se necesita para crear PRs e issues desde la terminal. |
 | **5.5 y 6.8** | Sumar a las skills el proceso de trabajo con el agente (plan → aprobación → código → diff → ledger). Hoy está solo en `PLAN-DE-ESTUDIO.md` §4 ("Review de cada slice"), así que en otro proyecto no se conoce. |
 | **Figma (de la 2.6)** | Activar números tabulares en el text style `heading/metric` y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button. |
@@ -52,7 +52,7 @@
 
 - [x] 5.1 Next.js + Tailwind
 - [x] 5.2 Tailwind desde tokens
-- [ ] 5.3 Preparar el repo para el agente
+- [x] 5.3 Preparar el repo para el agente
 - [ ] 5.4 Git en equipo
 - [ ] 5.5 Trabajar por slices
 - [ ] 5.6 Revisar implementaciones
@@ -136,6 +136,13 @@
 ---
 
 ## Bitácora
+
+### 2026-10-30 · Clase 5.3 — Preparar el repo para el agente
+- **Aprendí:** cada cosa va en un archivo según cuánto cambia. `CLAUDE.md` tiene las reglas estables (comandos, stack, tokens, convenciones, cómo trabajar, qué no tocar) y manda a leer el resto. `docs/PROJECT_CONTEXT.md` describe el producto, `CURRENT_STATE.md` lo hecho y verificado, y `PENDING_TASKS.md` lo que sigue. Los ADR registran una decisión por archivo, con opciones y costo; no se editan, se reemplazan. `docs/research/` guarda lo que llevó a cada decisión. Si el estado se mezcla con las reglas, el agente sigue instrucciones que ya no valen.
+- **Decidí:** el dashboard pasa a ser el de **Gurises Unidos** (mi caso freelance), rehecho con el stack y el sistema del curso para que sea un producto casi real y vaya al portfolio. Carpeta y repo `gurises-unidos-dashboard`; diseño en el archivo de Figma del curso; datos ficticios con todo funcionando; las acciones con backend ("Cargar métricas", "Nuevo proyecto") se construyen completas y al confirmar no guardan nada.
+- **Hice:** Claude escribió `CLAUDE.md` (con `@AGENTS.md`), los tres documentos de estado, 6 ADR y 2 notas de research, y actualizó nombre, metadata y README del proyecto.
+- **Verificado:** una sesión nueva de Claude Code abierta en la carpeta del dashboard, sin contexto y en modo plan, propuso el aviso de "datos ficticios" citando el ADR 0005, solo con tokens del sistema, sin inventar texto y marcando como UNVERIFIED lo que no pudo leer de Figma.
+- **Sumado a la skill:** documentación del proyecto para agentes (reglas, estado y decisiones separados, ADR que no se editan, actualizar estado al cerrar un slice) y probarla con una sesión nueva en modo plan.
 
 ### 2026-10-30 · Clase 5.2 — Tailwind desde los tokens
 - **Aprendí:** el `@theme` de Tailwind es el equivalente en código del panel de variables: cada token se vuelve clases. Los primitivos quedan afuera (variables comunes, sin clases) y los semánticos adentro, apuntando a ellos como los alias de Figma. Con `initial` se apaga lo que trae Tailwind: la paleta, los tamaños de texto y los radios. El prefijo de la clase (`text-`, `bg-`, `border-`) dice dónde se usa el color y no es parte del token: por eso en Figma el nombre sigue siendo `color/text/muted`.

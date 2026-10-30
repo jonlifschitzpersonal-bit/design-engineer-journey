@@ -38,6 +38,27 @@ Ningún proyecto es igual. Antes de escribir código, averiguá:
 - **Ajustá lo que la plantilla trae genérico:** `lang` al idioma del contenido (el lector de pantalla elige la pronunciación con ese dato), el `title` y la `description` de la metadata, y la fuente a la de los text styles.
 - **Antes de dar el proyecto por creado, corré `lint` y `build`.** `dev` puede funcionar con errores que el deploy después rechaza.
 
+### Documentación del proyecto para el agente
+
+Si el proyecto no la tiene, proponela. Cada cosa va en un archivo según cuánto cambia:
+
+| Archivo | Qué dice |
+|---|---|
+| `CLAUDE.md` (o `AGENTS.md`) | Reglas estables: comandos, stack, de dónde sale el diseño, tokens, convenciones, cómo trabajar, qué no tocar |
+| `docs/PROJECT_CONTEXT.md` | El producto: problema, usuarios, pantallas, estados, fuentes de verdad |
+| `docs/CURRENT_STATE.md` | Lo hecho **y verificado**, con evidencia |
+| `docs/PENDING_TASKS.md` | Próximas tareas, decisiones de producto pendientes, deuda a propósito |
+| `docs/adr/` | Una decisión de arquitectura por archivo, con un README índice |
+| `docs/research/` | Comparaciones y fuentes que llevaron a cada decisión |
+
+- **El estado no va en `CLAUDE.md`.** Lo que hoy es "falta hacer X" mañana es falso, y el agente lo sigue leyendo como regla. `CLAUDE.md` manda a leer el estado; no lo copia.
+- **Si el framework escribe su propio `AGENTS.md`, `CLAUDE.md` lo importa** con una línea `@AGENTS.md`, para no duplicarlo.
+- **Cada regla lleva su porqué en una línea** y el ADR tiene el completo. Una regla sin motivo ("las clases repiten palabras") el agente la "corrige".
+- **Un ADR no se edita una vez aceptado:** si la decisión cambia, se escribe uno nuevo que lo reemplaza (`Superseded by NNNN`). Formato: contexto, opciones consideradas, decisión, consecuencias.
+- **Al cerrar un slice se actualizan `CURRENT_STATE` y `PENDING_TASKS`**; una decisión nueva de arquitectura suma un ADR.
+- **El proceso de trabajo también va en el proyecto** (plan → aprobación → código → checks → ledger → docs), porque las skills de otro repo no se cargan en una sesión abierta en ese proyecto.
+- **Probá la documentación con una sesión nueva** abierta en la carpeta del proyecto, en modo plan y con un pedido chico sin contexto: si no lee el estado, usa valores sueltos o inventa textos, falta algo en los docs.
+
 ---
 
 ## 1. HTML base
