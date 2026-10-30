@@ -141,7 +141,7 @@ Se resolvió con un "puente" en el curso (`.claude/settings.json` + `.claude/hoo
 
 **Lo que se aprende de esto:** "está activado" no es evidencia. La evidencia es verlo fallar a propósito y que avise.
 
-## 5. Impeccable revisando el aviso y `/tokens` (issue #29)
+## 5. Impeccable revisando el aviso y `/tokens` (issue #29, PR #32)
 
 ### Cómo trabaja `critique`
 
@@ -198,4 +198,4 @@ Los dos falsos positivos del detector, con su motivo:
 
 - **El hook revisó cada cambio real** del código (el aviso, `globals.css`, `/tokens`) sin hallazgos, y avisó que `design.json` había quedado más viejo que `DESIGN.md`.
 - **Claude encontró un error propio en `DESIGN.md`:** faltaba `space/0-5`. La revisión A lo vio por su lado.
-- **Cambio de proceso, pedido tuyo:** un PR por clase y no uno por cosa. Los slices siguen siendo chicos y se revisan por commit.
+- **Cambio de proceso, pedido tuyo:** primero un PR por clase y no uno por cosa (fue el #32). Al cerrar, sin PRs: Claude pushea directo a `main` cada slice cerrado, con el ledger en el commit. `main` sigue sin aceptar force push ni borrado. Los slices siguen siendo chicos y se ven por commit.

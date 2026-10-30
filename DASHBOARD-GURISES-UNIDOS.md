@@ -16,7 +16,7 @@
 ## 1. En 30 segundos
 
 > "Es el dashboard de Gurises Unidos, una ONG uruguaya que trabaja con chicos, adolescentes y sus familias. La dirección tenía los datos de sus proyectos repartidos en muchos Excel, y armar el informe anual para los donantes le llevaba recorrer archivo por archivo. El dashboard junta todo: primero el alcance (cuántos chicos se alcanzaron), después familias, docentes y proyectos activos, una tabla de proyectos y filtros por año y departamento.
-> Ya lo había hecho como freelance en React. Esta segunda versión la rehice en Next.js, TypeScript y Tailwind, con un design system que va uno a uno entre Figma y el código, y preparada para trabajar con agentes de IA: el repo tiene las reglas, el contexto, el estado y cada decisión documentada, y cada cambio entra por un pull request con su evidencia, que reviso antes de mergear."
+> Ya lo había hecho como freelance en React. Esta segunda versión la rehice en Next.js, TypeScript y Tailwind, con un design system que va uno a uno entre Figma y el código, y preparada para trabajar con agentes de IA: el repo tiene las reglas, el contexto, el estado y cada decisión documentada, y cada cambio entra con su evidencia: un plan que apruebo antes y un registro de lo verificado al cerrarlo."
 
 ---
 
@@ -129,7 +129,7 @@ En el archivo "Design Engineer Journey" se armó el design system que usa el das
     - `PRODUCT.md`, armado desde `PROJECT_CONTEXT.md` y los ADRs.
     - `DESIGN.md`, armado desde `globals.css` y Figma. La idea guía es "The Honest Count" (cada número dice solo lo que mide) y el carácter, "sereno y preciso".
     - Un hook que revisa cada cambio de UI mientras el agente edita.
-  - **Revisión (#29):** `critique` y `audit` sobre el aviso y `/tokens`, y después `polish`, `harden` y `clarify` sobre el aviso.
+  - **Revisión (#29, PR #32, mergeado):** `critique` y `audit` sobre el aviso y `/tokens`, y después `polish`, `harden` y `clarify` sobre el aviso.
 - **Decidí (producto):**
   - Voseo uruguayo en los textos.
   - Sin marca hasta que haya un logo real.
@@ -140,7 +140,7 @@ En el archivo "Design Engineer Journey" se armó el design system que usa el das
 - **Por qué la marca fija:** el aviso se puede cerrar para siempre en ese navegador. `critique` lo marcó como prioridad alta, porque choca con el principio "la demo es honesta". La franja se sigue cerrando, pero queda una marca chica que no se va.
 - **Por qué el borde:** el celeste de la franja contra el blanco mide 1,09:1. Era fiel a Figma, pero en un proyector desaparece. Se usa un token propio y no el de un botón que casualmente tiene el mismo valor.
 - **Lo que apareció:** el hook estaba "activado" y no avisaba. Ignoraba los archivos de fuera de la carpeta donde se abre la sesión, y las sesiones se abren desde el curso. Se resolvió con un puente en el repo del curso. Se probó con un error puesto a propósito.
-- **Cambio de proceso:** un PR por clase en lugar de uno por cosa, con commits por slice. Lo pedí porque mergear a cada rato era tiempo perdido.
+- **Cambio de proceso:** primero, un PR por clase en lugar de uno por cosa. Al cerrar la clase, sin PRs: Claude pushea directo a `main` cada slice cerrado, con el ledger en el commit. Lo pedí porque mergear a cada rato era tiempo perdido, y con una sola persona el merge no sumaba una revisión. `main` sigue sin aceptar force push ni borrado, así que el historial no se puede reescribir.
 - **Evidencia:** medido en Chrome contra Figma: 41px en desktop y 3 líneas (81px) a 320. También teclado, foco, árbol de accesibilidad ("región Aviso de datos ficticios") y consola sin errores. `critique` dio 17/28 al aviso y 16/28 a `/tokens`; `audit`, 16/20. Lo que quedó de `/tokens` (valores, grupos, guía de uso) va a la 6.1 (#31).
 
 ---
@@ -310,34 +310,36 @@ Un ADR (*Architecture Decision Record*) es una decisión por archivo: contexto, 
 
 ## 9. Cómo se trabaja con un agente en este repo
 
-Se trabaja por **slices**: un pedazo chico con un resultado que se ve y un "done when". Un slice = un issue, con uno o más commits. **Desde la 5.6, un PR por sesión de trabajo (una clase):** todo lo de la sesión va en una branch y se mergea una vez, al final.
+Se trabaja por **slices**: un pedazo chico con un resultado que se ve y un "done when". Un slice = un issue, con uno o más commits. **Desde el cierre de la 5.6, sin PRs:** cada slice cerrado se pushea directo a `main`.
 
 1. **El agente lee primero:** `CLAUDE.md`, el issue, el estado, los pendientes, los ADR y el nodo de Figma.
 2. **Plan antes de código, y espera mi aprobación.** Responde: resultado observable, qué entra y qué queda afuera, estados, evidencia de Figma, decisiones ya aprobadas, supuestos con su riesgo, qué se reutiliza, extiende, crea o queda interno, tokens, archivos, qué es ficticio, verificaciones y decisiones de producto abiertas (esas me las pregunta). Si la duda es de layout, primero muestra wireframes en ASCII.
-3. **Implementa solo lo aprobado.** Si el plan tiene que cambiar el resultado, pregunta antes; un cambio técnico menor lo anota en el PR.
+3. **Implementa solo lo aprobado.** Si el plan tiene que cambiar el resultado, pregunta antes; un cambio técnico menor lo anota en el commit de cierre y me lo cuenta.
 4. **Checks:** `npm run lint` y `npm run build`.
 5. **Verificación con evidencia:** mide en el navegador contra Figma y marca cada control como PASS, FAIL, UNVERIFIED u OUT OF SCOPE. Lo que no se probó es UNVERIFIED, nunca PASS.
 6. **Revisión de diseño (desde la 5.6):** en los cambios de UI corre `critique` y `audit` de Impeccable. Cada hallazgo se corrige, va a un issue o se rechaza con motivo.
 7. **Cierra:** actualiza `CURRENT_STATE` y `PENDING_TASKS`; si hubo una decisión de arquitectura, escribe un ADR. No hay cierre con un FAIL.
-8. **Frena:** no empieza el siguiente slice hasta que se lo pido. El PR de la sesión lo abre al final.
+8. **Pushea y frena:** sube el slice cerrado a `main`, me muestra el ledger y no empieza el siguiente hasta que se lo pido.
 
-**El camino de cada cambio por Git (desde la 5.4):**
+**El camino de cada cambio por Git (desde el cierre de la 5.6):**
 
 ```
-issue(s)  →  branch tipo/N-tema  →  commits (uno por intención, por slice)  →  PR al final de la sesión con "Closes #N"  →  yo reviso y mergeo  →  los issues se cierran solos
+issue  →  plan aprobado  →  commits en main (uno por intención)  →  lint, build y verificación  →  push con "Closes #N" y el ledger  →  el issue se cierra solo
 ```
 
-- **Siempre sale de un issue.** Si no existe, el agente lo crea antes de la branch.
-- **Una branch por sesión de trabajo** (desde la 5.6). Lo que aparece en el camino y no es del pedido va a otro issue y se nombra en el PR.
-- **El agente lee el diff antes de cada commit** y abre el PR con la plantilla completa.
-- **El agente no mergea.** El merge es mío, después de leer *Files changed*.
-- **`main` no acepta nada que no venga de un PR**, así que esto no depende de que alguien se acuerde.
+- **Siempre sale de un issue.** Si no existe, el agente lo crea antes del código. Los arreglos de docs pueden ir sin issue.
+- **Lo que aparece en el camino y no es del pedido** va a otro issue y a otro commit, y me lo cuenta.
+- **El agente lee el diff antes de cada commit.**
+- **Solo se pushean slices cerrados**, así `main` nunca tiene medio slice.
+- **`main` no acepta force push ni borrado** (ruleset "Protect main"): un error se arregla con otro commit, nunca reescribiendo el historial.
+- **Un PR solo si lo pido**, por ejemplo para un cambio riesgoso que quiero ver antes. La plantilla de PR sigue en el repo para eso.
+- **Por qué cambió:** de la 5.4 a la 5.6 todo entraba por PR (#19 a #32). Con una sola persona, mergear era un paso sin revisión. El control quedó en el plan, en el ledger y en un historial que no se puede reescribir.
 
 ---
 
 ## 10. Estado hoy y lo que sigue
 
-**Hecho y verificado:** proyecto creado, tokens del sistema en el tema, Inter, `lang`, metadata, página `/tokens`, documentación para agentes, el flujo de equipo (issues, `main` protegido, plantillas de PR e issue), el aviso de datos ficticios en todas las pantallas (#20, revisado y mejorado en el #29) e Impeccable puesto a punto (#27).
+**Hecho y verificado:** proyecto creado, tokens del sistema en el tema, Inter, `lang`, metadata, página `/tokens`, documentación para agentes, el flujo de trabajo (issues, push directo a `main` sin force push ni borrado, plantillas de issue y de PR), el aviso de datos ficticios en todas las pantallas (#20, revisado y mejorado en el #29) e Impeccable puesto a punto (#27).
 
 **El backlog está en GitHub Issues:** https://github.com/jonlifschitzpersonal-bit/gurises-unidos-dashboard/issues (el orden de trabajo, en `docs/PENDING_TASKS.md`).
 
@@ -409,19 +411,19 @@ Porque es lo que piden los donantes y lo que la ONG puede medir hoy. La interfaz
 Que el texto secundario no cumplía contraste (2,56:1; se corrigió a 4,74:1), que el reintento tiene que mantener el mensaje de error visible, y que un botón sin flujo detrás confunde. En v2 el gris de texto secundario ya parte de 7,56:1.
 
 **¿Cómo trabajás con Git si estás solo en el proyecto?**
-Como en un equipo. Cada cambio sale de un issue, va en su branch y entra por un PR que reviso antes de mergear. `main` está protegido, así que ni yo ni el agente podemos escribir ahí directo. Con un agente esto importa más: el PR es donde veo el diff y la evidencia antes de que el cambio exista en `main`.
+Cada cambio sale de un issue y el commit que lo termina lo cierra. Arranqué como en un equipo, con branch y PR por cambio (#19 a #32), y lo dejé: con una sola persona, mergear era un paso sin revisión real. Ahora el agente pushea directo a `main` cada slice cerrado, con lint, build y un ledger de lo verificado en el commit. `main` no acepta force push ni borrado, así que el historial no se puede reescribir. Si un cambio es riesgoso, pido un PR para verlo antes.
 
 **¿Qué tiene que tener un buen PR?**
-Qué cambia y por qué, qué issue cierra, qué quedó afuera a propósito, las diferencias intencionales con Figma, la evidencia (checks, capturas y un ledger con lo verificado y lo que no) y cómo probarlo. Está en la plantilla del repo, así todos los PRs, también los del agente, tienen la misma forma.
+Qué cambia y por qué, qué issue cierra, qué quedó afuera a propósito, las diferencias intencionales con Figma, la evidencia (checks, capturas y un ledger con lo verificado y lo que no) y cómo probarlo. Está en la plantilla del repo, así todos los PRs, también los del agente, tienen la misma forma. Hoy no abro PRs, pero el commit que cierra cada slice lleva lo mismo: `Closes #N`, el ledger y las diferencias con el plan.
 
-**¿Por qué squash merge?**
-Para que `main` tenga un commit por cambio, con el número del PR. Si algo se rompe, encuentro qué PR lo trajo y leo ahí el porqué y la evidencia.
+**¿Por qué dejaste de usar PRs?**
+Porque en un repo de una sola persona el merge no agregaba una revisión, solo un paso. El control de verdad está antes, en el plan que apruebo, y después, en el ledger. Lo que perdí: ver el diff antes de que entre a `main` y un preview de Vercel por PR. Lo compensan dos cosas: solo se pushean slices cerrados, y `main` no acepta force push. En un equipo volvería a los PRs.
 
 **¿Cómo organizás el backlog?**
 En GitHub Issues: milestones por etapa (sistema, dashboard) y labels por tipo, incluido uno para lo que espera una decisión de producto. Cada issue tiene un "done when" que se puede comprobar. Lo que sale de un comentario de Figma se vuelve un issue con el link al comentario.
 
 **¿Cómo trabajás con un agente sin perder el control?**
-Por slices. Cada cambio es chico y tiene un "done when". Antes del código, el agente me presenta un plan: qué se va a ver, qué queda afuera, los estados, qué reutiliza y qué crea, los supuestos y las decisiones que son mías. Yo lo apruebo. Al final abre un PR con un ledger de lo que verificó y lo que no, y yo mergeo. Son dos puntos de control: el plan y el merge. Y frena después de cada slice, así nunca reviso cuarenta archivos de golpe.
+Por slices. Cada cambio es chico y tiene un "done when". Antes del código, el agente me presenta un plan: qué se va a ver, qué queda afuera, los estados, qué reutiliza y qué crea, los supuestos y las decisiones que son mías. Yo lo apruebo. Al final pushea el slice con un ledger de lo que verificó y lo que no, y me lo muestra. Son dos puntos de control: el plan y el ledger. Y frena después de cada slice, así nunca reviso cuarenta archivos de golpe.
 
 **¿Qué es un wireframe en ASCII y para qué lo usás?**
 Un boceto en texto. Antes de abrir Figma, el agente me muestra dos o tres opciones de dónde va cada cosa, con lo que gana y lo que pierde cada una. Para el aviso de datos ficticios fueron tres. Una no cumplía el issue, porque en mobile quedaba escondida, y se descartó en un minuto, sin diseñar nada. Sirve para la estructura, no para el craft: eso es Figma y el navegador.
@@ -456,7 +458,7 @@ Un archivo por decisión, con contexto, alternativas y consecuencias. Responde "
 | **Lint / build** | Lint revisa errores comunes en el código; build arma la versión de producción (lo que corre Vercel). |
 | **Branch / PR / issue** | Línea de trabajo aparte / pedido de revisión antes de sumar a `main` / tarea numerada en GitHub. |
 | **Milestone / label** | Agrupan issues: el milestone por etapa (qué tiene que estar para cerrarla), el label por tipo de tarea. |
-| **`Closes #N` / `Refs #N`** | En un PR: `Closes` cierra el issue al mergear; `Refs` lo menciona sin cerrarlo. |
+| **`Closes #N` / `Refs #N`** | En un commit o un PR: `Closes` cierra el issue cuando el cambio llega a `main`; `Refs` lo menciona sin cerrarlo. |
 | **Squash merge** | Todos los commits de la branch entran a `main` como uno solo, con el título y el número del PR. |
-| **Ruleset** | Reglas de GitHub sobre una branch; acá, que a `main` solo se llegue con un PR. |
+| **Ruleset** | Reglas de GitHub sobre una branch; acá, que `main` no acepte force push ni borrado (hasta la 5.6 también pedía PR). |
 | **`gh`** | GitHub CLI: issues, PRs y configuración del repo desde la terminal. |

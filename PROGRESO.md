@@ -22,7 +22,6 @@
 | Cuándo | Qué |
 |---|---|
 | **6.8** | Sumar a las skills los roles del agente (Plan Reviewer, Slice Closer…). El proceso de slices ya está en `design-implementation` §18 y en el `CLAUDE.md` del dashboard (5.5). |
-| **Dashboard (de la 5.4)** | Al abrir el próximo PR desde la web, confirmar que la plantilla se carga (UNVERIFIED: todos los PRs se abrieron desde la terminal). |
 | **6.1** | `/tokens` como referencia completa: valores, grupos, guía de uso y generada desde `globals.css` (issue #31 del dashboard). |
 | **5.9** | Configurar `live` de Impeccable al usarlo por primera vez (inyecta un script en la app; no se hizo en la 5.6 a propósito). |
 | **Impeccable (de la 5.6)** | UNVERIFIED: la pasada completa del hook al final de cada turno (la de cada edición sí se vio funcionar). Confirmarla la primera vez que aparezca. |
@@ -154,12 +153,13 @@
   - "The Honest Count" como idea guía y "sereno y preciso" como carácter.
   - Para el aviso: marca fija "Datos ficticios" en la barra superior (#30), el texto nuevo que dice que lo que se carga no se guarda, y un borde con un token nuevo.
   - En `/tokens`, lo mínimo ahora y el resto en la 6.1 (#31).
-  - Pedí un PR por clase en lugar de uno por cosa.
+  - Pedí un PR por clase en lugar de uno por cosa y, al cerrar, dejar los PRs: Claude pushea directo a `main` cada slice cerrado, con el ledger en el commit.
 - **Claude hizo:**
   - Puso a punto Impeccable en el dashboard: `PRODUCT.md`, `DESIGN.md` desde Figma y `globals.css`, y el hook (PR #28, mergeado).
   - Corrió `critique` con dos revisiones separadas (aviso 17/28, `/tokens` 16/28) y `audit` (16/20). También `polish`, `harden` y `clarify` sobre el aviso.
   - En Figma: el token `color/border/accent`, el borde, el texto y las anotaciones.
-  - En el código: el aviso como región "Aviso de datos ficticios" y `/tokens` en español. Todo en el PR de la clase (#29).
+  - En el código: el aviso como región "Aviso de datos ficticios" y `/tokens` en español. Todo en el PR de la clase, el #32: lo mergeé y el #29 se cerró solo. Fue el último PR.
+  - Sacó la regla de PR obligatorio del ruleset de `main` (quedan sin force push y sin borrado) y pasó el flujo nuevo al `CLAUDE.md` y al README del dashboard. El primer push directo fue `d5ba238`.
 - **Sorpresa:** el hook estaba "activado" y no avisaba nada. Ignora los archivos fuera de la carpeta de la sesión, y abrimos las sesiones desde el curso. Se arregló con un puente en `.claude/` del curso, que aprobé, y se probó con un error puesto a propósito. También:
   - El detector no encontró nada en el aviso: todo lo valioso salió de la revisión de diseño.
   - Claude se había olvidado `space/0-5` en `DESIGN.md`.

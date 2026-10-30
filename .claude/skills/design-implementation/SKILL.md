@@ -306,6 +306,7 @@ Si el proyecto tiene su propio flujo (en `CLAUDE.md`, `CONTRIBUTING.md` o planti
 - **Nombre de la branch: `tipo/issue-tema`** (`feat/15-app-shell`, `fix/`, `docs/`, `chore/`, `refactor/`). Dice qué tipo de cambio es y de qué tarea sale, sin abrir nada.
 - **Una branch, un issue.** Lo que aparece en el camino y no es del pedido (un refactor, otro bug) va a un issue nuevo, no a este PR: mezclado, el diff no se puede revisar.
 - **Si revisar y mergear seguido cuesta más de lo que aporta** (una sola persona revisa, muchos cambios chicos), el proyecto puede pasar a **un PR por sesión de trabajo**: una branch con un commit o más por slice, que cierra varios issues (`Closes #12`, `Closes #13`) y se mergea una vez. Los slices se siguen revisando de a uno, por commit. Lo que no tiene que ver con la sesión igual lleva su issue y se nombra en el PR.
+- **Si ni eso compensa** (una sola persona, que ya aprueba el plan), se puede trabajar en la branch principal y pushear directo. Solo se pushean slices cerrados, con checks y verificación en verde. El commit que termina el issue lleva `Closes #N` (lo cierra al llegar a la principal), el ledger y las diferencias con el plan, y el ledger también se le muestra a la persona. La protección queda en no aceptar force push ni borrado, y un error se arregla con otro commit. Se pierden la revisión del diff antes de que entre y el preview por PR: lo decide la persona, no el agente.
 
 **Mientras trabajás**
 - **Leé el diff antes de cada commit** (`git diff --staged`), no solo antes del PR. Ahí aparecen archivos generados, secretos o cambios de configuración que no pidió nadie.
@@ -325,7 +326,7 @@ Si el proyecto tiene su propio flujo (en `CLAUDE.md`, `CONTRIBUTING.md` o planti
 - **Si una regla del proyecto pide algo que ninguna tarea cubre** (un ADR que exige un aviso en la interfaz), creá el issue.
 - **Al crear muchos issues o recursos por la API, verificá la lista al final.** Los errores pueden ser parciales y correr la numeración: las referencias entre ellos (`Blocked by #10`) se escriben cuando los números ya existen.
 
-**Protección de la branch principal** (si te toca configurarla): PR obligatorio, sin force push ni borrado. Con una sola persona manteniendo el repo, no exijas aprobaciones: GitHub no deja aprobar el PR propio y el repo queda trabado.
+**Protección de la branch principal** (si te toca configurarla): PR obligatorio, sin force push ni borrado; si se pushea directo, solo sin force push ni borrado. Con una sola persona manteniendo el repo, no exijas aprobaciones: GitHub no deja aprobar el PR propio y el repo queda trabado.
 
 ---
 
@@ -358,13 +359,13 @@ Un **slice** es una porción chica del producto con un **resultado observable** 
 - **Una decisión de producto tiene consecuencias técnicas** (un aviso que se puede cerrar suma estado, un botón y foco). Decilas al confirmarla y resolvelas en el plan.
 
 **Implementación**
-- **Solo lo aprobado.** Si el plan tiene que cambiar el resultado, el alcance o el comportamiento, frená y preguntá. Un cambio técnico menor se anota en el PR ("diferencias con el plan aprobado"): no basta con contarlo después.
+- **Solo lo aprobado.** Si el plan tiene que cambiar el resultado, el alcance o el comportamiento, frená y preguntá. Un cambio técnico menor se anota en el PR ("diferencias con el plan aprobado"), o en el commit de cierre si no hay PR: no basta con contarlo después.
 - **Si el framework tiene documentación local para el caso** (por ejemplo, la guía de Next.js para evitar el flash antes de hidratar), seguí ese patrón y citalo en lugar de inventar uno.
 
 **Cierre**
 - Checks estáticos, runtime medido contra Figma, accesibilidad, consola y contenido extremo, con un ledger (sección 15).
 - **Un slice no se cierra con un FAIL**, ni con un control que la tarea exige en UNVERIFIED.
-- Docs de estado actualizados en el mismo PR. La deuda que deja el slice (un SVG en línea hasta que exista el componente de íconos) se anota en el issue que la va a resolver.
+- Docs de estado actualizados en el mismo PR (o push). La deuda que deja el slice (un SVG en línea hasta que exista el componente de íconos) se anota en el issue que la va a resolver.
 - **Frená.** No empieces el siguiente slice hasta que te lo pidan (y, con un PR por slice, hasta que esté mergeado).
 
 ---

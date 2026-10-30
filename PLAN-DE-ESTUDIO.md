@@ -12,7 +12,7 @@
 El curso sigue el flujo de trabajo de [`recursos/Guia_Completa_Figma_AI_a_Codigo.md`](recursos/Guia_Completa_Figma_AI_a_Codigo.md):
 
 ```
-Problema → Figma estructurado → Figma MCP → Plan → Código en una branch → Storybook → QA con evidencia → Entrega
+Problema → Figma estructurado → Figma MCP → Plan → Código → Storybook → QA con evidencia → Entrega
 ```
 
 Vos diseñás y tomás las decisiones; Claude Code implementa; vos revisás que el resultado respete el diseño y funcione. Para revisar con criterio necesitás entender el código generado, y eso es lo que suman los módulos de fundamentos.
@@ -129,7 +129,7 @@ Salario base publicado (NYC): USD 120k–250k + equity.
 **Reglas para usarlo en un design system:**
 1. **Puede mejorar el sistema, no saltearlo.** Si un comando quiere un color, un tamaño o una tipografía que no existen, se convierte en token: primero en Figma y después en `globals.css`. Nunca un valor suelto. Así el sistema mejora y sigue habiendo una sola fuente de verdad.
 2. **Lo que es producto lo propone y Jonathan lo decide:** qué se muestra, qué se saca y qué dice un texto. El texto aprobado se actualiza en Figma y en `PROJECT_CONTEXT.md`.
-3. **Todo comando que cambia algo se trabaja como un slice:** plan → aprobación → PR con ledger.
+3. **Todo comando que cambia algo se trabaja como un slice:** plan → aprobación → slice con ledger, pusheado a `main` (sin PR desde el cierre de la 5.6).
 4. **`PRODUCT.md` y `DESIGN.md` (los archivos de Impeccable) no son una segunda fuente de verdad.** Se arman desde `PROJECT_CONTEXT.md`, Figma y `globals.css`, y se regeneran cuando esos cambian.
 5. **Al cerrar cada slice de UI se corren `critique` y `audit`.** Cada hallazgo de prioridad alta se corrige en el slice o queda como issue.
 
