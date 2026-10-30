@@ -56,7 +56,7 @@ Si el proyecto no la tiene, proponela. Cada cosa va en un archivo según cuánto
 - **Cada regla lleva su porqué en una línea** y el ADR tiene el completo. Una regla sin motivo ("las clases repiten palabras") el agente la "corrige".
 - **Un ADR no se edita una vez aceptado:** si la decisión cambia, se escribe uno nuevo que lo reemplaza (`Superseded by NNNN`). Formato: contexto, opciones consideradas, decisión, consecuencias.
 - **Al cerrar un slice se actualizan `CURRENT_STATE` y `PENDING_TASKS`**; una decisión nueva de arquitectura suma un ADR.
-- **El proceso de trabajo también va en el proyecto** (plan → aprobación → código → checks → ledger → docs), porque las skills de otro repo no se cargan en una sesión abierta en ese proyecto.
+- **El proceso de trabajo también va en el proyecto** (plan → aprobación → código → checks → ledger → docs → frenar, sección 18), porque las skills de otro repo no se cargan en una sesión abierta en ese proyecto.
 - **Probá la documentación con una sesión nueva** abierta en la carpeta del proyecto, en modo plan y con un pedido chico sin contexto: si no lee el estado, usa valores sueltos o inventa textos, falta algo en los docs.
 
 ---
@@ -186,6 +186,7 @@ button, input, select, textarea {
 - **En HTML sin framework, los estados se arman como en Figma:** todas las capas en el markup (skeletons, mensaje de error, texto "Cargando") y un `data-state` en el contenedor que decide con CSS cuáles se ven. Lo oculto va con `display: none`, así tampoco lo lee el lector. En React, se renderiza según la prop.
 - **Si no hay datos reales, los estados se muestran con un control de demo** marcado como tal, fuera del diseño y oculto si no carga JavaScript.
 - `hover` solo con mouse: Tailwind v4 ya lo respeta; en CSS puro, `@media (hover: hover)`.
+- **Un aviso que se puede cerrar** es una región con nombre (`<aside aria-label="Aviso">`), no una alerta (`role="alert"` interrumpe al lector). La X es un `<button>` con `aria-label`. **Al cerrarlo, el foco va a un destino lógico** (el contenido de la página, con `tabIndex={-1}`), no se pierde en el `<body>`. Ese destino no es interactivo, así que puede ir sin anillo de foco: es la única excepción a "nunca `outline: none`".
 - Componentes interactivos complejos (dialog, menu, tabs, combobox, tooltip): **librería headless accesible** (Radix, Base UI) o shadcn/ui, no desde cero.
 - Respetá `prefers-reduced-motion`.
 - Animá solo `transform` y `opacity`. Nunca `transition: all`.
@@ -233,6 +234,7 @@ button, input, select, textarea {
 - En listas, `key` estable y única, nunca el índice si la lista cambia de orden.
 - Toda UI con datos tiene **loading, vacío y error**.
 - Next.js (App Router): componentes de servidor por default; `"use client"` solo donde hay estado, efectos o eventos, lo más abajo posible. `next/link` para navegar.
+- **Estado guardado en el navegador que cambia lo que se ve al cargar** (un aviso cerrado, el tema, una sección abierta): el servidor no lo conoce. Un `useEffect` lo aplica después de pintar y se ve un salto. La solución es un **script en línea** que corre mientras se lee el HTML, antes del elemento: lee `localStorage` (con `try/catch`, porque puede estar bloqueado) y pone un atributo en `<html>`. El CSS decide con ese atributo (una variante de Tailwind con `@custom-variant`), y `<html>` lleva `suppressHydrationWarning`. En desarrollo, el doble montaje de React borra el atributo: un `useLayoutEffect` lo vuelve a poner. La página sigue siendo estática.
 - **Next.js (App Router), dónde va cada cosa:** cada carpeta de `app/` con un `page.tsx` es una URL; una carpeta sin `page.tsx` solo ordena. Lo que se repite en todas las pantallas (shell, header, fuente, `lang`, metadata) va en `layout.tsx`, que envuelve a cada página con `{children}`. Si se copia en cada `page.tsx`, se desincroniza.
 - **Archivos generados, no se editan a mano:** `node_modules/`, `.next/`, el lockfile (`package-lock.json`), `next-env.d.ts` y el bloque que el framework escribe en `AGENTS.md` (ese bloque se commitea tal cual: si se borra, `next dev` lo vuelve a crear). El lockfile cambia solo cuando se agrega o se actualiza una dependencia, y eso se dice.
 
@@ -316,6 +318,46 @@ Si el proyecto tiene su propio flujo (en `CLAUDE.md`, `CONTRIBUTING.md` o planti
 - **Al crear muchos issues o recursos por la API, verificá la lista al final.** Los errores pueden ser parciales y correr la numeración: las referencias entre ellos (`Blocked by #10`) se escriben cuando los números ya existen.
 
 **Protección de la branch principal** (si te toca configurarla): PR obligatorio, sin force push ni borrado. Con una sola persona manteniendo el repo, no exijas aprobaciones: GitHub no deja aprobar el PR propio y el repo queda trabado.
+
+---
+
+## 18. Trabajar por slices: plan, aprobación y cierre
+
+Un **slice** es una porción chica del producto con un **resultado observable** y un **criterio de cierre** ("done when"). "Hacer la mitad de la pantalla" no es un slice: no se puede probar ni cerrar sola. Si el proyecto usa issues: un slice = un issue = una branch = un PR. Chico, porque un diff corto se revisa entero.
+
+**Antes:** leé el estado del proyecto y la tarea, el nodo exacto de Figma (con descripción y anotaciones) y los componentes y tokens que ya existen.
+
+**El plan, antes de escribir código.** Se presenta y **se espera la aprobación**. Responde:
+
+| Pregunta | Quién decide |
+|---|---|
+| Resultado observable | Producto (el usuario) |
+| Qué entra y qué queda afuera a propósito | Producto |
+| Estados | Producto (salen de Figma o del brief) |
+| Qué es ficticio | Producto |
+| Decisiones de producto o diseño abiertas | Producto: se preguntan, no se resuelven en el código |
+| Evidencia de Figma | El agente la muestra |
+| Decisiones ya aprobadas (issue, ADR) | El agente las cita |
+| Supuestos, cada uno con su riesgo | El agente los dice |
+| Reutilizar, extender, crear o mantener interno | El agente (crear solo con reutilización real) |
+| Tokens | El agente |
+| Archivos que cambian y por qué | El agente |
+| Verificaciones que se van a correr | El agente |
+
+- **Un plan se revisa buscando lo que falta:** sin "fuera de alcance", el alcance crece solo; sin estados, se inventan; sin supuestos, los tiene igual, solo que escondidos.
+- **Para decidir dónde va cada cosa, wireframes en ASCII** antes de Figma o del código: 2 o 3 opciones, cada una con lo que gana y lo que pierde, y una recomendación. Gastan pocos tokens y separan la estructura del estilo. No sirven para espaciado ni jerarquía visual: eso es Figma y el navegador.
+- **Una opción que no cumple el "done when" se muestra igual, marcada** ("en mobile queda escondida: no cumple"), para que se vea por qué se descarta.
+- **Una decisión de producto tiene consecuencias técnicas** (un aviso que se puede cerrar suma estado, un botón y foco). Decilas al confirmarla y resolvelas en el plan.
+
+**Implementación**
+- **Solo lo aprobado.** Si el plan tiene que cambiar el resultado, el alcance o el comportamiento, frená y preguntá. Un cambio técnico menor se anota en el PR ("diferencias con el plan aprobado"): no basta con contarlo después.
+- **Si el framework tiene documentación local para el caso** (por ejemplo, la guía de Next.js para evitar el flash antes de hidratar), seguí ese patrón y citalo en lugar de inventar uno.
+
+**Cierre**
+- Checks estáticos, runtime medido contra Figma, accesibilidad, consola y contenido extremo, con un ledger (sección 15).
+- **Un slice no se cierra con un FAIL**, ni con un control que la tarea exige en UNVERIFIED.
+- Docs de estado actualizados en el mismo PR. La deuda que deja el slice (un SVG en línea hasta que exista el componente de íconos) se anota en el issue que la va a resolver.
+- **Frená.** No empieces el siguiente slice hasta que el PR esté mergeado y te lo pidan.
 
 ---
 

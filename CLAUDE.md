@@ -20,7 +20,7 @@ Repo del curso de Jonathan (product designer → design engineer). Las skills de
 - **Variables:** colecciones `Primitives` (modo `value`) y `Semantic` (modo `light`, con code syntax WEB). Espaciado `space/N` = N × 4px (escala de Tailwind), radios `radius/sm|md|lg|full`.
 - **Text styles:** `label/md|sm|xs`, `body/sm`, `heading/metric`, `heading/section` (Inter).
 - **Íconos:** component set `Icon`, 16×16, trazo de 1,5px, basados en **Lucide**. Las equivalencias de nombre están en la descripción del set (por ejemplo `currency` → `dollar-sign`, `arrow-up` → `move-up`).
-- **Componentes:** `Icon`, `Button`, `MetricCard`, `StatusBadge`. Sección `Resumen` en `05 - Screens`.
+- **Componentes:** `Icon`, `Button`, `MetricCard`, `StatusBadge`, `DemoNotice` (el aviso de datos ficticios del dashboard, 5.5). Sección `Resumen` en `05 - Screens`.
 
 ## Código
 - **Stack desde el módulo 5:** Next.js + React + **Tailwind v4**, con los tokens de Figma en `@theme` y solo los colores del sistema. Es la decisión de este repo, no de las skills. `proyectos/00-seccion-resumen` queda en HTML y CSS (es de la 2.6).

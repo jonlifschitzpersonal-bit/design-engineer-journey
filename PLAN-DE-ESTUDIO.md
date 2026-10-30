@@ -177,7 +177,7 @@ Guía §9–11, 14. **Proyecto ancla 2.** Se cursa en dos partes: 6.1–6.4 entr
 | 6.3 | Accesibilidad de componentes: semántica, teclado, foco, Radix. |
 | 6.4 | Storybook: stories por variante y estado, addon de accesibilidad (guía §10). |
 | 6.5 | Dark mode y modos de variables. |
-| 6.6 | Documentación para agentes: `docs/design-system/`, `AI_CONTEXT.md` y la regla en `CLAUDE.md` (guía §11.1). |
+| 6.6 | Documentación para agentes: `docs/design-system/`, `AI_CONTEXT.md` y la regla en `CLAUDE.md` (guía §11.1). **Guía de uso de tokens y text styles:** para cada uno, para qué es, cuándo sí y cuándo no (por ejemplo, `heading/metric` solo para el número de un indicador). Va en la descripción de cada variable y text style en Figma (la lee el MCP) y en `docs/design-system/`, con la regla en `CLAUDE.md` de leerla antes de elegir. Así el agente no deduce el uso por el nombre cuando no hay Figma (5.9, 6.10). Primer caso a resolver: los íconos usan colores de texto (`color/text/muted`, `color/text/default`) porque no hay `color/icon/muted`; decidir si se separan (de la 5.5). |
 | 6.7 | Code Connect: concepto, template files, checklist. En plan Free: **mapeo documentado** Figma ↔ código (guía §9). |
 | 6.8 | Skills y reglas: gobernar al agente con roles (Component Architect, Plan Reviewer, Slice Closer…) (guía §14). Regla de supuestos explícitos: si el agente asume algo, lo dice y nombra el riesgo. El proceso completo (plan → aprobación → código → diff → ledger) queda en las skills con sus roles. |
 | 6.9 | StorySync y drift Figma ↔ código: concepto y demo (opcional según requisitos) (guía §10.1). |

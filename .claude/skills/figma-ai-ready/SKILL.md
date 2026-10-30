@@ -42,7 +42,8 @@ La skill `design-implementation` cubre la otra mitad: cómo se traduce todo esto
 
 ## 2. Componentes, propiedades y variantes
 
-- **Componente solo con reutilización real.** Lo que aparece una vez queda como capa bien nombrada.
+- **Componente solo con reutilización real.** Lo que aparece una vez queda como capa bien nombrada. Algo que va en todas las pantallas (un aviso global, el header) **es** componente, aunque en código se use una sola vez en el layout: en Figma se repite en cada frame.
+- **Una parte que parece de otro componente del sistema queda interna mientras tenga un solo uso** (un botón de solo ícono dentro de un aviso, cuando el `Button` no tiene esa variante). Pasa al componente del sistema cuando aparece el segundo uso. Anotalo en la descripción para que nadie lo duplique.
 - **Tipo de propiedad correcto:** Variant para diferencias discretas (`variant`, `size`, `state`); Text para textos editables; Boolean para mostrar u ocultar; Instance swap para íconos o subcomponentes.
 - **Conectá cada capa a su propiedad.** Crear la propiedad no alcanza: el texto vinculado (`componentPropertyReferences.characters`), el booleano a la visibilidad, el instance swap a la instancia.
 - **Revisá las conexiones en todas las variantes, no solo en la default.** Al crear variantes duplicando o por código, las conexiones se pierden sin aviso: la instancia sigue mostrando el texto de muestra aunque se le cambie la propiedad. Si una variante deja algo sin conectar **a propósito** (un texto fijo por estado, una capa oculta en `loading`), escribilo en la descripción.
@@ -111,6 +112,8 @@ La skill `design-implementation` cubre la otra mitad: cómo se traduce todo esto
 - **Si se pierde la conexión,** probá `figma_reconnect` una vez; si sigue, pedí que reabran el plugin en el archivo correcto. No reintentes en loop.
 - **Con `documentAccess: dynamic-page`,** usá las APIs async: `getNodeByIdAsync`, `getMainComponentAsync`, `getLocalVariablesAsync`, `setTextStyleIdAsync`.
 - **Para vincular variables:** `setBoundVariableForPaint` en rellenos y trazos; `setBoundVariable` en padding, gap y radios (las cuatro esquinas por separado).
+- **`resize()` sobre un frame con Auto Layout pasa ese eje a Fixed**, aunque antes estuviera en Hug: el texto baja de línea y queda cortado. Después de `resize`, volvé a poner `layoutSizingVertical` (u `Horizontal`) en `'HUG'` y probalo con una instancia de contenido largo o al ancho mínimo.
+- **Los frames que existen solo para alinear** (un ícono con la primera línea de un texto que baja) son válidos si dicen para qué están: nombralos por su función (`iconSlot`) y explicalos en la descripción. En código suelen ser un margen, no un `<div>` más.
 - **`setProperties` sobre una instancia no avisa si la propiedad no está conectada en esa variante:** devuelve OK y la instancia sigue con el texto de muestra. Por eso la captura después de armar es obligatoria.
 - **Al terminar, corré esta auditoría** sobre los component sets y Sections que tocaste, y no des el trabajo por cerrado si encuentra algo. Las únicas excepciones válidas son las que figuran en la descripción del componente:
 
