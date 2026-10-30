@@ -119,7 +119,7 @@ En el archivo "Design Engineer Journey" se armó el design system que usa el das
 - **Lo que quedó como deuda, a propósito:**
   - Los íconos van como SVG dentro del aviso hasta que exista `Icon` (#12).
   - La X es un botón interno hasta que haya otro botón de solo ícono (#3).
-- **El proceso quedó en el repo:** el PR #26 pasa al `CLAUDE.md` qué responde un plan, qué hacer si cambia, cuándo se cierra un slice y que el agente frena después.
+- **El proceso quedó en el repo:** el PR #26 (mergeado, cerró el #25) pasa al `CLAUDE.md` qué responde un plan, qué hacer si cambia, cuándo se cierra un slice y que el agente frena después. La plantilla de PR suma "Differences with the approved plan", para los cambios técnicos hechos después de aprobar.
 - **Evidencia:** medido en Chrome contra Figma a 1280 y 320px. También se probaron teclado y foco, recargar, cambiar de pantalla, el navegador sin `localStorage`, el árbol de accesibilidad, el contraste y la consola. Quedó UNVERIFIED un lector de pantalla real.
 
 ---
@@ -321,6 +321,8 @@ issue #N  →  branch tipo/N-tema  →  commits (uno por intención)  →  PR co
 | 5.9 | Una pantalla diseñada directo en código, sin pasar por Figma |
 | 6.5–6.11 | Dark mode, docs del design system, mapeo Figma ↔ código, skills del agente |
 | 8.1–8.6 | Tabla, filtros, búsqueda, los 6 estados, accesibilidad en runtime, responsive y performance |
+
+**Desde la 5.6, Impeccable** (impeccable.style) revisa y mejora el diseño en cada slice. `critique` y `audit` corren al cerrar cada slice de UI, y los hooks revisan cada cambio mientras el agente edita. Puede mejorar el sistema, pero no saltearlo: lo que cambia el estilo se vuelve token, primero en Figma.
 
 **Pendiente de producto:** el set de datos ficticios (#6: cuántos proyectos y años, nombres y estados). **Antes del primer deploy:** el favicon (#16). **Deuda conocida:** números tabulares en `heading/metric` (#5), el token del Button al apretar (#14), el dark mode (#11), los SVG del aviso que pasan a `Icon` (#12) y su X, que pasa a `Button` con un segundo uso (#3).
 

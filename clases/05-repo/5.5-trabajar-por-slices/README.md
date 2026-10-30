@@ -229,7 +229,7 @@ Así se ve un plan completo. Cada bloque responde una de las preguntas de la sec
 3. **Plan:** aprobado sin cambios (sección 5).
 4. **Código:** branch `feat/20-demo-notice`, 2 commits (el aviso y los docs de estado). Lint y build en verde, y medido en Chrome contra Figma. **PR #24**: lo revisaste y lo mergeaste, y el #20 se cerró solo.
 5. **Deuda anotada donde se va a resolver:** en el #12, reemplazar los SVG por `Icon`; en el #7, poner el `DemoNotice` arriba de cada pantalla.
-6. **El proceso pasó al repo del dashboard:** issue #25 y **PR #26** (cómo trabajar por slices en su `CLAUDE.md` y una sección nueva en la plantilla de PR). Lo mergeás vos.
+6. **El proceso pasó al repo del dashboard:** issue #25 y **PR #26** (cómo trabajar por slices en su `CLAUDE.md` y una sección nueva en la plantilla de PR). Lo mergeaste y el #25 se cerró solo.
 
 **Qué hace cada archivo del diff**
 
