@@ -95,12 +95,27 @@ En el archivo "Design Engineer Journey" se armó el design system que usa el das
 - **Por qué separar reglas y estado:** si `CLAUDE.md` dijera "falta la tabla", en un mes sería falso y el agente lo seguiría leyendo como cierto. Las reglas casi no cambian; el estado se actualiza en cada slice.
 - **Evidencia:** una sesión nueva de Claude Code, abierta en la carpeta del proyecto y sin contexto, propuso un cambio citando el ADR 0005, con tokens del sistema, sin inventar textos y marcando como UNVERIFIED lo que no pudo comprobar.
 
+### Clase 5.4 — Git en equipo (30/10/2026)
+
+- **Qué se hizo:** el backlog pasó de `PENDING_TASKS.md` a 20 GitHub Issues, agrupados en 3 milestones (`Repo workflow`, `System components`, `Dashboard v1`) y con labels por tipo (`enhancement`, `design`, `debt`, `needs decision`). `main` quedó protegido: solo se llega con un PR, sin force push ni borrado, y cada PR entra como un solo commit (squash). Se sumaron plantillas de PR y de issue, y la sección "Git workflow" del `CLAUDE.md`.
+- **El primer PR (#19):** 3 commits, uno por intención (plantillas, reglas de Git, pendientes con links). Lo revisé en *Files changed* y lo mergeé yo: el issue #1 se cerró solo por el `Closes #1`.
+- **Por qué:** en un equipo, `main` es lo publicado y nadie escribe ahí directo. Con un agente, el PR es mi punto de control: Claude abre el PR con evidencia y yo decido si entra. Y como el repo es público, los issues y los PRs muestran cómo trabajo.
+- **Por qué sin aprobación obligatoria:** GitHub no deja aprobar el PR propio; con una sola persona en el repo, exigirla lo traba. La revisión se hace igual, antes del merge.
+- **Lo que apareció:** el ADR 0005 pide que la demo avise que los datos son ficticios y ninguna tarea lo cubría. Se creó el #20, y el PR #21 lo suma al orden de trabajo antes del deploy.
+- **Evidencia:** el #1 está cerrado por el PR #19, la branch se borró sola, `main` tiene un commit `(#19)` y la API de GitHub muestra las tres reglas activas sobre `main`. Quedó UNVERIFIED que la plantilla de PR se cargue en la web (los dos PRs se abrieron desde la terminal).
+
 ---
 
 ## 6. El repo, archivo por archivo
 
 ```
 gurises-unidos-dashboard/
+├── .github/
+│   ├── pull_request_template.md
+│   └── ISSUE_TEMPLATE/
+│       ├── task.yml
+│       ├── bug.yml
+│       └── config.yml
 ├── app/
 │   ├── layout.tsx
 │   ├── page.tsx
@@ -152,7 +167,9 @@ gurises-unidos-dashboard/
 | `AGENTS.md` | Lo escribe Next.js: avisa que esta versión cambió y que hay que leer su documentación local antes de programar. | Nunca a mano (si se borra, `next dev` lo vuelve a crear) |
 | `docs/PROJECT_CONTEXT.md` | El producto: cliente, problema, usuarios, qué muestra la pantalla, qué filtro afecta a qué, los 6 estados y las fuentes de verdad. | Poco |
 | `docs/CURRENT_STATE.md` | Lo que está hecho **y verificado**, con la evidencia de cada cosa. | En cada slice |
-| `docs/PENDING_TASKS.md` | Lo que sigue, las decisiones de producto pendientes y la deuda que se deja a propósito. | En cada slice |
+| `docs/PENDING_TASKS.md` | El orden de trabajo, lo bloqueado, las decisiones de producto pendientes y la deuda que se deja a propósito, cada cosa con el link a su issue. El detalle está en el issue, no acá, para que no digan cosas distintas. | En cada slice |
+| `.github/pull_request_template.md` | Las secciones de todo PR: qué y por qué, `Closes #N`, alcance y lo que queda afuera, diferencias con Figma, evidencia y ledger, riesgos, cómo probarlo y docs. GitHub la carga al abrir un PR desde la web. | Casi nunca |
+| `.github/ISSUE_TEMPLATE/` | Las plantillas de issue: *Task* (qué y por qué, "done when", fuera de alcance, fuente, "blocked by") y *Bug* (qué pasa, qué debería pasar, pasos, dónde). `config.yml` deja abrir también un issue en blanco. | Casi nunca |
 | `docs/adr/README.md` | Índice de los ADR, sus reglas y la plantilla para escribir uno nuevo. | Cuando se suma un ADR |
 | `docs/adr/0001` … `0006` | Una decisión por archivo (sección 8). | No se editan: si una decisión cambia, se escribe otro que la reemplaza |
 | `docs/research/figma-mcp-options.md` | Comparación del MCP oficial de Figma con Figma Console MCP en el plan Starter, más los límites del plan. Respalda el ADR 0003. | Se suman notas |
@@ -249,19 +266,30 @@ Un ADR (*Architecture Decision Record*) es una decisión por archivo: contexto, 
 5. **Verificación con evidencia:** mide en el navegador contra Figma y marca cada control como PASS, FAIL, UNVERIFIED u OUT OF SCOPE. Lo que no se probó es UNVERIFIED, nunca PASS.
 6. **Cierra:** actualiza `CURRENT_STATE` y `PENDING_TASKS`; si hubo una decisión de arquitectura, escribe un ADR.
 
-Desde la clase 5.4, cada cambio va además en una branch con su pull request y su issue (ver sección 10).
+**El camino de cada cambio por Git (desde la 5.4):**
+
+```
+issue #N  →  branch tipo/N-tema  →  commits (uno por intención)  →  PR con "Closes #N"  →  yo reviso y mergeo  →  el #N se cierra solo
+```
+
+- **Siempre sale de un issue.** Si no existe, el agente lo crea antes de la branch.
+- **Una branch por issue.** Lo que aparece en el camino y no es del pedido va a otro issue.
+- **El agente lee el diff antes de cada commit** y abre el PR con la plantilla completa.
+- **El agente no mergea.** El merge es mío, después de leer *Files changed*.
+- **`main` no acepta nada que no venga de un PR**, así que esto no depende de que alguien se acuerde.
 
 ---
 
 ## 10. Estado hoy y lo que sigue
 
-**Hecho y verificado:** proyecto creado, tokens del sistema en el tema, Inter, `lang`, metadata, página `/tokens` y documentación para agentes.
+**Hecho y verificado:** proyecto creado, tokens del sistema en el tema, Inter, `lang`, metadata, página `/tokens`, documentación para agentes y el flujo de equipo (issues, `main` protegido, plantillas de PR e issue).
+
+**El backlog está en GitHub Issues:** https://github.com/jonlifschitzpersonal-bit/gurises-unidos-dashboard/issues (el orden de trabajo, en `docs/PENDING_TASKS.md`).
 
 **Lo que sigue, y en qué clase del curso:**
 
 | Clase | Qué se suma al dashboard |
 |---|---|
-| 5.4 | Flujo de equipo: issues, branches, PRs. Primer cambio: el aviso de "datos ficticios" |
 | 5.5–5.6 | Trabajar por slices y revisar implementaciones |
 | 6.1–6.4 | Componentes del sistema en código (`Icon`, `Button`, `MetricCard`, `StatusBadge`) con variantes, accesibilidad y Storybook |
 | 5.7 | Pantallas de Gurises Unidos en Figma + slice 1: el shell (sidebar, barra superior, tabs) |
@@ -270,7 +298,7 @@ Desde la clase 5.4, cada cambio va además en una branch con su pull request y s
 | 6.5–6.11 | Dark mode, docs del design system, mapeo Figma ↔ código, skills del agente |
 | 8.1–8.6 | Tabla, filtros, búsqueda, los 6 estados, accesibilidad en runtime, responsive y performance |
 
-**Pendiente de producto:** el set de datos ficticios (cuántos proyectos y años, nombres y estados). **Deuda conocida:** números tabulares en `heading/metric`, el token del Button al apretar, el favicon de Next.js y el dark mode.
+**Pendiente de producto:** el set de datos ficticios (#6: cuántos proyectos y años, nombres y estados). **Antes del primer deploy:** el favicon (#16) y el aviso de datos ficticios (#20). **Deuda conocida:** números tabulares en `heading/metric` (#5), el token del Button al apretar (#14) y el dark mode (#11).
 
 ---
 
@@ -303,6 +331,18 @@ Porque es lo que piden los donantes y lo que la ONG puede medir hoy. La interfaz
 **¿Qué aprendiste de la primera versión?**
 Que el texto secundario no cumplía contraste (2,56:1; se corrigió a 4,74:1), que el reintento tiene que mantener el mensaje de error visible, y que un botón sin flujo detrás confunde. En v2 el gris de texto secundario ya parte de 7,56:1.
 
+**¿Cómo trabajás con Git si estás solo en el proyecto?**
+Como en un equipo. Cada cambio sale de un issue, va en su branch y entra por un PR que reviso antes de mergear. `main` está protegido, así que ni yo ni el agente podemos escribir ahí directo. Con un agente esto importa más: el PR es donde veo el diff y la evidencia antes de que el cambio exista en `main`.
+
+**¿Qué tiene que tener un buen PR?**
+Qué cambia y por qué, qué issue cierra, qué quedó afuera a propósito, las diferencias intencionales con Figma, la evidencia (checks, capturas y un ledger con lo verificado y lo que no) y cómo probarlo. Está en la plantilla del repo, así todos los PRs, también los del agente, tienen la misma forma.
+
+**¿Por qué squash merge?**
+Para que `main` tenga un commit por cambio, con el número del PR. Si algo se rompe, encuentro qué PR lo trajo y leo ahí el porqué y la evidencia.
+
+**¿Cómo organizás el backlog?**
+En GitHub Issues: milestones por etapa (sistema, dashboard) y labels por tipo, incluido uno para lo que espera una decisión de producto. Cada issue tiene un "done when" que se puede comprobar. Lo que sale de un comentario de Figma se vuelve un issue con el link al comentario.
+
 **¿Qué es un ADR y por qué los usás?**
 Un archivo por decisión, con contexto, alternativas y consecuencias. Responde "¿por qué está hecho así?" sin depender de quien lo decidió, y le dice al agente qué no reabrir.
 
@@ -324,3 +364,8 @@ Un archivo por decisión, con contexto, alternativas y consecuencias. Responde "
 | **Ledger** | La lista de controles de un slice, cada uno con PASS, FAIL, UNVERIFIED u OUT OF SCOPE y su evidencia. |
 | **Lint / build** | Lint revisa errores comunes en el código; build arma la versión de producción (lo que corre Vercel). |
 | **Branch / PR / issue** | Línea de trabajo aparte / pedido de revisión antes de sumar a `main` / tarea numerada en GitHub. |
+| **Milestone / label** | Agrupan issues: el milestone por etapa (qué tiene que estar para cerrarla), el label por tipo de tarea. |
+| **`Closes #N` / `Refs #N`** | En un PR: `Closes` cierra el issue al mergear; `Refs` lo menciona sin cerrarlo. |
+| **Squash merge** | Todos los commits de la branch entran a `main` como uno solo, con el título y el número del PR. |
+| **Ruleset** | Reglas de GitHub sobre una branch; acá, que a `main` solo se llegue con un PR. |
+| **`gh`** | GitHub CLI: issues, PRs y configuración del repo desde la terminal. |

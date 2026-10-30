@@ -32,7 +32,7 @@ Vos diseñás y tomás las decisiones; Claude Code implementa; vos revisás que 
 | Rol actual | Product Designer |
 | Código | HTML/CSS ok · JavaScript poco · sin React |
 | Tiempo | 5–8 hs por semana |
-| Entorno | VS Code, Node.js 24 (npm 11), GitHub y Vercel listos. PowerShell habilitado para correr `npm`/`npx` (5.1). Falta GitHub CLI (`gh`, en la 5.4). |
+| Entorno | VS Code, Node.js 24 (npm 11), GitHub y Vercel listos. PowerShell habilitado para correr `npm`/`npx` (5.1). GitHub CLI (`gh`) instalado y autenticado (5.4). |
 | Figma | Plan Free / Starter |
 | Estrategia | Prepararse primero, aplicar con portfolio de design engineering |
 

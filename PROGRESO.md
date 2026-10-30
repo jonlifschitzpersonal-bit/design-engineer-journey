@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 5.4
+**Clase actual:** 5.5
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
 
 ### Dónde está cada cosa
@@ -12,6 +12,7 @@
 |---|---|
 | Repo del curso | https://github.com/jonlifschitzpersonal-bit/design-engineer-journey |
 | Dashboard de Gurises Unidos (proyecto ancla 1, y los componentes del sistema) | `D:\Escritorio\proyectos\gurises-unidos-dashboard` · https://github.com/jonlifschitzpersonal-bit/gurises-unidos-dashboard · sin publicar todavía (deploy en la 5.8) |
+| Backlog del dashboard | https://github.com/jonlifschitzpersonal-bit/gurises-unidos-dashboard/issues (el orden, en su `docs/PENDING_TASKS.md`) |
 | Explicación del dashboard (qué es, por qué, cada archivo) | [`DASHBOARD-GURISES-UNIDOS.md`](DASHBOARD-GURISES-UNIDOS.md) |
 | Sección Resumen (2.6) | https://design-engineer-journey-00-seccion.vercel.app/ |
 | Setup (0.2) | https://design-engineer-journey-00-setup.vercel.app/ |
@@ -20,10 +21,9 @@
 
 | Cuándo | Qué |
 |---|---|
-| **5.4** | Instalar GitHub CLI (`gh`) y autenticarlo: hoy no está, y se necesita para crear PRs e issues desde la terminal. |
 | **5.5 y 6.8** | Sumar a las skills el proceso de trabajo con el agente (plan → aprobación → código → diff → ledger). Hoy está solo en `PLAN-DE-ESTUDIO.md` §4 ("Review de cada slice"), así que en otro proyecto no se conoce. |
-| **Figma (de la 2.6)** | Activar números tabulares en el text style `heading/metric` y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button. |
-| **Backlog (de la 2.4)** | Comentarios de Figma → backlog (cuando haya comentarios reales). Probar una vez el MCP oficial (opcional). |
+| **Figma (de la 2.6)** | Activar números tabulares en el text style `heading/metric` (issue #5) y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button (issue #14). |
+| **Backlog (de la 2.4)** | Comentarios de Figma → issues cuando haya comentarios reales (el flujo quedó listo en la 5.4: plantilla *Task* con *Source* y ejemplo resuelto en su README). Probar una vez el MCP oficial (opcional). |
 
 ---
 
@@ -53,7 +53,7 @@
 - [x] 5.1 Next.js + Tailwind
 - [x] 5.2 Tailwind desde tokens
 - [x] 5.3 Preparar el repo para el agente
-- [ ] 5.4 Git en equipo
+- [x] 5.4 Git en equipo
 - [ ] 5.5 Trabajar por slices
 - [ ] 5.6 Revisar implementaciones
 - [ ] 6.1 Tokens Figma ↔ código
@@ -136,6 +136,15 @@
 ---
 
 ## Bitácora
+
+### 2026-10-30 · Clase 5.4 — Git en equipo
+- **Aprendí:** el flujo de equipo: issue → branch `tipo/issue-tema` → commits con un motivo cada uno → PR con `Closes #N` → revisión → merge. El PR junta el diff con la evidencia (alcance, lo que queda afuera, diferencias con Figma, ledger, riesgos, cómo probar); en GitHub se revisa en *Files changed*. `Closes` cierra el issue al mergear y `Refs` solo lo menciona. Con squash merge, cada PR entra a `main` como un commit con su número. Los issues se agrupan con milestones (etapa) y labels (tipo), y cada uno tiene un "done when" que se puede comprobar.
+- **Hice:** hice el login de `gh`, revisé el PR #19 (3 commits: plantillas, reglas de Git en el `CLAUDE.md` del dashboard y pendientes con links a los issues) y lo mergeé: el #1 se cerró solo y la branch se borró.
+- **Claude hizo:** instaló `gh` 2.103.3 desde el zip oficial (no hay `winget` en este Windows), creó 20 issues en 3 milestones con labels nuevos (`debt`, `design`, `needs decision`), protegió `main` (PR obligatorio, sin force push ni borrado, solo squash) y abrió el PR #21 para anotar el #20.
+- **Sorpresa:** GitHub falló en 7 de las 18 creaciones de issues y las referencias entre issues quedaron apuntando a otros números; se corrigieron y se revisaron una por una. Y al cerrar apareció una tarea que nadie había anotado: el ADR 0005 pide avisar en la demo que los datos son ficticios (#20).
+- **Decidido (técnico):** sin aprobación obligatoria en los PRs (GitHub no deja aprobar el propio); el agente no mergea, el merge es mío; `PENDING_TASKS.md` guarda el orden y los links, y el detalle queda en los issues.
+- **Verificado:** el #1 cerrado por el PR #19, la branch borrada, un commit `(#19)` en `main`, las tres reglas activas sobre `main` por la API. UNVERIFIED: que un push directo a `main` se rechace (no se probó empujando) y que la plantilla de PR se cargue en la web (los PRs se abrieron desde la terminal).
+- **Sumado a las skills:** sección nueva de Git, issues y pull requests (branch por issue, diff antes de cada commit, plantilla de PR, `Closes`/`Refs`, no mergear el PR propio, squash y branches locales, backlog en issues sin duplicar, verificar al crear muchas cosas por la API, protección sin aprobaciones si hay una sola persona). En Figma: comentario → issue con el link como fuente.
 
 ### 2026-10-30 · Clase 5.3 — Preparar el repo para el agente
 - **Aprendí:** cada cosa va en un archivo según cuánto cambia. `CLAUDE.md` tiene las reglas estables (comandos, stack, tokens, convenciones, cómo trabajar, qué no tocar) y manda a leer el resto. `docs/PROJECT_CONTEXT.md` describe el producto, `CURRENT_STATE.md` lo hecho y verificado, y `PENDING_TASKS.md` lo que sigue. Los ADR registran una decisión por archivo, con opciones y costo; no se editan, se reemplazan. `docs/research/` guarda lo que llevó a cada decisión. Si el estado se mezcla con las reglas, el agente sigue instrucciones que ya no valen.

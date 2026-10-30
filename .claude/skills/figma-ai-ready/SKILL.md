@@ -100,7 +100,7 @@ La skill `design-implementation` cubre la otra mitad: cómo se traduce todo esto
 - **Las decisiones técnicas las tomás vos y las explicás; las de producto son del usuario:** qué se muestra, qué dice, qué significa un color, si algo es editable, si un componente merece existir.
 - **Separá evidencia, decisión aprobada y suposición.**
 - **Si el pedido no tiene resultado observable,** tomalo del contexto y decilo explícitamente para que lo confirmen.
-- **Comentarios → backlog:** juntá duplicados, clasificá (bug, pregunta de diseño, contenido, componente nuevo), convertí cada pregunta en una tarea y marcá quién decide. No respondas vos las preguntas de diseño.
+- **Comentarios → backlog:** juntá duplicados, clasificá (bug, pregunta de diseño, contenido, componente nuevo), convertí cada pregunta en una tarea y marcá quién decide. No respondas vos las preguntas de diseño. Si el proyecto usa issues, cada tarea es un issue con el link al comentario o al nodo como fuente, y el comentario se responde con el link al issue para que quien preguntó lo siga desde ahí.
 - **Leé antes de tocar:** recorré el árbol (nombres, tipos, Auto Layout, propiedades, referencias) y sacá una captura. Los IDs de nodos cambian entre sesiones: no reutilices IDs de otra conversación.
 - **Después de cada cambio visual: captura y revisión.** Si algo falla a mitad de camino, borrá lo que quedó a medias antes de reintentar.
 - **Contale al usuario qué cambiaste y por qué**, en lenguaje simple.

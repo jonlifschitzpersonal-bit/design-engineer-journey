@@ -47,7 +47,7 @@ Si el proyecto no la tiene, proponela. Cada cosa va en un archivo según cuánto
 | `CLAUDE.md` (o `AGENTS.md`) | Reglas estables: comandos, stack, de dónde sale el diseño, tokens, convenciones, cómo trabajar, qué no tocar |
 | `docs/PROJECT_CONTEXT.md` | El producto: problema, usuarios, pantallas, estados, fuentes de verdad |
 | `docs/CURRENT_STATE.md` | Lo hecho **y verificado**, con evidencia |
-| `docs/PENDING_TASKS.md` | Próximas tareas, decisiones de producto pendientes, deuda a propósito |
+| `docs/PENDING_TASKS.md` | Próximas tareas, decisiones de producto pendientes, deuda a propósito. Si el backlog está en issues, el orden y los links (sección 17) |
 | `docs/adr/` | Una decisión de arquitectura por archivo, con un README índice |
 | `docs/research/` | Comparaciones y fuentes que llevaron a cada decisión |
 
@@ -285,6 +285,37 @@ Al terminar, contale al usuario qué reglas aplicaste o tuviste que resolver, en
 - **Señales de alarma:** valores sueltos o arbitrarios sin comentario, estados que no existen en el diseño, elementos no interactivos con `onClick` (`<div>`, `<article>`) en lugar de `<a href>` o `<button>`, y cambios en archivos generados o de configuración (lockfile, `next.config`, `tsconfig`) sin un motivo que diga el pedido.
 - **Todo color nuevo se mide** (contraste contra su fondo), no se juzga a ojo.
 - **El resultado es un ledger por control y un veredicto** (aprobar o pedir cambios) con un comentario accionable: qué cambiar y por qué. Lo que es decisión de diseño (un estado nuevo) se devuelve a diseño, no se resuelve en el código.
+
+---
+
+## 17. Git, issues y pull requests
+
+Si el proyecto tiene su propio flujo (en `CLAUDE.md`, `CONTRIBUTING.md` o plantillas en `.github/`), gana ese. Si no tiene, proponé este.
+
+**Antes de tocar nada**
+- **Confirmá el repo y la branch** (`git status`, `git branch`). Si estás en la branch principal de un proyecto compartido, no trabajes ahí: actualizala (`git pull`) y creá una branch desde ella.
+- **Nombre de la branch: `tipo/issue-tema`** (`feat/15-app-shell`, `fix/`, `docs/`, `chore/`, `refactor/`). Dice qué tipo de cambio es y de qué tarea sale, sin abrir nada.
+- **Una branch, un issue.** Lo que aparece en el camino y no es del pedido (un refactor, otro bug) va a un issue nuevo, no a este PR: mezclado, el diff no se puede revisar.
+
+**Mientras trabajás**
+- **Leé el diff antes de cada commit** (`git diff --staged`), no solo antes del PR. Ahí aparecen archivos generados, secretos o cambios de configuración que no pidió nadie.
+- **Un commit, una intención:** asunto en imperativo, en el idioma del repo, de menos de 72 caracteres, y un cuerpo que diga el porqué cuando no es obvio. Tres commits con un motivo cada uno se revisan mejor que uno que "agrega todo".
+
+**El pull request**
+- **Seguí la plantilla del proyecto.** Si no hay, cubrí: qué y por qué, alcance y lo que queda afuera a propósito, diferencias intencionales con el diseño, evidencia (checks, capturas, ledger), riesgos y decisiones pendientes, y cómo probarlo.
+- **`Closes #N` si el PR termina la tarea, `Refs #N` si solo la avanza.** `Closes` cierra el issue al mergear, y solo cuando el PR va a la branch principal.
+- **El ledger del PR sigue la regla de la sección 15:** lo que no se probó es UNVERIFIED. Por ejemplo, abrir un PR desde la terminal con un texto propio no prueba que la plantilla se cargue en la web.
+- **No mergees tus propios PRs** salvo que el proyecto lo diga. El merge es el punto de control de la persona que revisa.
+- **Con squash merge, Git dice que la branch local "no está mergeada"** porque los commits de `main` son otros. Antes de borrarla con `-D`, comprobá que el contenido es igual (`git diff --quiet <branch> main`).
+
+**Issues y backlog**
+- **Cada issue tiene un "done when" que se puede comprobar** ("sin scroll horizontal a 320px", no "que se vea bien"), su fuente (comentario o nodo de Figma, ADR, conversación) y `Blocked by #N` si depende de otro.
+- **Agrupá por etapa con milestones y por tipo con labels.** Sumá un label para lo que espera una decisión de producto, así se ve qué está trabado por una persona y no por el código.
+- **Si el backlog está en issues, el archivo de pendientes no repite el detalle:** guarda el orden de trabajo, lo bloqueado y el porqué de la deuda, con links. Si los dos tienen el detalle, terminan diciendo cosas distintas.
+- **Si una regla del proyecto pide algo que ninguna tarea cubre** (un ADR que exige un aviso en la interfaz), creá el issue.
+- **Al crear muchos issues o recursos por la API, verificá la lista al final.** Los errores pueden ser parciales y correr la numeración: las referencias entre ellos (`Blocked by #10`) se escriben cuando los números ya existen.
+
+**Protección de la branch principal** (si te toca configurarla): PR obligatorio, sin force push ni borrado. Con una sola persona manteniendo el repo, no exijas aprobaciones: GitHub no deja aprobar el PR propio y el repo queda trabado.
 
 ---
 
