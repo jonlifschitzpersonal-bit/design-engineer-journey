@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 6.1
+**Clase actual:** 6.2
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
 
 ### Dónde está cada cosa
@@ -22,10 +22,12 @@
 | Cuándo | Qué |
 |---|---|
 | **6.8** | Sumar a las skills los roles del agente (Plan Reviewer, Slice Closer…). El proceso de slices ya está en `design-implementation` §18 y en el `CLAUDE.md` del dashboard (5.5). |
-| **6.1** | `/tokens` como referencia completa: valores, grupos, guía de uso y generada desde `globals.css` (issue #31 del dashboard). |
+| **6.2** | Crear en Figma `color/action/secondary/bg-pressed` (issue #14 del dashboard), para el estado al apretar del `Button`: el color lo decide Jonathan. Queda de la práctica de la 6.1. |
+| **6.4** | La referencia de tokens pasa a Storybook y `/tokens` queda solo para desarrollo (issue #35). Bloquea el primer deploy (5.8). |
+| **6.6** | Notas de uso para los tokens y text styles que no las tienen (issue #34), con el caso de los íconos. |
 | **5.9** | Configurar `live` de Impeccable al usarlo por primera vez (inyecta un script en la app; no se hizo en la 5.6 a propósito). |
 | **Impeccable (de la 5.6)** | UNVERIFIED: la pasada completa del hook al final de cada turno (la de cada edición sí se vio funcionar). Confirmarla la primera vez que aparezca. |
-| **Figma (de la 2.6)** | Activar números tabulares en el text style `heading/metric` (issue #5) y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button (issue #14). |
+| **Figma (de la 2.6)** | Activar números tabulares en el text style `heading/metric` (issue #5). |
 | **Backlog (de la 2.4)** | Comentarios de Figma → issues cuando haya comentarios reales (el flujo quedó listo en la 5.4: plantilla *Task* con *Source* y ejemplo resuelto en su README). Probar una vez el MCP oficial (opcional). |
 
 ---
@@ -59,7 +61,7 @@
 - [x] 5.4 Git en equipo
 - [x] 5.5 Trabajar por slices
 - [x] 5.6 Revisar implementaciones
-- [ ] 6.1 Tokens Figma ↔ código
+- [x] 6.1 Tokens Figma ↔ código
 - [ ] 6.2 Componentes con variantes
 - [ ] 6.3 Accesibilidad de componentes
 - [ ] 6.4 Storybook
@@ -139,6 +141,38 @@
 ---
 
 ## Bitácora
+
+### 2026-10-30 · Clase 6.1 — Tokens de Figma a código
+- **Aprendí:** los tokens no se copian, se generan. Figma es la única fuente.
+  - El agente exporta las variables por MCP a un JSON en formato **DTCG** (el estándar del W3C), y **Style Dictionary** lo compila a CSS para Tailwind.
+  - El build controla el mapeo 1 a 1 y frena si se rompe: nombre igual al *code syntax*, semántico como alias de un primitivo, `space/N` = N × 4px, grupo desconocido. El lint falla si alguien edita a mano lo generado.
+  - No es una sincronización: el código se entera de un cambio solo cuando alguien exporta. Con Starter no se puede hacer desde CI, porque la API de variables es de Enterprise.
+  - Para probar que un cambio "no se ve", se compara el CSS compilado antes y después: compara cada valor, no solo una captura.
+  - La nota de uso de un token va en su descripción en Figma: la lee el MCP y baja sola a la página de referencia.
+- **Decidí (producto):**
+  - Las 13 notas de uso de los tokens que comparten valor y de `text-disabled`.
+  - `/tokens` no va en la demo pública; para el portfolio, la referencia de tokens va a Storybook (#35).
+  - No hice la práctica de `bg-pressed`: queda para la 6.2, con el `Button` (#14).
+- **Claude hizo:**
+  - Slice 1 (#33, `0840fd0`): el pipeline Figma → `tokens/figma/` → `npm run tokens` → `app/tokens.css`, con 6 controles, el ADR 0007 y el paso a paso en el `CLAUDE.md` del dashboard.
+  - Slice 2 (#31, `6ea00af`): `/tokens` generada, con valor, primitivo, nota de uso, grupos y navegación.
+  - Las notas, escritas en Figma.
+  - `critique` (con dos revisiones separadas) y `audit`. El hallazgo que no era técnico quedó como issue (#34).
+- **Sorpresa:**
+  - Tailwind generó una clase `.transform` porque leyó esa palabra en el script. Lo mostró la comparación del CSS.
+  - El export guarda la hora en cada token y ensuciaba el diff.
+  - La revisión encontró que las muestras de `/tokens` usaban colores de acción, justo lo que sus propias notas prohíben.
+  - Me escribió en inglés varias veces; quedó en la memoria que todo va en castellano.
+- **Verificado:**
+  - CSS compilado con las mismas declaraciones antes y después.
+  - Cada control roto a propósito frena el build.
+  - Reexportar sin cambios no genera diff.
+  - En Chrome, los 42 tokens coinciden con su muestra; sin scroll a 320 ni con texto al 200%; contraste mínimo de 7,56:1.
+  - `critique` 21/28 (antes 16/28), `audit` 17/20, `doctor` sin desfasajes.
+  - UNVERIFIED: una mirada mía a `/tokens`. El navegador no dejó sacar capturas.
+- **Sumado a las skills:**
+  - En `design-implementation`: generar los tokens desde un export (DTCG + Style Dictionary), con los controles del build y del lint; sacar la hora del export; decir "mapeo", no "sincronización"; comparar el CSS compilado; las notas de uso en la herramienta de diseño, respetadas por la página de referencia; Tailwind lee todo el repo (`@source not`); las clases generadas se escriben enteras.
+  - En `figma-ai-ready`: el *code syntax* como control del build; la descripción de la variable es su nota de uso; los text styles necesitan su propio export.
 
 ### 2026-10-30 · Clase 5.6 — Revisar implementaciones
 - **Aprendí:** una implementación se revisa con tres preguntas.

@@ -72,7 +72,9 @@ La skill `design-implementation` cubre la otra mitad: cómo se traduce todo esto
 - **Scopes:** primitivos de color sin scopes (no aparecen en el selector); espaciado con `GAP`, radios con `CORNER_RADIUS`, semánticos con el de su uso (`TEXT_FILL`, `FRAME_FILL`, `STROKE_COLOR`…).
 - **Mismo valor no es mismo token:** un color con dos funciones son dos semánticos. Al revés, dos valores casi iguales sin razón de diseño se unifican en un primitivo.
 - **Escala de espaciado:** seguí la del proyecto. Si no hay, `space/N` = N × 4px (la de Tailwind). **Figma no acepta puntos en los nombres de variables:** `space/1-5`, no `space/1.5`.
-- **Code syntax WEB en los semánticos** (`var(--color-text-muted)`), con la convención del código del proyecto.
+- **Code syntax WEB en los semánticos** (`var(--color-text-muted)`), con la convención del código del proyecto. Si el código se genera desde Figma, el build lo usa como control: un *code syntax* que no coincide con el nombre frena el build.
+- **La descripción de cada variable es su nota de uso:** para qué sirve, cuándo sí y cuándo no ("Fondo del botón principal. Solo acciones."). La lee el MCP y la baja el export, así que no hace falta otra copia en un documento. Primero los tokens que comparten valor con otro y los de uso restringido.
+- **El export de variables no incluye los text styles:** necesitan su propio export (por ejemplo, un script que se corre en Figma por MCP y devuelve tokens DTCG de tipo `typography`).
 - **Tipografía con text styles**, no con tamaño y peso sueltos.
 - **Si una anotación pide algo del texto, ponelo en el text style** (por ejemplo, números tabulares en el estilo de las métricas). Si solo está en la anotación, Figma y el código se ven distintos.
 - **Si un estado necesita un color que no existe, creá el token** (primitivo + semántico) antes de usarlo.

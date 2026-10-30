@@ -143,6 +143,27 @@ En el archivo "Design Engineer Journey" se armó el design system que usa el das
 - **Cambio de proceso:** primero, un PR por clase en lugar de uno por cosa. Al cerrar la clase, sin PRs: Claude pushea directo a `main` cada slice cerrado, con el ledger en el commit. Lo pedí porque mergear a cada rato era tiempo perdido, y con una sola persona el merge no sumaba una revisión. `main` sigue sin aceptar force push ni borrado, así que el historial no se puede reescribir.
 - **Evidencia:** medido en Chrome contra Figma: 41px en desktop y 3 líneas (81px) a 320. También teclado, foco, árbol de accesibilidad ("región Aviso de datos ficticios") y consola sin errores. `critique` dio 17/28 al aviso y 16/28 a `/tokens`; `audit`, 16/20. Lo que quedó de `/tokens` (valores, grupos, guía de uso) va a la 6.1 (#31).
 
+### Clase 6.1 — Tokens de Figma a código, generados (30/10/2026)
+
+- **Qué se hizo:** los tokens dejaron de copiarse a mano. Antes estaban tres veces: en Figma, en `globals.css` y en la lista de `/tokens`. Ahora Figma es la única fuente y el código se genera:
+  ```
+  Figma → (Figma Console MCP) → tokens/figma/*.tokens.json → (npm run tokens, Style Dictionary) → app/tokens.css + app/tokens/tokens.ts
+  ```
+  - **Slice 1, el pipeline (#33, commit `0840fd0`):** el export de variables en formato DTCG, un script para los text styles (no salen con las variables), Style Dictionary con un formato propio para el `@theme` de Tailwind v4, el control en el lint y el ADR 0007.
+  - **Slice 2, `/tokens` (#31, commit `6ea00af`):** la página lee la lista generada y muestra de cada token el valor, el primitivo y la nota de uso. Tiene grupos por namespace, navegación y una sola anatomía de fila.
+- **Los controles del build:** frena si un nombre no coincide con el *code syntax* de Figma, si un semántico tiene un hex en vez de un alias, si `space/N` no es N × 4px, si aparece un grupo de tokens que el script no conoce, o si los exports vienen de dos archivos distintos. El lint falla si alguien edita a mano el CSS o la lista. Cada control se probó rompiéndolo a propósito.
+- **Decidí:**
+  - Las 13 notas de uso, para los tokens que comparten valor con otro y para `text-disabled`. Se escribieron en la descripción de cada variable en Figma y de ahí bajan solas.
+  - `/tokens` no va en la demo pública: es una herramienta para construir. Para el portfolio, la referencia de tokens pasa a Storybook, que se publica aparte (#35). Esto bloquea el primer deploy.
+  - La práctica de crear `color/action/secondary/bg-pressed` (#14) queda para la 6.2, cuando se arme el `Button`.
+- **Por qué Style Dictionary y DTCG:** DTCG es el formato estándar de tokens del W3C, así que el JSON no queda atado a ninguna herramienta. Style Dictionary es la herramienta estándar para compilar tokens a cualquier plataforma. Se descartó Tokens Studio (otro plugin y otro formato al lado de las variables) y también el export directo a CSS del MCP: usa `@theme inline` con valores resueltos, así que los primitivos tendrían clases y se perderían los alias.
+- **Lo que apareció:**
+  - Tailwind lee todos los archivos del repo buscando clases. Encontró la palabra "transform" en el script y generó una clase que nadie usa. Lo mostró la comparación del CSS compilado, y se arregló excluyendo `scripts/` y `tokens/`.
+  - El export guarda la hora en cada token, así que reexportar sin cambios ensuciaba 51 líneas del diff. `npm run tokens` la borra.
+  - La revisión de Impeccable encontró que las muestras de `/tokens` usaban colores de acción, contra las notas que la misma página imprime. Se corrigió.
+- **Lo que no hace:** es un mapeo con control, no una sincronización. El código se entera de un cambio en Figma solo cuando alguien exporta. Con el plan Starter, la API de variables es de Enterprise y no se puede exportar desde CI.
+- **Evidencia:** el CSS compilado tiene las mismas declaraciones antes y después (la app se ve igual). En Chrome, los 42 tokens de `/tokens` coinciden con su muestra, no hay scroll horizontal a 320 ni con texto al 200%, y el contraste mínimo es de 7,56:1. `critique` subió de 16/28 a 21/28 y `audit` dio 17/20. Las notas que faltan quedaron en el #34.
+
 ---
 
 ## 6. El repo, archivo por archivo
@@ -159,9 +180,11 @@ gurises-unidos-dashboard/
 │   ├── layout.tsx
 │   ├── page.tsx
 │   ├── globals.css
+│   ├── tokens.css         (generado desde Figma)
 │   ├── favicon.ico
 │   └── tokens/
-│       └── page.tsx
+│       ├── page.tsx
+│       └── tokens.ts      (generado desde Figma)
 ├── components/
 │   └── DemoNotice.tsx
 ├── docs/
@@ -170,10 +193,18 @@ gurises-unidos-dashboard/
 │   ├── PENDING_TASKS.md
 │   ├── adr/
 │   │   ├── README.md
-│   │   └── 0001 … 0006
+│   │   └── 0001 … 0007
 │   └── research/
 │       ├── figma-mcp-options.md
 │       └── v1-case-study.md
+├── scripts/
+│   └── tokens/
+│       ├── build.mjs
+│       └── export-text-styles.figma.js
+├── tokens/
+│   └── figma/
+│       ├── variables.tokens.json
+│       └── text-styles.tokens.json
 ├── .impeccable/
 │   ├── config.json
 │   ├── design.json
@@ -200,12 +231,23 @@ gurises-unidos-dashboard/
 |---|---|---|
 | `app/layout.tsx` | Envuelve a **todas** las páginas | Carga Inter con `next/font` (Next.js la descarga al armar el proyecto y la sirve desde el mismo dominio, sin pedido a Google), pone `lang="es"`, el título "Gurises Unidos · Dashboard" y la descripción. Pone el aviso de datos ficticios primero y envuelve el contenido en `#content`, adonde va el foco al cerrar el aviso. Lo que se repite en todas las pantallas va acá, una sola vez. |
 | `app/page.tsx` | La home (`/`) | Por ahora, un título y un link a `/tokens`. El dashboard la reemplaza en los próximos slices. |
-| `app/tokens/page.tsx` | La página `/tokens` | Muestra cada token con la clase que lo usa: colores, text styles, radios y espaciado. Sirve para comparar con Figma hasta que exista Storybook. Las clases están escritas completas en una lista, porque Tailwind arma el CSS buscando clases en el texto de los archivos. |
-| `app/globals.css` | Los tokens del sistema | El corazón del sistema en código (ver sección 7). También tiene la variante `demo-dismissed:`, que oculta el aviso cuando está cerrado. |
+| `app/tokens/page.tsx` | La página `/tokens` | Muestra cada token con su clase, su nombre en Figma, el valor, el primitivo y la nota de uso, agrupados como en Figma (6.1). Solo decide cómo mostrar los datos: los lee de `tokens.ts`. Es una herramienta para construir y no va en la demo pública; para el portfolio, la referencia pasa a Storybook (#35). |
+| `app/tokens/tokens.ts` | La lista de tokens, **generada** | La escribe `npm run tokens` desde el export de Figma. Las clases están escritas completas (`"bg-bg-surface"`), porque Tailwind arma el CSS buscando clases en el texto de los archivos. No se edita: el lint falla si no coincide con el export. |
+| `app/tokens.css` | Los tokens del sistema, **generados** | Primitivos en `:root`; semánticos, radios y text styles en `@theme`. Lo escribe `npm run tokens` (ver sección 7). No se edita a mano. |
+| `app/globals.css` | Lo que no es token | Importa Tailwind y `tokens.css`, excluye `scripts/` y `tokens/` de la búsqueda de clases, define la fuente, el fondo de la página y la variante `demo-dismissed:`, que oculta el aviso cuando está cerrado. |
 | `components/DemoNotice.tsx` | El aviso de datos ficticios | Una región con nombre "Aviso de datos ficticios" (desde la 5.6; antes era un `<aside>` genérico), con un borde inferior `border-accent`, el texto fijo y el botón "Cerrar aviso". Es *client component* porque tiene un clic. Al cerrarse, guarda `dismissed` en `localStorage` y pasa el foco al contenido. Un script en línea lo oculta antes de pintar si ya estaba cerrado. Los íconos son SVG de Lucide hasta que exista `Icon` (#12). |
 | `app/favicon.ico` | El ícono de la pestaña | Todavía es el de Next.js; está anotado como pendiente. |
 
 **Cómo funcionan las rutas:** en `app/`, cada carpeta con un `page.tsx` adentro es una URL. `app/page.tsx` es `/` y `app/tokens/page.tsx` es `/tokens`. No hay que configurar nada más.
+
+### Los tokens desde Figma (`tokens/` y `scripts/tokens/`, 6.1)
+
+| Archivo | Qué hace | Detalle para explicarlo |
+|---|---|---|
+| `tokens/figma/variables.tokens.json` | La "foto" de las variables de Figma | La escribe el MCP (`figma_export_tokens`) en formato DTCG: cada token con `$type`, `$value`, su alias (`{primitives.gray.600}`), la descripción (la nota de uso) y el *code syntax*. No se edita: se reexporta. |
+| `tokens/figma/text-styles.tokens.json` | La "foto" de los text styles | Los text styles no son variables y el export no los trae. Los saca un script que corre adentro de Figma. |
+| `scripts/tokens/export-text-styles.figma.js` | Ese script | Se corre con `figma_execute` del MCP; devuelve los 6 estilos como tokens `typography`. |
+| `scripts/tokens/build.mjs` | El compilador (`npm run tokens`) | Usa Style Dictionary: lee los dos JSON, controla que Figma y el código se correspondan 1 a 1 y escribe `tokens.css` y `tokens.ts`. Con `--check` (dentro del lint) solo compara y falla si algo no coincide. También borra la hora que el export guarda en cada token, para que reexportar sin cambios no ensucie el diff. |
 
 ### La documentación para agentes
 
@@ -223,7 +265,7 @@ gurises-unidos-dashboard/
 | `docs/research/figma-mcp-options.md` | Comparación del MCP oficial de Figma con Figma Console MCP en el plan Starter, más los límites del plan. Respalda el ADR 0003. | Se suman notas |
 | `docs/research/v1-case-study.md` | Qué decisiones de v1 se mantienen, qué quedó sin medir y qué cambia en v2. | Se suman notas |
 | `PRODUCT.md` | Para Impeccable: para quién es el producto, para qué sirve, qué no se puede inventar y sus principios. Es una copia derivada de `PROJECT_CONTEXT.md` y los ADRs, no una fuente de verdad (5.6). | Cuando cambian los docs de producto: se regenera |
-| `DESIGN.md` y `.impeccable/design.json` | Para Impeccable: los tokens, cómo se usa cada uno, los componentes y las reglas con nombre ("The Quiet Blue Rule"…). Derivados de Figma y `globals.css` (5.6). | Cuando cambian Figma o los tokens: se regeneran, y `impeccable doctor` avisa si quedaron viejos |
+| `DESIGN.md` y `.impeccable/design.json` | Para Impeccable: los tokens, cómo se usa cada uno, los componentes y las reglas con nombre ("The Quiet Blue Rule"…). Derivados de Figma y de los tokens del código (5.6). | Cuando cambian Figma o los tokens: se regeneran, y `impeccable doctor` avisa si quedaron viejos |
 | `.impeccable/config.json` y `.impeccable/critique/` | El hook de Impeccable prendido para el proyecto, y los informes de `critique` con su puntaje (para ver si mejora con el tiempo). | Con cada revisión |
 | `README.md` | La presentación del repo en GitHub: qué es, qué hace, cómo correrlo, estructura, cómo se trabaja (issues, PRs, plantilla), tokens y roadmap. | Cuando cambia algo visible |
 
@@ -262,19 +304,31 @@ El navegador pide /tokens
 
 ### El camino de un token, de Figma al navegador
 
+Desde la 6.1, nadie escribe los tokens en el código: se generan.
+
 ```
-Figma                          app/globals.css                         Clase            Navegador
-gray/600 = #4b5563     →   --gray-600: #4b5563;  (en :root)
-color/text/muted → gray/600  →  --color-text-muted: var(--gray-600);  (en @theme)  →  text-text-muted  →  color: #4b5563
+1. Figma:        color/text/muted → gray/600 (= #4b5563), code syntax var(--color-text-muted)
+2. Export (MCP): tokens/figma/variables.tokens.json  →  "muted": { "$value": "{primitives.gray.600}", … }
+3. npm run tokens (Style Dictionary):
+     app/tokens.css       →  --gray-600: #4b5563;  (en :root)
+                             --color-text-muted: var(--gray-600);  (en @theme)
+     app/tokens/tokens.ts →  { figma: "color/text/muted", utility: "text-text-muted", value: "#4b5563", primitive: "gray/600", note: "Texto secundario…" }
+4. Tailwind:     text-text-muted  →  color: var(--color-text-muted)
+5. Navegador:    color: #4b5563
 ```
+
+**Para cambiar o agregar un token:** se cambia en Figma, el agente exporta y corre `npm run tokens`, y el diff muestra solo ese cambio en el JSON, en `tokens.css` y en `tokens.ts`. Si algo no coincide (por ejemplo, el *code syntax*), el build frena y dice qué.
 
 Es la misma cadena que en Figma va de la capa a la variable semántica y de ahí al primitivo. En DevTools se ve igual: la clase usa `var(--color-text-muted)`, y esa variable apunta a `--gray-600`.
 
-### `globals.css` por partes
+### `globals.css` y `tokens.css` por partes
+
+`globals.css` importa Tailwind, después `tokens.css` (generado) y agrega lo que no es token. Los bloques `:root` y `@theme` (sin `inline`) están en `tokens.css`.
 
 | Bloque | Qué tiene | Por qué |
 |---|---|---|
 | `@import "tailwindcss"` | Carga Tailwind | Incluye el *preflight*, el reset de estilos del navegador |
+| `@source not "../scripts"` y `"../tokens"` | Excluye esas carpetas de la búsqueda de clases | No son interfaz: si no, una palabra del script ("transform") se vuelve una clase (6.1) |
 | `:root { … }` | Los **primitivos** (`--gray-600`, `--blue-200`…) | Fuera de `@theme` no generan clases: ningún componente puede usar `bg-blue-200` directo. Igual que en Figma, donde los primitivos no aparecen en el selector. |
 | `@theme { … }` | Los **semánticos** de color, los radios y los text styles | Cada variable de `@theme` se vuelve clases. `--color-*: initial`, `--radius-*: initial` y `--text-*: initial` borran lo que trae Tailwind antes de definir lo del sistema. |
 | `@theme inline { … }` | La fuente (`--font-sans: var(--font-inter), …`) | `inline` copia el valor directo; lo recomienda Next.js para las fuentes de `next/font`. Los colores van **sin** `inline` para que el dark mode pueda redefinirlos más adelante. |
@@ -305,6 +359,7 @@ Un ADR (*Architecture Decision Record*) es una decisión por archivo: contexto, 
 | **0004** | Repo propio | Historial, PRs e issues limpios, y un link para compartir. | Las skills del curso no viven en este repo; lo que el proyecto necesita está en su `CLAUDE.md`. |
 | **0005** | Datos ficticios y sin backend en v1 | Los datos reales son privados; todo lo demás funciona igual. | La capa de datos se escribe para que después se pueda enchufar una fuente real sin tocar la interfaz. |
 | **0006** | Acciones con backend completas, sin guardar | El producto se ve y se comporta como uno real, flujos incluidos. | Al confirmar no pasa nada con los datos; la demo avisa que son ficticios. |
+| **0007** | El CSS de los tokens se genera desde un export de Figma con Style Dictionary | Tres copias a mano coincidían solo hasta el primer cambio; ahora el build controla que Figma y el código se correspondan. | Es un mapeo, no una sincronización: hay que exportar para que el código se entere. Un tipo de token nuevo (sombras, dark mode) pide tocar el script. |
 
 ---
 
@@ -339,7 +394,7 @@ issue  →  plan aprobado  →  commits en main (uno por intención)  →  lint,
 
 ## 10. Estado hoy y lo que sigue
 
-**Hecho y verificado:** proyecto creado, tokens del sistema en el tema, Inter, `lang`, metadata, página `/tokens`, documentación para agentes, el flujo de trabajo (issues, push directo a `main` sin force push ni borrado, plantillas de issue y de PR), el aviso de datos ficticios en todas las pantallas (#20, revisado y mejorado en el #29) e Impeccable puesto a punto (#27).
+**Hecho y verificado:** proyecto creado, tokens del sistema generados desde Figma (6.1), Inter, `lang`, metadata, página `/tokens`, documentación para agentes, el flujo de trabajo (issues, push directo a `main` sin force push ni borrado, plantillas de issue y de PR), el aviso de datos ficticios en todas las pantallas (#20, revisado y mejorado en el #29) e Impeccable puesto a punto (#27).
 
 **El backlog está en GitHub Issues:** https://github.com/jonlifschitzpersonal-bit/gurises-unidos-dashboard/issues (el orden de trabajo, en `docs/PENDING_TASKS.md`).
 
@@ -347,8 +402,7 @@ issue  →  plan aprobado  →  commits en main (uno por intención)  →  lint,
 
 | Clase | Qué se suma al dashboard |
 |---|---|
-| 6.1 | Tokens Figma ↔ código, y `/tokens` como referencia completa (#31) |
-| 6.1–6.4 | Componentes del sistema en código (`Icon`, `Button`, `MetricCard`, `StatusBadge`) con variantes, accesibilidad y Storybook |
+| 6.2–6.4 | Componentes del sistema en código (`Icon`, `Button`, `MetricCard`, `StatusBadge`) con variantes, accesibilidad y Storybook; el token del Button al apretar (#14); la referencia de tokens en Storybook y `/tokens` solo en desarrollo (#35) |
 | 5.7 | Pantallas de Gurises Unidos en Figma + slice 1: el shell (sidebar, barra superior, tabs) |
 | 5.8 | Slice 2: los indicadores de alcance + deploy de preview en Vercel |
 | 5.9 | Una pantalla diseñada directo en código, sin pasar por Figma |
@@ -357,7 +411,7 @@ issue  →  plan aprobado  →  commits en main (uno por intención)  →  lint,
 
 **Desde la 5.6, Impeccable** (impeccable.style) revisa y mejora el diseño en cada slice. `critique` y `audit` corren al cerrar cada slice de UI, y los hooks revisan cada cambio mientras el agente edita. Puede mejorar el sistema, pero no saltearlo: lo que cambia el estilo se vuelve token, primero en Figma.
 
-**Pendiente de producto:** el set de datos ficticios (#6: cuántos proyectos y años, nombres y estados). **Antes del primer deploy:** el favicon (#16). **Deuda conocida:** números tabulares en `heading/metric` (#5), el token del Button al apretar (#14), el dark mode (#11), los SVG del aviso que pasan a `Icon` (#12) y su X, que pasa a `Button` con un segundo uso (#3). **De la revisión de la 5.6:** la marca fija "Datos ficticios" en la barra superior (#30, con el slice 1) y `/tokens` como referencia completa (#31, en la 6.1).
+**Pendiente de producto:** el set de datos ficticios (#6: cuántos proyectos y años, nombres y estados). **Antes del primer deploy:** el favicon (#16). **Deuda conocida:** números tabulares en `heading/metric` (#5), el token del Button al apretar (#14), el dark mode (#11), los SVG del aviso que pasan a `Icon` (#12) y su X, que pasa a `Button` con un segundo uso (#3). **De la revisión de la 5.6:** la marca fija "Datos ficticios" en la barra superior (#30, con el slice 1). **De la 6.1:** las notas de uso que faltan (#34, en la 6.6) y sacar `/tokens` de la demo pública (#35, bloquea el primer deploy).
 
 ---
 
@@ -434,6 +488,18 @@ Que lo cerraste vive en tu navegador y el servidor no lo sabe. Si lo ocultara Re
 **¿Cómo sabe el agente qué color usar en algo nuevo?**
 Si hay Figma, lo lee del nodo: cada capa tiene su variable. Si no hay, lo deduce del nombre del token, y ahí puede elegir distinto en cada sesión. Me pasó con los íconos: no hay un gris para íconos y se usa el de texto. La solución es una guía de uso para cada token, con cuándo sí y cuándo no, en Figma y en el repo, y que el agente la lea antes de elegir. Los tokens de componente ayudan dentro de un componente, pero no en uno nuevo.
 
+**¿Cómo mantenés sincronizados Figma y el código?**
+No digo "sincronizados": es un mapeo con control. Figma es la única fuente. El agente exporta las variables por MCP a un JSON en formato DTCG, el estándar del W3C, y Style Dictionary genera el CSS que usa Tailwind. El build frena si un nombre no coincide con el *code syntax* de Figma, si un token semántico no apunta a un primitivo o si el espaciado se sale de la escala. El lint falla si alguien edita el CSS a mano. Un cambio en Figma llega como un diff que se revisa como cualquier otro. No es automático porque con el plan de Figma que uso la API de variables no está disponible; con Enterprise lo correría en CI.
+
+**¿Por qué Style Dictionary y no copiar los tokens?**
+Porque estaban tres veces (Figma, el CSS y la página de referencia) y coincidían solo porque nadie había cambiado nada. Style Dictionary es la herramienta estándar para compilar tokens: hoy genera el CSS para Tailwind y la lista de la página de referencia, y mañana podría generar iOS o Android desde el mismo JSON.
+
+**¿Cómo probaste que el cambio no rompió nada visual?**
+Compilé la app antes y después y comparé el CSS final: mismas declaraciones y mismas reglas, solo cambió el orden. Es más fuerte que mirar una captura, porque compara cada valor. Así apareció una clase de más que Tailwind había generado por una palabra en un script.
+
+**¿Dónde vive la guía de uso de cada token?**
+En la descripción de cada variable en Figma: para qué sirve, cuándo sí y cuándo no. La lee el MCP cuando un agente inspecciona el diseño, y el pipeline la baja a la página de referencia. Así no hay otro documento que se desactualice.
+
 **¿Qué es un ADR y por qué los usás?**
 Un archivo por decisión, con contexto, alternativas y consecuencias. Responde "¿por qué está hecho así?" sin depender de quien lo decidió, y le dice al agente qué no reabrir.
 
@@ -449,6 +515,9 @@ Un archivo por decisión, con contexto, alternativas y consecuencias. Responde "
 | **`@theme`** | El bloque de `globals.css` donde cada variable se vuelve clases de Tailwind. |
 | **Token primitivo / semántico** | Primitivo: cómo se ve (`gray/600`). Semántico: para qué sirve (`color/text/muted`). Los componentes usan semánticos. |
 | **Text style** | Tamaño, interlineado y peso juntos; en código, una clase (`text-label-md`). |
+| **DTCG** | El formato estándar de tokens del W3C: un JSON donde cada token tiene `$type`, `$value` y, si es un alias, una referencia a otro token. |
+| **Style Dictionary** | La herramienta que compila tokens (por ejemplo, de un JSON DTCG) a CSS, iOS, Android u otros formatos. |
+| **Pipeline** | Una cadena de pasos automática. Acá: Figma → export → Style Dictionary → CSS. |
 | **MCP** | El protocolo con el que un agente lee y escribe en otra herramienta (acá, Figma). |
 | **ADR** | *Architecture Decision Record*: una decisión por archivo. |
 | **Slice** | Un pedazo chico y completo del producto (por ejemplo, el shell) que se planifica, implementa y verifica de una vez. |

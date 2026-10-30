@@ -214,9 +214,9 @@ Guía §9–11, 14. **Proyecto ancla 2.** Se cursa en dos partes: 6.1–6.4 entr
 | Clase | Tema |
 |---|---|
 | 6.1 | Tokens en código mapeados 1 a 1 con las variables de Figma (primitivo → semántico). Exportar variables con Figma Console MCP o Tokens Studio (gratis) y compilarlas a CSS con Style Dictionary. |
-| 6.2 | Componentes con variantes en código (`cva`, shadcn/ui): API de componentes. **Impeccable:** `extract` para pasar patrones repetidos a componentes (por ejemplo, la X del aviso a `Button`). |
+| 6.2 | Componentes con variantes en código (`cva`, shadcn/ui): API de componentes. **Impeccable:** `extract` para pasar patrones repetidos a componentes (por ejemplo, la X del aviso a `Button`). El token `color/action/secondary/bg-pressed` (#14) se crea en Figma y pasa por el pipeline de la 6.1. |
 | 6.3 | Accesibilidad de componentes: semántica, teclado, foco, Radix. **Impeccable:** `harden` y `audit` por componente. |
-| 6.4 | Storybook: stories por variante y estado, addon de accesibilidad (guía §10). |
+| 6.4 | Storybook: stories por variante y estado, addon de accesibilidad (guía §10). La referencia de tokens pasa a Storybook, que se publica para el portfolio, y `/tokens` queda solo para desarrollo (#35, decisión de la 6.1). |
 | 6.5 | Dark mode y modos de variables. **Impeccable:** `colorize` para la paleta oscura, que se carga como tokens. |
 | 6.6 | Documentación para agentes: `docs/design-system/`, `AI_CONTEXT.md` y la regla en `CLAUDE.md` (guía §11.1). **Guía de uso de tokens y text styles:** para cada uno, para qué es, cuándo sí y cuándo no (por ejemplo, `heading/metric` solo para el número de un indicador). Va en la descripción de cada variable y text style en Figma (la lee el MCP) y en `docs/design-system/`, con la regla en `CLAUDE.md` de leerla antes de elegir. Así el agente no deduce el uso por el nombre cuando no hay Figma (5.9, 6.10). Primer caso a resolver: los íconos usan colores de texto (`color/text/muted`, `color/text/default`) porque no hay `color/icon/muted`; decidir si se separan (de la 5.5). **Impeccable:** `document` y `extract` actualizan `DESIGN.md`, que apunta a esta guía sin copiarla. |
 | 6.7 | Code Connect: concepto, template files, checklist. En plan Free: **mapeo documentado** Figma ↔ código (guía §9). |
