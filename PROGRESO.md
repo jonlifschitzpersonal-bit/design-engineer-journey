@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 5.2
+**Clase actual:** 5.3
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
 
 ### Dónde está cada cosa
@@ -19,11 +19,11 @@
 
 | Cuándo | Qué |
 |---|---|
-| **5.2** | En el dashboard: vaciar `page.tsx` y `globals.css` de la plantilla, cargar los tokens de Figma en `@theme` (solo los colores del sistema), cambiar Geist por Inter, `lang="en"` por `es` y la metadata (título y descripción). Decidir si las clases de color quedan con palabras repetidas (`text-text-muted`, viene de la P.2). |
 | **5.3** | Docs del dashboard para el agente: su propio `CLAUDE.md` (stack, tokens, convenciones), contexto, estado y ADRs. |
 | **5.4** | Instalar GitHub CLI (`gh`) y autenticarlo: hoy no está, y se necesita para crear PRs e issues desde la terminal. |
 | **5.5 y 6.8** | Sumar a las skills el proceso de trabajo con el agente (plan → aprobación → código → diff → ledger). Hoy está solo en `PLAN-DE-ESTUDIO.md` §4 ("Review de cada slice"), así que en otro proyecto no se conoce. |
 | **Figma (de la 2.6)** | Activar números tabulares en el text style `heading/metric` y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button. |
+| **Módulo 7 o 9 (de la 5.2)** | Probar Paper (paper.design) armando una pantalla del dashboard y comparar el código con el que sale de Figma. Antes, revisar su roadmap: si ya tiene componentes, Tailwind nativo y modos. |
 | **Backlog (de la 2.4)** | Comentarios de Figma → backlog (cuando haya comentarios reales). Probar una vez el MCP oficial (opcional). |
 
 ---
@@ -52,7 +52,7 @@
 ### Módulos 5 y 6 — Repo real + design system agéntico (intercalados, en este orden)
 
 - [x] 5.1 Next.js + Tailwind
-- [ ] 5.2 Tailwind desde tokens
+- [x] 5.2 Tailwind desde tokens
 - [ ] 5.3 Preparar el repo para el agente
 - [ ] 5.4 Git en equipo
 - [ ] 5.5 Trabajar por slices
@@ -63,6 +63,7 @@
 - [ ] 6.4 Storybook
 - [ ] 5.7 Dashboard: Figma + slice 1
 - [ ] 5.8 Dashboard: slice 2 + deploy
+- [ ] 5.9 Diseñar en código: pantalla sin Figma
 - [ ] 6.5 Dark mode y modos
 - [ ] 6.6 Docs para agentes
 - [ ] 6.7 Code Connect / mapeo documentado
@@ -136,6 +137,15 @@
 ---
 
 ## Bitácora
+
+### 2026-10-30 · Clase 5.2 — Tailwind desde los tokens
+- **Aprendí:** el `@theme` de Tailwind es el equivalente en código del panel de variables: cada token se vuelve clases. Los primitivos quedan afuera (variables comunes, sin clases) y los semánticos adentro, apuntando a ellos como los alias de Figma. Con `initial` se apaga lo que trae Tailwind: la paleta, los tamaños de texto y los radios. El prefijo de la clase (`text-`, `bg-`, `border-`) dice dónde se usa el color y no es parte del token: por eso en Figma el nombre sigue siendo `color/text/muted`.
+- **Hice:** Claude leyó las variables y los text styles de Figma por el MCP, reemplazó la plantilla (Inter, `lang="es"`, metadata, sin dark mode automático, sin los SVG) y armó `/tokens`, una página con cada token y su clase. Medido en Chrome: todo igual a Figma, sin scroll horizontal a 320px y `bg-red-500` sin efecto. Commit y push en el repo del dashboard. La práctica de DevTools (seguir la cadena clase → variable → primitivo) quedó en la guía.
+- **Sorpresa:** Tailwind ya trae `rounded-lg`, pero de 8px; en Figma es de 12. Si no se redefine, la clase existe con otro valor y se ve "casi bien".
+- **Decidido:** las clases de color quedan con palabras repetidas (`text-text-muted`): un solo nombre de Figma a la clase vale más que lo lindo. Nombrar los tokens de Figma como clases de Tailwind duplicaría el prefijo, rompería las carpetas del panel de variables y ataría el archivo a Tailwind.
+- **Evaluado:** Paper (paper.design), un editor con lienzo de HTML y CSS y MCP propio. Hoy no reemplaza a Figma: no tiene componentes con variantes, text styles, modos ni tokens compartidos entre archivos, y está en alpha. Queda para probar en el módulo 7 o 9.
+- **Cambio en el plan:** nueva clase 5.9, diseñar una pantalla directo en código, sin pasar por Figma (una tarea típica de design engineer). La 6.10 sigue siendo la prueba de que el agente usa el sistema sin indicaciones.
+- **Sumado a la skill:** resetear los grupos de Tailwind que chocan con el sistema (radios, tamaños de texto), primitivos fuera de `@theme` y semánticos adentro, `inline` solo para lo que define el framework (la fuente), y verificar el tema midiendo en el navegador.
 
 ### 2026-10-29 · Clase 5.1 — Next.js + Tailwind
 - **Aprendí:** Next.js es el marco que convierte componentes de React en una web: páginas, URLs, servidor local y armado para publicar. En `app/`, cada carpeta con un `page.tsx` es una URL; `layout.tsx` envuelve a todas las páginas con `{children}` (como un slot) y ahí va lo que se repite; `globals.css` tiene `@import "tailwindcss"` y el bloque `@theme`, donde cada variable se vuelve clases. El proyecto tiene tres zonas: lo que se toca (`app/`, `public/`, después `components/`), lo que se lee (`package.json`, `AGENTS.md`) y lo que no se toca (`node_modules/`, `.next/`, lockfile, configuraciones). `AGENTS.md` lo escribe Next.js para avisarle al agente que su versión cambió.

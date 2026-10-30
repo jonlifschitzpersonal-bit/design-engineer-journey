@@ -89,7 +89,7 @@ Salario base publicado (NYC): USD 120k–250k + equity.
 
 ```
 0 Setup ✅ → 1.1–1.2 ✅ → 2 Figma AI-ready ✅ → P Puente React
-→ 5.1–5.6 Repo real → 6.1–6.4 Componentes del sistema → 5.7–5.8 Dashboard → 6.5–6.11 Sistema agéntico → 8 QA
+→ 5.1–5.6 Repo real → 6.1–6.4 Componentes del sistema → 5.7–5.9 Dashboard → 6.5–6.11 Sistema agéntico → 8 QA
 → 1.3–1.8 CSS → 3 JavaScript → 4 React y TS → 7 Motion → 9 Portfolio
 ```
 
@@ -164,6 +164,7 @@ Guía §4, 11–13, 15–16. Arranca el **proyecto ancla 1**, en su propio repo 
 | 5.6 | Revisar implementaciones: señales de código poco confiable (guía §16). |
 | 5.7 | **Proyecto ancla 1** — Dashboard "AI visibility": Figma AI-ready + slice 1 (shell de la app). *Se cursa después de 6.4.* |
 | 5.8 | Slice 2 (metric cards, con los componentes del sistema) + deploy de preview en Vercel. *Se cursa después de 6.4.* |
+| 5.9 | **Diseñar en código:** una pantalla nueva del dashboard sin pasar por Figma. Brief → wireframe en ASCII → Claude la arma con los tokens y componentes del sistema → se itera en el navegador (2 o 3 variantes lado a lado) → ledger. Al final se decide qué vuelve a Figma (un patrón o un componente nuevo) para que el archivo no quede atrás. *Se cursa después de 5.8.* |
 
 ### Módulo 6 — Design system agéntico
 Guía §9–11, 14. **Proyecto ancla 2.** Se cursa en dos partes: 6.1–6.4 entre 5.6 y 5.7, y 6.5–6.11 después del dashboard.
