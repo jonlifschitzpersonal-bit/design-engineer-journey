@@ -19,7 +19,6 @@
 
 | Cuándo | Qué |
 |---|---|
-| **Antes de la 5.4** | Renombrar el repo del dashboard en GitHub (Settings → Rename → `gurises-unidos-dashboard`) y la carpeta local (`dashboard-ai-visibility` → `gurises-unidos-dashboard`); después, actualizar el remoto de Git. |
 | **5.4** | Instalar GitHub CLI (`gh`) y autenticarlo: hoy no está, y se necesita para crear PRs e issues desde la terminal. |
 | **5.5 y 6.8** | Sumar a las skills el proceso de trabajo con el agente (plan → aprobación → código → diff → ledger). Hoy está solo en `PLAN-DE-ESTUDIO.md` §4 ("Review de cada slice"), así que en otro proyecto no se conoce. |
 | **Figma (de la 2.6)** | Activar números tabulares en el text style `heading/metric` y crear `color/action/secondary/bg-pressed` para el estado al apretar del Button. |
