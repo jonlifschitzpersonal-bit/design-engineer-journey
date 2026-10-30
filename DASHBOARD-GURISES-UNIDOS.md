@@ -2,7 +2,7 @@
 
 > **Para qué es este archivo:** poder explicar el proyecto de punta a punta (en una entrevista, a un cliente o en el portfolio): qué es, qué se hizo, por qué y qué hace cada archivo.
 > Se actualiza al cerrar cada clase que toca el dashboard.
-> **Última actualización:** 2026-10-30, al cerrar la clase 5.3.
+> **Última actualización:** 2026-10-30, al cerrar la clase 5.4.
 
 | | |
 |---|---|
@@ -16,7 +16,7 @@
 ## 1. En 30 segundos
 
 > "Es el dashboard de Gurises Unidos, una ONG uruguaya que trabaja con chicos, adolescentes y sus familias. La dirección tenía los datos de sus proyectos repartidos en muchos Excel, y armar el informe anual para los donantes le llevaba recorrer archivo por archivo. El dashboard junta todo: primero el alcance (cuántos chicos se alcanzaron), después familias, docentes y proyectos activos, una tabla de proyectos y filtros por año y departamento.
-> Ya lo había hecho como freelance en React. Esta segunda versión la rehice en Next.js, TypeScript y Tailwind, con un design system que va uno a uno entre Figma y el código, y preparada para trabajar con agentes de IA: el repo tiene las reglas, el contexto, el estado y cada decisión documentada, y cada cambio se verifica con evidencia."
+> Ya lo había hecho como freelance en React. Esta segunda versión la rehice en Next.js, TypeScript y Tailwind, con un design system que va uno a uno entre Figma y el código, y preparada para trabajar con agentes de IA: el repo tiene las reglas, el contexto, el estado y cada decisión documentada, y cada cambio entra por un pull request con su evidencia, que reviso antes de mergear."
 
 ---
 
@@ -101,7 +101,7 @@ En el archivo "Design Engineer Journey" se armó el design system que usa el das
 - **El primer PR (#19):** 3 commits, uno por intención (plantillas, reglas de Git, pendientes con links). Lo revisé en *Files changed* y lo mergeé yo: el issue #1 se cerró solo por el `Closes #1`.
 - **Por qué:** en un equipo, `main` es lo publicado y nadie escribe ahí directo. Con un agente, el PR es mi punto de control: Claude abre el PR con evidencia y yo decido si entra. Y como el repo es público, los issues y los PRs muestran cómo trabajo.
 - **Por qué sin aprobación obligatoria:** GitHub no deja aprobar el PR propio; con una sola persona en el repo, exigirla lo traba. La revisión se hace igual, antes del merge.
-- **Lo que apareció:** el ADR 0005 pide que la demo avise que los datos son ficticios y ninguna tarea lo cubría. Se creó el #20, y el PR #21 lo suma al orden de trabajo antes del deploy.
+- **Lo que apareció:** el ADR 0005 pide que la demo avise que los datos son ficticios y ninguna tarea lo cubría. Se creó el #20, y el PR #21 lo sumó al orden de trabajo antes del deploy. El #20 sigue abierto a propósito: el PR decía `Refs #20`, porque anotar la tarea no es terminarla. El PR #23 sumó el backlog y el flujo al README y a `PROJECT_CONTEXT.md`.
 - **Evidencia:** el #1 está cerrado por el PR #19, la branch se borró sola, `main` tiene un commit `(#19)` y la API de GitHub muestra las tres reglas activas sobre `main`. Quedó UNVERIFIED que la plantilla de PR se cargue en la web (los dos PRs se abrieron desde la terminal).
 
 ---
@@ -163,7 +163,7 @@ gurises-unidos-dashboard/
 
 | Archivo | Qué tiene | Cuándo cambia |
 |---|---|---|
-| `CLAUDE.md` | Reglas para cualquier agente: comandos, stack, de dónde sale el diseño, reglas de tokens, convenciones, cómo trabajar y qué no tocar. Empieza con `@AGENTS.md` para incluir el aviso de Next.js. | Casi nunca |
+| `CLAUDE.md` | Reglas para cualquier agente: comandos, stack, de dónde sale el diseño, reglas de tokens, convenciones, cómo trabajar, el flujo de Git (desde la 5.4) y qué no tocar. Manda a leer primero el issue de la tarea. Empieza con `@AGENTS.md` para incluir el aviso de Next.js. | Casi nunca |
 | `AGENTS.md` | Lo escribe Next.js: avisa que esta versión cambió y que hay que leer su documentación local antes de programar. | Nunca a mano (si se borra, `next dev` lo vuelve a crear) |
 | `docs/PROJECT_CONTEXT.md` | El producto: cliente, problema, usuarios, qué muestra la pantalla, qué filtro afecta a qué, los 6 estados y las fuentes de verdad. | Poco |
 | `docs/CURRENT_STATE.md` | Lo que está hecho **y verificado**, con la evidencia de cada cosa. | En cada slice |
@@ -174,7 +174,7 @@ gurises-unidos-dashboard/
 | `docs/adr/0001` … `0006` | Una decisión por archivo (sección 8). | No se editan: si una decisión cambia, se escribe otro que la reemplaza |
 | `docs/research/figma-mcp-options.md` | Comparación del MCP oficial de Figma con Figma Console MCP en el plan Starter, más los límites del plan. Respalda el ADR 0003. | Se suman notas |
 | `docs/research/v1-case-study.md` | Qué decisiones de v1 se mantienen, qué quedó sin medir y qué cambia en v2. | Se suman notas |
-| `README.md` | La presentación del repo en GitHub: qué es, qué hace, cómo correrlo, estructura, tokens y roadmap. | Cuando cambia algo visible |
+| `README.md` | La presentación del repo en GitHub: qué es, qué hace, cómo correrlo, estructura, cómo se trabaja (issues, PRs, plantilla), tokens y roadmap. | Cuando cambia algo visible |
 
 ### Configuración (se lee, no se toca sin motivo)
 
