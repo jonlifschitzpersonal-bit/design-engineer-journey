@@ -12,6 +12,7 @@
 |---|---|
 | Repo del curso | https://github.com/jonlifschitzpersonal-bit/design-engineer-journey |
 | Dashboard de Gurises Unidos (proyecto ancla 1, y los componentes del sistema) | `D:\Escritorio\proyectos\gurises-unidos-dashboard` · https://github.com/jonlifschitzpersonal-bit/gurises-unidos-dashboard · sin publicar todavía (deploy en la 5.8) |
+| Explicación del dashboard (qué es, por qué, cada archivo) | [`DASHBOARD-GURISES-UNIDOS.md`](DASHBOARD-GURISES-UNIDOS.md) |
 | Sección Resumen (2.6) | https://design-engineer-journey-00-seccion.vercel.app/ |
 | Setup (0.2) | https://design-engineer-journey-00-setup.vercel.app/ |
 
@@ -142,6 +143,7 @@
 - **Hice:** Claude escribió `CLAUDE.md` (con `@AGENTS.md`), los tres documentos de estado, 6 ADR y 2 notas de research, y actualizó nombre, metadata y README del proyecto.
 - **Verificado:** una sesión nueva de Claude Code abierta en la carpeta del dashboard, sin contexto y en modo plan, propuso el aviso de "datos ficticios" citando el ADR 0005, solo con tokens del sistema, sin inventar texto y marcando como UNVERIFIED lo que no pudo leer de Figma.
 - **Sumado a la skill:** documentación del proyecto para agentes (reglas, estado y decisiones separados, ADR que no se editan, actualizar estado al cerrar un slice) y probarla con una sesión nueva en modo plan.
+- **Sumado al curso:** [`DASHBOARD-GURISES-UNIDOS.md`](DASHBOARD-GURISES-UNIDOS.md), la explicación completa del proyecto (qué es, decisiones, cada archivo del repo, cómo funciona, preguntas de entrevista con respuesta). Se actualiza al cerrar cada clase que toque el dashboard.
 
 ### 2026-10-30 · Clase 5.2 — Tailwind desde los tokens
 - **Aprendí:** el `@theme` de Tailwind es el equivalente en código del panel de variables: cada token se vuelve clases. Los primitivos quedan afuera (variables comunes, sin clases) y los semánticos adentro, apuntando a ellos como los alias de Figma. Con `initial` se apaga lo que trae Tailwind: la paleta, los tamaños de texto y los radios. El prefijo de la clase (`text-`, `bg-`, `border-`) dice dónde se usa el color y no es parte del token: por eso en Figma el nombre sigue siendo `color/text/muted`.
