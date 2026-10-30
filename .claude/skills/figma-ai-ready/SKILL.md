@@ -49,7 +49,7 @@ La skill `design-implementation` cubre la otra mitad: cómo se traduce todo esto
 - **Revisá las conexiones en todas las variantes, no solo en la default.** Al crear variantes duplicando o por código, las conexiones se pierden sin aviso: la instancia sigue mostrando el texto de muestra aunque se le cambie la propiedad. Si una variante deja algo sin conectar **a propósito** (un texto fijo por estado, una capa oculta en `loading`), escribilo en la descripción.
 - **Las variantes se multiplican, los booleanos no** (3 × 2 × 4 = 24). Usá booleanos para lo que solo se muestra u oculta.
 - **No crees combinaciones que no existen.** Si `loading` no muestra tendencia, no hagas `loading × up/down/neutral`: creá una sola (Figma exige un valor por propiedad) y aclaralo en la descripción.
-- **El texto de muestra es del producto**, no de otro proyecto ni lorem ipsum: el agente lo copia tal cual al código, a las historias y a las páginas de referencia. Un título de muestra de otro dominio termina en producción.
+- **El texto de muestra es del producto**, no de otro proyecto ni lorem ipsum: el agente lo copia tal cual al código, a las historias y a las páginas de referencia. Un título de muestra de otro dominio termina en producción. Se cambia en el valor por defecto de la propiedad (por MCP, `editComponentProperty` con `defaultValue`), no capa por capa: así lo heredan todas las variantes conectadas.
 - **Si el texto depende del estado, no lo hagas editable** (un badge `active` siempre dice "Activo"). Aclaralo en la descripción y en una anotación de *Content*.
 - **Si un componente necesita un tamaño que los text styles no tienen, creá el estilo**, en lugar de forzar el padding o escribir el tamaño suelto.
 - **Lo que Figma no puede expresar va en la descripción del componente** (por ejemplo, que un booleano apaga a otro).
@@ -78,6 +78,7 @@ La skill `design-implementation` cubre la otra mitad: cómo se traduce todo esto
 - **Tipografía con text styles**, no con tamaño y peso sueltos.
 - **Si una anotación pide algo del texto, ponelo en el text style** (por ejemplo, números tabulares en el estilo de las métricas). Si solo está en la anotación, Figma y el código se ven distintos.
 - **Si un estado necesita un color que no existe, creá el token** (primitivo + semántico) antes de usarlo.
+- **Antes de crear el token que pide una tarea, leé la anotación y todas las variantes.** El alcance real puede ser otro: una tarea que nombra un solo token (el apretado del secondary) puede venir de una anotación que vale para todas las variantes, y dos variantes que comparten el hover comparten también el apretado. Si el alcance cambia, actualizá la tarea antes de crear nada.
 
 ## 5. Estados, responsive y accesibilidad
 

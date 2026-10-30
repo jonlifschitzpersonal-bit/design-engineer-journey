@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 6.2
+**Clase actual:** 6.3
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
 
 ### Dónde está cada cosa
@@ -22,7 +22,8 @@
 | Cuándo | Qué |
 |---|---|
 | **6.8** | Sumar a las skills los roles del agente (Plan Reviewer, Slice Closer…). El proceso de slices ya está en `design-implementation` §18 y en el `CLAUDE.md` del dashboard (5.5). |
-| **6.2** | Crear en Figma `color/action/secondary/bg-pressed` (issue #14 del dashboard), para el estado al apretar del `Button`: el color lo decide Jonathan. Queda de la práctica de la 6.1. |
+| **Práctica de la 6.2** | Decidir en Figma el issue #36 del dashboard (`Button`: contraste entre variantes, hover sobre superficies celestes, 44px en formularios mobile) y el #38 (`MetricCard`: base de comparación visible, ícono de "sin cambios", formato del %, textos de error y de sin dato, dónde va "Reintentar", títulos largos). |
+| **6.3** | Issue #37 del dashboard: alto contraste de Windows, anuncio del fin de la carga del `Button`, teclado mientras carga. Probar con un lector de pantalla real (NVDA) lo que quedó UNVERIFIED en la 6.2. |
 | **6.4** | La referencia de tokens pasa a Storybook y `/tokens` queda solo para desarrollo (issue #35). Bloquea el primer deploy (5.8). |
 | **6.6** | Notas de uso para los tokens y text styles que no las tienen (issue #34), con el caso de los íconos. |
 | **5.9** | Configurar `live` de Impeccable al usarlo por primera vez (inyecta un script en la app; no se hizo en la 5.6 a propósito). |
@@ -62,7 +63,7 @@
 - [x] 5.5 Trabajar por slices
 - [x] 5.6 Revisar implementaciones
 - [x] 6.1 Tokens Figma ↔ código
-- [ ] 6.2 Componentes con variantes
+- [x] 6.2 Componentes con variantes
 - [ ] 6.3 Accesibilidad de componentes
 - [ ] 6.4 Storybook
 - [ ] 5.7 Dashboard: Figma + slice 1
@@ -141,6 +142,29 @@
 ---
 
 ## Bitácora
+
+### 2026-10-30 · Clase 6.2 — Componentes con variantes
+- **Aprendí:**
+  - La API de un componente en código es la de Figma: cada propiedad es una prop con el mismo nombre y los mismos valores. El `state` no es prop: hover, foco y apretado los maneja el navegador, y `disabled` es el atributo nativo.
+  - `cva` es el component set escrito en código: una base y lo que cambia en cada variante. shadcn/ui sirve de modelo para la forma, no como dependencia, porque trae su propio diseño.
+  - `tailwind-merge` no conoce los text styles propios: hay que contárselos, o borra `text-label-md` al lado de un color.
+  - Un booleano de Figma que solo existe para mostrar algo (`showTrend`) en código puede desaparecer: si pasás la tendencia, se ve. TypeScript no deja pasar la mitad.
+  - `extract` de Impeccable: se extrae lo que se repite con la misma intención, no lo que se parece.
+- **Decidí (producto):** delegué todo en Claude, incluido el color del estado apretado, que era mi práctica.
+- **Claude hizo:**
+  - Slice 1 (#14, `b6e2f93`): dos tokens de apretado en Figma, uno para el primary (`blue/400`) y otro para secondary y ghost (`blue/100`), siguiendo cómo ya se agrupaba el hover. Primer cambio que recorrió el pipeline de la 6.1.
+  - Slice 2 (`31e3e38`): `Icon` (los 12 íconos de Figma con `lucide-react`), `Button` con `cva`, `cn()` y el ADR 0008. Los íconos del aviso pasaron a `<Icon>`.
+  - Slice 3 (`ddd43bf`): `StatusBadge` y `MetricCard`. En Figma, el título de muestra de la card pasó a "Familias alcanzadas".
+  - `critique` (dos revisiones separadas) y `audit` en cada slice: lo técnico se corrigió y lo de diseño quedó en los issues #36 y #38, para mí. Lo de accesibilidad que falta va al #37 (6.3).
+- **Sorpresa:**
+  - `visibility: hidden` también esconde el texto al lector de pantalla: el botón cargando se quedaba sin nombre.
+  - Envolver el `onClick` obligaba a que el botón fuera de cliente.
+  - La card en carga no tenía nombre: el lector decía "Cargando, Cargando, Cargando".
+  - Una pestaña del navegador quedó recargando sola por un script de la revisión; ahora la revisión no inyecta nada.
+- **Verificado:**
+  - En Chrome, con páginas temporales (borradas): `Button` 110×40 y 96×32, colores y estados por variante, foco con teclado, ancho fijo al cargar; `MetricCard` 194px en los tres estados y 162 sin tendencia; badges de 24px; todos los colores son tokens; sin desborde a 320.
+  - `critique` del `Button` 23/32 y de la `MetricCard` 18/28 (antes de las correcciones); `audit` 17/20 en los dos.
+  - UNVERIFIED: lector de pantalla real y modo de alto contraste (#37, 6.3).
 
 ### 2026-10-30 · Clase 6.1 — Tokens de Figma a código
 - **Aprendí:** los tokens no se copian, se generan. Figma es la única fuente.

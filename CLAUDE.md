@@ -18,10 +18,10 @@ Repo del curso de Jonathan (product designer → design engineer). Las skills de
   - Las anotaciones nativas no se ven sin Dev Mode: cada una va también como nota visible en un frame `annotations`.
   - El MCP oficial da 6 llamadas por mes: se usa **Figma Console MCP** (plugin Desktop Bridge).
 - **Páginas:** `00 - Cover`, `01 - Foundations`, `02 - Components`, `05 - Screens`, `99 - Archive`.
-- **Variables:** colecciones `Primitives` (modo `value`) y `Semantic` (modo `light`, con code syntax WEB). Espaciado `space/N` = N × 4px (escala de Tailwind), radios `radius/sm|md|lg|full`. La **descripción** de cada variable es su nota de uso y aparece en `/tokens` (6.1): 14 escritas; las que faltan, en el issue #34 del dashboard (6.6).
+- **Variables:** colecciones `Primitives` (modo `value`) y `Semantic` (modo `light`, con code syntax WEB). Espaciado `space/N` = N × 4px (escala de Tailwind), radios `radius/sm|md|lg|full`. La **descripción** de cada variable es su nota de uso y aparece en `/tokens` (6.1): 16 escritas; las que faltan, en el issue #34 del dashboard (6.6). Estado apretado del `Button` (6.2): `color/action/primary/bg-pressed` → `blue/400` y `color/action/subtle/bg-pressed` → `blue/100` (secondary y ghost, que ya comparten el hover).
 - **Text styles:** `label/md|sm|xs`, `body/sm`, `heading/metric`, `heading/section` (Inter).
 - **Íconos:** component set `Icon`, 16×16, trazo de 1,5px, basados en **Lucide**. Las equivalencias de nombre están en la descripción del set (por ejemplo `currency` → `dollar-sign`, `arrow-up` → `move-up`).
-- **Componentes:** `Icon`, `Button`, `MetricCard`, `StatusBadge`, `DemoNotice` (el aviso de datos ficticios del dashboard, 5.5). Sección `Resumen` en `05 - Screens`.
+- **Componentes:** `Icon`, `Button`, `MetricCard`, `StatusBadge`, `DemoNotice` (el aviso de datos ficticios del dashboard, 5.5). Sección `Resumen` en `05 - Screens`. Los cuatro primeros ya existen en el dashboard con la misma API (6.2, `cva`, ADR 0008); la única diferencia a propósito es que `showTrend` de la `MetricCard` se pliega en `trend` + `trendValue`.
 
 ## Código
 - **Stack desde el módulo 5:** Next.js + React + **Tailwind v4**, con los tokens de Figma en `@theme` y solo los colores del sistema. Es la decisión de este repo, no de las skills. `proyectos/00-seccion-resumen` queda en HTML y CSS (es de la 2.6).

@@ -164,6 +164,24 @@ En el archivo "Design Engineer Journey" se armó el design system que usa el das
 - **Lo que no hace:** es un mapeo con control, no una sincronización. El código se entera de un cambio en Figma solo cuando alguien exporta. Con el plan Starter, la API de variables es de Enterprise y no se puede exportar desde CI.
 - **Evidencia:** el CSS compilado tiene las mismas declaraciones antes y después (la app se ve igual). En Chrome, los 42 tokens de `/tokens` coinciden con su muestra, no hay scroll horizontal a 320 ni con texto al 200%, y el contraste mínimo es de 7,56:1. `critique` subió de 16/28 a 21/28 y `audit` dio 17/20. Las notas que faltan quedaron en el #34.
 
+### Clase 6.2 — Componentes con variantes en código (30/10/2026)
+
+- **Qué se hizo:** los componentes de Figma existen en código con la **misma API**: los mismos nombres de props, los mismos valores y los mismos estados. Tres slices:
+  - **Slice 1, el estado apretado del `Button` (#14, commit `b6e2f93`):** dos tokens nuevos en Figma, `color/action/primary/bg-pressed` (`blue/400`) y `color/action/subtle/bg-pressed` (`blue/100`, para secondary y ghost). Fue el primer cambio que recorrió el pipeline de la 6.1: el diff mostró solo las 4 variables nuevas.
+  - **Slice 2, `Icon` y `Button` (commit `31e3e38`):** `Icon` traduce los 12 nombres de Figma a `lucide-react`; `Button` arma las 24 variantes de Figma con `cva` (variant × size); `lib/cn.ts` combina clases. ADR 0008.
+  - **Slice 3, `StatusBadge` y `MetricCard` (commit `ddd43bf`):** el badge recibe solo `status`; la card, título, valor, ícono, estado y tendencia.
+- **La idea:** cada propiedad de Figma es una prop. El `state` de Figma (default, hover, focus, disabled) **no es prop**: hover, foco y apretado los maneja el navegador con CSS, y `disabled` es el atributo nativo. Así, 24 variantes de Figma son 2 props en código.
+- **Decidí:** delegué todo, incluido el color del estado apretado. Se eligió `blue/400` para el primary y `blue/100` para secondary y ghost porque así ya se agrupaba el hover; `blue/200` no servía para el secondary porque es el fondo del primary y se habrían confundido.
+- **Por qué `cva` y no shadcn/ui:** `cva` es una tabla de variantes con tipos, igual a cómo Figma describe un component set. shadcn/ui trae su propio diseño y sus nombres de tokens: se tomó su forma de armar la API, no sus componentes. `lucide-react` en lugar de copiar los SVG, porque el set de Figma ya está basado en Lucide.
+- **Lo que apareció:**
+  - `tailwind-merge` no conoce los text styles propios y borraba `text-label-md` al lado de un color. `cn()` ahora lee la lista generada desde Figma.
+  - `visibility: hidden` también esconde el texto al lector de pantalla: el botón cargando se quedaba sin nombre. Se usa `opacity-0`.
+  - Envolver el `onClick` obligaba a que el botón fuera de cliente; mientras carga, simplemente no se le pasa.
+  - La card en carga no tenía nombre: el lector decía "Cargando" tres veces sin decir qué. Ahora el título queda para el lector.
+  - En Figma, el título de muestra de la card era de otro proyecto ("Menciones en ChatGPT"). Pasó a "Familias alcanzadas".
+- **Lo que queda para mí:** las preguntas de diseño de la revisión, en Figma: contraste entre variantes del `Button` y 44px en mobile (#36), y en la card la base de comparación visible, el ícono de "sin cambios", el formato del % y los textos de error (#38). Lo de accesibilidad que falta (alto contraste, anuncio de la carga) va a la 6.3 (#37).
+- **Evidencia:** medido en Chrome con páginas temporales que se borraron: `Button` 110×40 y 96×32 como en Figma, colores por variante y estado, foco con teclado; `MetricCard` 194px en default, loading y error (sin saltos al cargar); todos los colores son tokens; sin desborde a 320. `critique` 23/32 (`Button`) y 18/28 (`MetricCard`, antes de las correcciones); `audit` 17/20 en los dos.
+
 ---
 
 ## 6. El repo, archivo por archivo
@@ -186,14 +204,20 @@ gurises-unidos-dashboard/
 │       ├── page.tsx
 │       └── tokens.ts      (generado desde Figma)
 ├── components/
-│   └── DemoNotice.tsx
+│   ├── Button.tsx
+│   ├── DemoNotice.tsx
+│   ├── Icon.tsx
+│   ├── MetricCard.tsx
+│   └── StatusBadge.tsx
+├── lib/
+│   └── cn.ts
 ├── docs/
 │   ├── PROJECT_CONTEXT.md
 │   ├── CURRENT_STATE.md
 │   ├── PENDING_TASKS.md
 │   ├── adr/
 │   │   ├── README.md
-│   │   └── 0001 … 0007
+│   │   └── 0001 … 0008
 │   └── research/
 │       ├── figma-mcp-options.md
 │       └── v1-case-study.md
@@ -235,7 +259,12 @@ gurises-unidos-dashboard/
 | `app/tokens/tokens.ts` | La lista de tokens, **generada** | La escribe `npm run tokens` desde el export de Figma. Las clases están escritas completas (`"bg-bg-surface"`), porque Tailwind arma el CSS buscando clases en el texto de los archivos. No se edita: el lint falla si no coincide con el export. |
 | `app/tokens.css` | Los tokens del sistema, **generados** | Primitivos en `:root`; semánticos, radios y text styles en `@theme`. Lo escribe `npm run tokens` (ver sección 7). No se edita a mano. |
 | `app/globals.css` | Lo que no es token | Importa Tailwind y `tokens.css`, excluye `scripts/` y `tokens/` de la búsqueda de clases, define la fuente, el fondo de la página y la variante `demo-dismissed:`, que oculta el aviso cuando está cerrado. |
-| `components/DemoNotice.tsx` | El aviso de datos ficticios | Una región con nombre "Aviso de datos ficticios" (desde la 5.6; antes era un `<aside>` genérico), con un borde inferior `border-accent`, el texto fijo y el botón "Cerrar aviso". Es *client component* porque tiene un clic. Al cerrarse, guarda `dismissed` en `localStorage` y pasa el foco al contenido. Un script en línea lo oculta antes de pintar si ya estaba cerrado. Los íconos son SVG de Lucide hasta que exista `Icon` (#12). |
+| `components/DemoNotice.tsx` | El aviso de datos ficticios | Una región con nombre "Aviso de datos ficticios" (desde la 5.6; antes era un `<aside>` genérico), con un borde inferior `border-accent`, el texto fijo y el botón "Cerrar aviso". Es *client component* porque tiene un clic. Al cerrarse, guarda `dismissed` en `localStorage` y pasa el foco al contenido. Un script en línea lo oculta antes de pintar si ya estaba cerrado. Los íconos son `<Icon>` (6.2); la X sigue siendo un botón interno hasta que aparezca un segundo botón de solo ícono. |
+| `components/Icon.tsx` | Los íconos del sistema | Traduce los 12 nombres de Figma (`currency`, `arrow-up`) a los de `lucide-react` (`DollarSign`, `MoveUp`), con trazo de 1,5px a cualquier tamaño. Toma el color del texto. Es decorativo (oculto al lector) salvo que reciba `label`. |
+| `components/Button.tsx` | El botón del sistema | `variant` (primary, secondary, ghost) y `size` (md, sm) con `cva`; `iconStart`; `loading`; `disabled` nativo. Hover, foco y apretado son CSS. Mientras carga: mismo ancho, sigue teniendo foco, no hace nada al clic y el lector oye ", cargando". |
+| `components/StatusBadge.tsx` | El estado de un proyecto | Solo `status` (active, paused, error). El texto sale de un mapa ("Activo"…), así el color y el texto no se contradicen. Nunca baja de línea. |
+| `components/MetricCard.tsx` | La card de un indicador | `title`, `value`, `icon`, `state` (default, loading, error) y la tendencia. `trend` y `trendValue` van juntos o no van (lo controla TypeScript), en lugar del `showTrend` de Figma. El título es un h3 que nombra la card, también mientras carga. La tendencia se lee como texto ("Subió 12% respecto del período anterior"). |
+| `lib/cn.ts` | Combina clases | Une clases y resuelve conflictos: si alguien le pasa `rounded-sm` a un botón `rounded-md`, gana la suya. Conoce los text styles de Figma; si no, los borraba. |
 | `app/favicon.ico` | El ícono de la pestaña | Todavía es el de Next.js; está anotado como pendiente. |
 
 **Cómo funcionan las rutas:** en `app/`, cada carpeta con un `page.tsx` adentro es una URL. `app/page.tsx` es `/` y `app/tokens/page.tsx` es `/tokens`. No hay que configurar nada más.
@@ -360,6 +389,7 @@ Un ADR (*Architecture Decision Record*) es una decisión por archivo: contexto, 
 | **0005** | Datos ficticios y sin backend en v1 | Los datos reales son privados; todo lo demás funciona igual. | La capa de datos se escribe para que después se pueda enchufar una fuente real sin tocar la interfaz. |
 | **0006** | Acciones con backend completas, sin guardar | El producto se ve y se comporta como uno real, flujos incluidos. | Al confirmar no pasa nada con los datos; la demo avisa que son ficticios. |
 | **0007** | El CSS de los tokens se genera desde un export de Figma con Style Dictionary | Tres copias a mano coincidían solo hasta el primer cambio; ahora el build controla que Figma y el código se correspondan. | Es un mapeo, no una sincronización: hay que exportar para que el código se entere. Un tipo de token nuevo (sombras, dark mode) pide tocar el script. |
+| **0008** | Variantes con `cva`, clases con `tailwind-merge`, íconos con `lucide-react` | Una tabla de variantes con tipos, como el component set de Figma; shadcn/ui como modelo de API, no como dependencia. | Cuatro dependencias chicas, con versión exacta. Un ícono nuevo va primero al set de Figma y después al mapa de `Icon`. |
 
 ---
 
@@ -394,7 +424,7 @@ issue  →  plan aprobado  →  commits en main (uno por intención)  →  lint,
 
 ## 10. Estado hoy y lo que sigue
 
-**Hecho y verificado:** proyecto creado, tokens del sistema generados desde Figma (6.1), Inter, `lang`, metadata, página `/tokens`, documentación para agentes, el flujo de trabajo (issues, push directo a `main` sin force push ni borrado, plantillas de issue y de PR), el aviso de datos ficticios en todas las pantallas (#20, revisado y mejorado en el #29) e Impeccable puesto a punto (#27).
+**Hecho y verificado:** proyecto creado, tokens del sistema generados desde Figma (6.1), los componentes `Icon`, `Button`, `StatusBadge` y `MetricCard` en código con la API de Figma (6.2), Inter, `lang`, metadata, página `/tokens`, documentación para agentes, el flujo de trabajo (issues, push directo a `main` sin force push ni borrado, plantillas de issue y de PR), el aviso de datos ficticios en todas las pantallas (#20, revisado y mejorado en el #29) e Impeccable puesto a punto (#27).
 
 **El backlog está en GitHub Issues:** https://github.com/jonlifschitzpersonal-bit/gurises-unidos-dashboard/issues (el orden de trabajo, en `docs/PENDING_TASKS.md`).
 
@@ -402,7 +432,7 @@ issue  →  plan aprobado  →  commits en main (uno por intención)  →  lint,
 
 | Clase | Qué se suma al dashboard |
 |---|---|
-| 6.2–6.4 | Componentes del sistema en código (`Icon`, `Button`, `MetricCard`, `StatusBadge`) con variantes, accesibilidad y Storybook; el token del Button al apretar (#14); la referencia de tokens en Storybook y `/tokens` solo en desarrollo (#35) |
+| 6.3–6.4 | Accesibilidad de los componentes (#37) y Storybook: las stories cierran los issues de cada componente (#12, #3, #13, #4); la referencia de tokens en Storybook y `/tokens` solo en desarrollo (#35) |
 | 5.7 | Pantallas de Gurises Unidos en Figma + slice 1: el shell (sidebar, barra superior, tabs) |
 | 5.8 | Slice 2: los indicadores de alcance + deploy de preview en Vercel |
 | 5.9 | Una pantalla diseñada directo en código, sin pasar por Figma |
@@ -411,7 +441,7 @@ issue  →  plan aprobado  →  commits en main (uno por intención)  →  lint,
 
 **Desde la 5.6, Impeccable** (impeccable.style) revisa y mejora el diseño en cada slice. `critique` y `audit` corren al cerrar cada slice de UI, y los hooks revisan cada cambio mientras el agente edita. Puede mejorar el sistema, pero no saltearlo: lo que cambia el estilo se vuelve token, primero en Figma.
 
-**Pendiente de producto:** el set de datos ficticios (#6: cuántos proyectos y años, nombres y estados). **Antes del primer deploy:** el favicon (#16). **Deuda conocida:** números tabulares en `heading/metric` (#5), el token del Button al apretar (#14), el dark mode (#11), los SVG del aviso que pasan a `Icon` (#12) y su X, que pasa a `Button` con un segundo uso (#3). **De la revisión de la 5.6:** la marca fija "Datos ficticios" en la barra superior (#30, con el slice 1). **De la 6.1:** las notas de uso que faltan (#34, en la 6.6) y sacar `/tokens` de la demo pública (#35, bloquea el primer deploy).
+**Pendiente de producto:** el set de datos ficticios (#6: cuántos proyectos y años, nombres y estados). **Antes del primer deploy:** el favicon (#16). **Deuda conocida:** números tabulares en `heading/metric` (#5), el dark mode (#11) y la X del aviso, que pasa a `Button` con un segundo botón de solo ícono (#3). **De la revisión de la 6.2 (decido yo, en Figma):** el `Button` (#36) y la `MetricCard` (#38). **De la revisión de la 5.6:** la marca fija "Datos ficticios" en la barra superior (#30, con el slice 1). **De la 6.1:** las notas de uso que faltan (#34, en la 6.6) y sacar `/tokens` de la demo pública (#35, bloquea el primer deploy).
 
 ---
 
@@ -499,6 +529,21 @@ Compilé la app antes y después y comparé el CSS final: mismas declaraciones y
 
 **¿Dónde vive la guía de uso de cada token?**
 En la descripción de cada variable en Figma: para qué sirve, cuándo sí y cuándo no. La lee el MCP cuando un agente inspecciona el diseño, y el pipeline la baja a la página de referencia. Así no hay otro documento que se desactualice.
+
+**¿Cómo diseñarías la API de un Button?**
+Igual que en Figma. Cada propiedad del componente es una prop con el mismo nombre y los mismos valores: `variant` primary, secondary o ghost; `size` md o sm; `iconStart`; `loading`. El estado no es prop: hover, foco y apretado los maneja el navegador, y `disabled` es el atributo nativo. Así, las 24 variantes de Figma son 2 props en código. Lo armé con `cva`, que es una tabla de variantes con tipos, el mismo modelo que usa shadcn/ui.
+
+**¿Por qué no usaste shadcn/ui?**
+Porque trae su propio diseño y sus nombres de tokens, y el diseño ya estaba en Figma. Tomé su forma de armar la API (`cva`, un `cn()` para combinar clases) y la llené con mis tokens.
+
+**¿Qué pasa con un botón mientras carga?**
+Mantiene el ancho (el spinner va donde estaba el ícono, o encima del texto, que queda transparente), no responde al clic y sigue teniendo foco. No uso `disabled` porque el foco se perdería mientras guarda. El lector de pantalla oye "Guardar, cargando". Un detalle que encontré: si escondés el texto con `visibility: hidden`, el lector tampoco lo lee y el botón se queda sin nombre.
+
+**¿En qué se diferencia la API de tu card de la de Figma?**
+En una sola cosa, a propósito: Figma tiene un booleano `showTrend` porque necesita mostrar u ocultar la capa. En código, si pasás la tendencia, se ve; si no, no. TypeScript no deja pasar la flecha sin el número. Un booleano que en Figma solo existe para ocultar algo puede desaparecer en código.
+
+**¿Cómo decidís qué se convierte en componente?**
+Lo que se repite tres veces o más con la misma intención. La X del aviso se parece a un botón ghost, pero su hover cambia el color del ícono y el del ghost pinta el fondo: son intenciones distintas. Queda interna hasta que aparezca un segundo botón de solo ícono, y esa opción se diseña primero en Figma.
 
 **¿Qué es un ADR y por qué los usás?**
 Un archivo por decisión, con contexto, alternativas y consecuencias. Responde "¿por qué está hecho así?" sin depender de quien lo decidió, y le dice al agente qué no reabrir.

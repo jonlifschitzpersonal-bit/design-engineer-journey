@@ -20,7 +20,7 @@ Ningún proyecto es igual. Antes de escribir código, averiguá:
 | Qué | Dónde mirarlo | Si no existe |
 |---|---|---|
 | Reglas del proyecto | `CLAUDE.md`, `AGENTS.md`, `docs/`, `README` | Seguí esta skill |
-| Stack | `package.json`: framework, versión de Tailwind, librería de componentes, TypeScript | Preguntá antes de agregar dependencias |
+| Stack | `package.json`: framework, versión de Tailwind, librería de componentes, TypeScript | Preguntá antes de agregar dependencias. Una dependencia nueva va con versión exacta (`--save-exact`), publicada hace al menos dos semanas, y con su porqué en un ADR |
 | Tokens | Archivo de tokens (`tokens.css`, `@theme`, `tailwind.config`) y variables de Figma | Proponé crearlos; no escribas valores sueltos |
 | Convención de nombres de tokens | Cómo se llaman en Figma y cómo en código (y su *code syntax*) | Barras de Figma → guiones en código |
 | Breakpoints | Config del proyecto o anotaciones de Figma | Los de Tailwind: 640 / 768 / 1024 / 1280 |
@@ -169,6 +169,7 @@ button, input, select, textarea {
   - **Es un mapeo con control, no una sincronización:** el código se entera de un cambio solo cuando alguien exporta. Decilo así, y dejá el paso a paso en las reglas del proyecto para que cualquier agente lo repita.
   - **Para probar que un cambio "no se ve", compará el CSS compilado** antes y después (declaraciones ordenadas). Compara cada valor, no solo lo que entra en una captura.
 - **La nota de uso de un token va en su descripción en la herramienta de diseño** (para qué sirve, cuándo sí y cuándo no) y baja con el export. Empezá por los que comparten valor con otro y los de uso restringido (un gris solo para deshabilitados). Una página de referencia las muestra, y **sus propias muestras las respetan**: es el ejemplo que copian los agentes.
+- **Los tokens de estado siguen la agrupación que ya existe:** si dos variantes comparten el token de hover, el de apretado también es uno compartido. Y "un paso más oscuro" se mide contra el hover, no contra el default.
 - **No fusiones semánticos porque hoy tengan el mismo valor.** Dos tokens que apuntan al mismo primitivo son dos decisiones: si se unifican, cambiar una rompe la otra.
 - **Un text style de Figma = una clase o utilidad** (tamaño, interlineado y peso juntos). No copies `font-size` y `font-weight` sueltos de cada capa.
 - **Modos (dark mode):** si las variables de Figma tienen varios modos, cada modo redefine los semánticos en código. Si el plan de Figma no permite modos (Starter: 1 por colección), el dark mode se define solo en código, redefiniendo los semánticos.
@@ -188,6 +189,8 @@ button, input, select, textarea {
 - Implementá **todos los estados** del diseño (default, hover, focus-visible, active, disabled y, si aplica, loading y error). No inventes los que faltan: preguntá.
 - **Leé las anotaciones de Figma antes de implementar.** Ahí está lo que el dibujo no muestra: estados sin variante, grilla responsive, formato de datos, textos para lector. Si una anotación contradice el dibujo, preguntá.
 - **El skeleton de loading ocupa lo mismo que el contenido final**, para que el layout no salte. Anunciá la carga (`aria-busy` en el contenedor).
+- **Lo que no es dato no se esconde mientras carga.** El título de una card llega por prop, no del servidor: si el diseño lo cambia por un skeleton, igual queda para el lector (`sr-only`) y nombra el bloque (`aria-labelledby`). Si no, el lector oye "Cargando, Cargando, Cargando" sin saber qué, y la navegación por encabezados se saltea las cards.
+- **El componente se protege de los datos que el tipo no frena.** Si la anotación dice "sin dato: —", un valor vacío o `null` muestra "—" (no un párrafo vacío de alto 0). Si la flecha ya dice la dirección, un signo que venga en el dato ("+4,0 %") se saca, o el lector dice "Subió más 4,0 %". Un número largo baja de línea (`overflow-wrap: anywhere`) en lugar de salirse del borde al ancho mínimo.
 - **Una variante de Figma que existe solo por obligación no es un caso a implementar.** Si la descripción dice que `loading` ignora `trend`, el componente en `loading` no renderiza tendencia.
 - **Una sección se nombra por su título:** `<section aria-labelledby="…">` apuntando a su encabezado; los títulos de los bloques de adentro van un nivel abajo. Si hay un estado junto al título (un badge), se lee con él.
 - **Con varias fuentes de datos, cada bloque maneja su propio loading y error.** Si uno falla, solo ese muestra error. Las acciones que dependen de los datos quedan deshabilitadas mientras cargan.
@@ -236,6 +239,13 @@ button, input, select, textarea {
 - **Una sección o pantalla de Figma (un frame que no es componente) se implementa como un *slice*:** markup de página armado con los componentes existentes. Leé **todos** sus frames (anchos y estados) más sus anotaciones antes de escribir: cada frame es un caso a cubrir.
 - **Los nombres de las instancias en una sección son las claves de los datos** (`activeUsers` → `{ id: "activeUsers", … }`, recorrido con `map` y el `id` como `key`).
 - **Antes de crear un componente, buscá si ya existe.** Reutilizá, después extendé con una prop, y recién al final creá. **No crees un componente para algo que aparece una sola vez.**
+- **Extraer a un componente del sistema pide repetición con la misma intención** (Impeccable `extract`: 3 usos o más). Dos piezas que se parecen pero se comportan distinto (un botón de cerrar cuyo hover cambia el color del ícono, y un botón ghost cuyo hover pinta el fondo) quedan separadas hasta que el diseño las unifique. Si no, el componente gana una variante que nadie diseñó.
+- **Un mismo tipo de propiedad de Figma tiene la misma forma en todos los componentes.** Si un Instance swap de ícono recibe un elemento en el `Button` (`iconStart={<Icon …/>}`), también en la card. El componente que lo recibe le pone tamaño y color.
+- **Un componente del sistema no envuelve los handlers que recibe** (un `handleClick` que llama a `onClick`). En Next.js eso lo obliga a ser de cliente, y deja de poder usarse desde una página de servidor. Para bloquear una acción, no se pasa el handler (`onClick={loading ? undefined : onClick}`).
+- **Las props del consumidor se esparcen antes de los atributos que el componente controla** (`{...props}` y después `aria-disabled`, `type`): si van después, los pueden pisar.
+- **Un botón cargando:** `aria-disabled` y no `disabled`, así no pierde el foco mientras trabaja. El ancho no cambia: el spinner ocupa el lugar del ícono, o tapa el texto, que sigue en su lugar con `opacity-0`. **Nunca `invisible`:** `visibility: hidden` también lo saca del lector de pantalla y el botón se queda sin nombre.
+- **Un valor que ya dice su dirección** con una flecha y con texto para lector ("Subió 12%…") va sin signo; si no, se lee "Subió +12%".
+- **Un componente que todavía no está en ninguna pantalla se mide en una página temporal** con todas sus variantes y estados, y la página se borra antes del commit. Cuando el proyecto tiene Storybook, esa página es una story.
 - `children` o props tipo slot para contenido intercambiable.
 - **No uses `useEffect` para datos derivados:** calculalos en el render. `useEffect` es para sincronizar con algo externo.
 - No dupliques estado.
@@ -261,6 +271,9 @@ button, input, select, textarea {
 - **Los estados de Figma son prefijos** (`hover:`, `focus-visible:`, `disabled:`) y el **responsive es mobile first**: sin prefijo es mobile y `sm:`, `md:`… suman desde ese ancho. El frame mobile es la base; el desktop, los prefijos.
 - **Si el componente dimensiona un hijo que llega por prop** (un ícono por Instance swap), usá la variante de hijos en el contenedor (`*:size-5`) en lugar de pedirle el tamaño a quien lo usa.
 - Variantes con **`cva`** y combinación con `cn()` (`clsx` + `tailwind-merge`).
+- **`tailwind-merge` solo conoce las utilidades de Tailwind.** Si el sistema tiene utilidades propias que comparten prefijo (los text styles `text-label-md` al lado de los colores `text-text-muted`), las toma por el mismo grupo y borra una sin avisar. Extendé su configuración (`extendTailwindMerge`) con la lista generada desde los tokens, y probalo con un caso que combine las dos.
+- **Un trazo interior que no suma al alto** (un botón de 40 con borde de 1px) en Tailwind v4 es `inset-ring`. Es una sombra: el modo de alto contraste de Windows (*forced colors*) la borra, así que el componente necesita un contorno para ese modo (por ejemplo, un `outline` transparente).
+- **El texto de un botón no lleva `whitespace-nowrap` por defecto:** en Figma es Hug, pero en un contenedor más angosto que el texto tiene que bajar de línea (con `text-center`) en lugar de generar scroll horizontal.
 - **No concatenes clases dinámicas** (`` `bg-${color}-500` ``): Tailwind no las genera. Usá un mapa de clases completas.
 - Orden de clases consistente; si hay `prettier-plugin-tailwindcss`, que lo haga él.
 
