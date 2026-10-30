@@ -119,6 +119,7 @@ El PR es el lugar donde se revisa un cambio antes de que entre a `main`. En GitH
 3. Claude configuró el repo (regla de `main`, squash, borrar branches).
 4. **PR #19**, con 3 commits, uno por intención: plantillas, reglas de Git en el `CLAUDE.md` y `PENDING_TASKS.md` con links a los issues. Vos lo revisaste y lo mergeaste: el #1 se cerró solo y la branch se borró.
 5. Al cierre apareció una tarea que nadie había anotado: el ADR 0005 pide que la demo avise que los datos son ficticios. Se creó el #20 y el **PR #21** lo sumó al orden de trabajo, con `Refs #20`. Lo mergeaste vos y el #20 siguió abierto, como corresponde.
+6. Al completar los docs, el **PR #23** (cierra el #22) sumó el backlog y el flujo al README y a `PROJECT_CONTEXT.md`, y el `CLAUDE.md` del dashboard pasó a pedir que se lea el issue antes de empezar. Con eso, el milestone `Repo workflow` quedó completo y se cerró.
 
 **Lo que salió mal y cómo se resolvió:**
 
@@ -141,3 +142,5 @@ El PR es el lugar donde se revisa un cambio antes de que entre a `main`. En GitH
 | El formulario de PR en la web se completa con la plantilla | UNVERIFIED | Los dos PRs se abrieron desde la terminal; se comprueba en el próximo que se abra desde la web |
 | Las referencias entre issues son correctas | PASS | Revisadas una por una después de corregirlas |
 | `Refs #N` no cierra el issue al mergear | PASS | Después de mergear el #21, el #20 sigue `OPEN` |
+| El README del repo muestra "How we work" | PASS | Página del repo en GitHub después de mergear el #23 |
+| El milestone `Repo workflow` está completo | PASS | 0 abiertos; cerrado en GitHub |

@@ -101,7 +101,7 @@ En el archivo "Design Engineer Journey" se armó el design system que usa el das
 - **El primer PR (#19):** 3 commits, uno por intención (plantillas, reglas de Git, pendientes con links). Lo revisé en *Files changed* y lo mergeé yo: el issue #1 se cerró solo por el `Closes #1`.
 - **Por qué:** en un equipo, `main` es lo publicado y nadie escribe ahí directo. Con un agente, el PR es mi punto de control: Claude abre el PR con evidencia y yo decido si entra. Y como el repo es público, los issues y los PRs muestran cómo trabajo.
 - **Por qué sin aprobación obligatoria:** GitHub no deja aprobar el PR propio; con una sola persona en el repo, exigirla lo traba. La revisión se hace igual, antes del merge.
-- **Lo que apareció:** el ADR 0005 pide que la demo avise que los datos son ficticios y ninguna tarea lo cubría. Se creó el #20, y el PR #21 lo sumó al orden de trabajo antes del deploy. El #20 sigue abierto a propósito: el PR decía `Refs #20`, porque anotar la tarea no es terminarla. El PR #23 sumó el backlog y el flujo al README y a `PROJECT_CONTEXT.md`.
+- **Lo que apareció:** el ADR 0005 pide que la demo avise que los datos son ficticios y ninguna tarea lo cubría. Se creó el #20, y el PR #21 lo sumó al orden de trabajo antes del deploy. El #20 sigue abierto a propósito: el PR decía `Refs #20`, porque anotar la tarea no es terminarla. El PR #23 sumó el backlog y el flujo al README y a `PROJECT_CONTEXT.md`, y con eso se cerró el milestone `Repo workflow`.
 - **Evidencia:** el #1 está cerrado por el PR #19, la branch se borró sola, `main` tiene un commit `(#19)` y la API de GitHub muestra las tres reglas activas sobre `main`. Quedó UNVERIFIED que la plantilla de PR se cargue en la web (los dos PRs se abrieron desde la terminal).
 
 ---
