@@ -122,6 +122,47 @@ Salario base publicado (NYC): USD 120k–250k + equity.
 4. **Ledger de verificación** (guía §17): cada criterio como `PASS`, `FAIL`, `UNVERIFIED`, `OUT OF SCOPE` o `NOT APPLICABLE`, con evidencia.
 5. **Craft:** ¿se ve igual a Figma? Espaciado, tipografía, hover/focus/disabled, motion.
 
+### Impeccable: criterio de UI senior en cada slice (desde la 5.6)
+
+[Impeccable](https://impeccable.style/docs) (de Paul Bakaus) le da al agente vocabulario de diseño. Tiene 24 comandos, un hook que revisa cada cambio de UI mientras el agente edita y un detector con 62 controles de "AI slop", lo genérico que suele generar la IA. **Se usan todos los comandos**, cada uno en la clase que le corresponde. El objetivo es que lo que deja Claude Code esté a nivel de un UI designer senior. El ledger mide si el código es igual a Figma; Impeccable juzga si el diseño está bien.
+
+**Reglas para usarlo en un design system:**
+1. **Puede mejorar el sistema, no saltearlo.** Si un comando quiere un color, un tamaño o una tipografía que no existen, se convierte en token: primero en Figma y después en `globals.css`. Nunca un valor suelto. Así el sistema mejora y sigue habiendo una sola fuente de verdad.
+2. **Lo que es producto lo propone y Jonathan lo decide:** qué se muestra, qué se saca y qué dice un texto. El texto aprobado se actualiza en Figma y en `PROJECT_CONTEXT.md`.
+3. **Todo comando que cambia algo se trabaja como un slice:** plan → aprobación → PR con ledger.
+4. **`PRODUCT.md` y `DESIGN.md` (los archivos de Impeccable) no son una segunda fuente de verdad.** Se arman desde `PROJECT_CONTEXT.md`, Figma y `globals.css`, y se regeneran cuando esos cambian.
+5. **Al cerrar cada slice de UI se corren `critique` y `audit`.** Cada hallazgo de prioridad alta se corrige en el slice o queda como issue.
+
+| Comando | Qué hace | Dónde |
+|---|---|---|
+| `init` | Guarda el contexto del producto en `PRODUCT.md` | 5.6 |
+| `document` | Registra el sistema visual en `DESIGN.md` | 5.6; se actualiza en la 6.6 |
+| Hooks (`hooks on`) y detector | Revisan cada cambio de UI mientras el agente edita | 5.6, y activos desde ahí |
+| `doctor` | Repara el contexto de Impeccable cuando quedó viejo | Cada vez que cambian Figma, los tokens o los docs |
+| `critique` | Qué frena al diseño y qué mejorar primero | 5.6 y al cierre de cada slice de UI |
+| `audit` | Problemas de implementación (accesibilidad, performance, responsive), priorizados | 5.6, al cierre de cada slice de UI y en la 8.3 |
+| `polish` | Pasada final, para que se sienta terminado | 5.6 (el aviso), 5.8 y 8.6 |
+| `harden` | Que funcione cuando los datos, la conexión o una acción fallan | 5.6, 6.3 y 8.4 |
+| `clarify` | Textos que dicen qué pasó y qué hacer | 5.6, 5.7 (los textos de los 6 estados) y 5.9 |
+| `shape` | De una idea a un brief | 5.7 (antes de Figma), 5.9 y 9.2 |
+| `layout` | Jerarquía, agrupación y ritmo | 5.7 (las pantallas en Figma) y 5.9 |
+| `typeset` | Tipografía más fácil de leer y de reconocer | 5.7 (revisión de los text styles) y 9.2 |
+| `colorize` | Color para acciones, estados y carácter | 5.7 y 6.5 (dark mode) |
+| `adapt` | Que un diseño funcione en otra pantalla o dispositivo | 5.7 (mobile) y 8.5 |
+| `bolder` / `quieter` | Más presencia / menos ruido, sin perder el carácter | 5.8 (el indicador de alcance) y 5.9 |
+| `optimize` | Encontrar qué lo hace lento, arreglarlo y medir | 5.8 (antes del deploy) y 8.5 |
+| `extract` | Los patrones repetidos pasan a componentes y estilos compartidos | 6.2 (por ejemplo, la X del aviso pasa a `Button`) y 6.6 |
+| `generate` | Variaciones de un elemento, para elegir una | 5.9 y 7.6 |
+| `live` | Señalar algo en la página y explorar variaciones | 5.9, 7.6 y 9.2 |
+| `distill` | Menos ruido, para que lo importante se encuentre | 5.9 y 8.6 |
+| `delight` | Momentos memorables que tienen sentido | 5.9, 7.6 y 9.2 |
+| `overdrive` | Ir más allá de lo esperado | 7.6 y 9.2. En el dashboard, solo como una variante exploratoria en la 5.9 que se decide |
+| `animate` | Motion que explica cambios, relaciones y feedback | 7.1–7.4 |
+| `onboard` | Que alguien nuevo llegue rápido a su primer resultado | 8.4 (el vacío inicial) |
+| `impeccable` | El pedido libre: describir qué hacer o mejorar | Cualquier clase |
+
+**Modo:** Impeccable diseña distinto según el tipo de superficie. El dashboard es *Operate*: la persona viene a hacer una tarea, así que la claridad y la consistencia pesan más que la expresión. El portfolio (9.2) es *Experience* y *Persuade*.
+
 ---
 
 ## 5. Módulos y clases
@@ -162,10 +203,10 @@ Guía §4, 11–13, 15–16. Arranca el **proyecto ancla 1**, en su propio repo 
 | 5.3 | Preparar el repo para el agente: `CLAUDE.md`, `PROJECT_CONTEXT`, `CURRENT_STATE`, `PENDING_TASKS` (guía §11). ADRs (*Architecture Decision Records*): `docs/adr/` con un README índice, más `docs/research/` para el contexto que lleva a cada decisión. |
 | 5.4 | Git en equipo: branches, diff, commits con intención, pull requests (guía §12). GitHub Issues: crear issues (también desde comentarios de Figma), agruparlos por alcance y vincularlos al PR (`Closes #12`). Instalar y autenticar GitHub CLI (`gh`) para hacerlo desde la terminal. |
 | 5.5 | Trabajar por slices: plan → aprobación → implementación (guía §13, 15). Tip: iterar layout con wireframes en ASCII antes de diseñar o codear (gasta pocos tokens). Al cerrar: el proceso pasa a la skill `design-implementation`, para que valga en cualquier proyecto. |
-| 5.6 | Revisar implementaciones: señales de código poco confiable (guía §16). **Impeccable como segundo revisor** (plugin ya instalado en Claude Code): `critique` y `audit` sobre el `DemoNotice`, comparados con el ledger de la 5.5. El ledger mide si el código es igual a Figma; Impeccable juzga si el diseño está bien. `polish` se corre como un slice (plan → aprobación); si encuentra un token que falta, va primero a Figma. Regla: lo que es decisión de producto (qué se muestra, qué se saca, qué dice) Impeccable lo propone y Jonathan lo decide. |
-| 5.7 | **Proyecto ancla 1** — Dashboard de Gurises Unidos: pantallas en Figma (AI-ready) + slice 1 (shell: sidebar, barra superior, tabs). *Se cursa después de 6.4.* |
-| 5.8 | Slice 2 (indicadores de alcance, con la MetricCard del sistema) + deploy de preview en Vercel. *Se cursa después de 6.4.* |
-| 5.9 | **Diseñar en código:** una pantalla nueva del dashboard sin pasar por Figma. Brief → wireframe en ASCII → Claude la arma con los tokens y componentes del sistema → se itera en el navegador (2 o 3 variantes lado a lado) → ledger. Al final se decide qué vuelve a Figma (un patrón o un componente nuevo) para que el archivo no quede atrás. **Con Impeccable:** `shape` para armar el brief; `distill` (qué sacar) y `clarify` (qué dice el texto) como propuestas que decide Jonathan, y el texto aprobado vuelve a Figma y a `PROJECT_CONTEXT.md`; `critique` para comparar las variantes. Sus comandos de estilo (`colorize`, `bolder`, `typeset`) solo con los tokens del sistema; si piden uno nuevo, se crea primero en Figma. *Se cursa después de 5.8.* |
+| 5.6 | Revisar implementaciones: señales de código poco confiable (guía §16). **Impeccable** (§4): instalarlo desde su web, `init`, `document` y los hooks. Después `critique`, `audit`, `polish`, `harden` y `clarify` sobre el `DemoNotice` y `/tokens`, comparados con el ledger de la 5.5. |
+| 5.7 | **Proyecto ancla 1** — Dashboard de Gurises Unidos: pantallas en Figma (AI-ready) + slice 1 (shell: sidebar, barra superior, tabs). **Impeccable:** `shape` para el brief antes de Figma; `layout`, `typeset`, `colorize` y `adapt` sobre las pantallas, y lo que proponen se aplica en Figma; `clarify` para los textos de los 6 estados. *Se cursa después de 6.4.* |
+| 5.8 | Slice 2 (indicadores de alcance, con la MetricCard del sistema) + deploy de preview en Vercel. **Impeccable:** `bolder` o `quieter` para el peso del indicador de alcance, `polish`, y `optimize` antes del deploy. *Se cursa después de 6.4.* |
+| 5.9 | **Diseñar en código:** una pantalla nueva del dashboard sin pasar por Figma. Brief → wireframe en ASCII → Claude la arma con los tokens y componentes del sistema → se itera en el navegador (2 o 3 variantes lado a lado) → ledger. Al final se decide qué vuelve a Figma (un patrón o un componente nuevo) para que el archivo no quede atrás. **Impeccable:** `shape` para el brief, `layout`, y `generate` y `live` para las variantes lado a lado. `bolder`, `quieter` y `delight` sobre la variante elegida, y `overdrive` como una variante exploratoria más. `distill` y `clarify` como propuestas que decide Jonathan. `critique` para elegir. *Se cursa después de 5.8.* |
 
 ### Módulo 6 — Design system agéntico
 Guía §9–11, 14. **Proyecto ancla 2.** Se cursa en dos partes: 6.1–6.4 entre 5.6 y 5.7, y 6.5–6.11 después del dashboard.
@@ -173,15 +214,15 @@ Guía §9–11, 14. **Proyecto ancla 2.** Se cursa en dos partes: 6.1–6.4 entr
 | Clase | Tema |
 |---|---|
 | 6.1 | Tokens en código mapeados 1 a 1 con las variables de Figma (primitivo → semántico). Exportar variables con Figma Console MCP o Tokens Studio (gratis) y compilarlas a CSS con Style Dictionary. |
-| 6.2 | Componentes con variantes en código (`cva`, shadcn/ui): API de componentes. |
-| 6.3 | Accesibilidad de componentes: semántica, teclado, foco, Radix. |
+| 6.2 | Componentes con variantes en código (`cva`, shadcn/ui): API de componentes. **Impeccable:** `extract` para pasar patrones repetidos a componentes (por ejemplo, la X del aviso a `Button`). |
+| 6.3 | Accesibilidad de componentes: semántica, teclado, foco, Radix. **Impeccable:** `harden` y `audit` por componente. |
 | 6.4 | Storybook: stories por variante y estado, addon de accesibilidad (guía §10). |
-| 6.5 | Dark mode y modos de variables. |
-| 6.6 | Documentación para agentes: `docs/design-system/`, `AI_CONTEXT.md` y la regla en `CLAUDE.md` (guía §11.1). **Guía de uso de tokens y text styles:** para cada uno, para qué es, cuándo sí y cuándo no (por ejemplo, `heading/metric` solo para el número de un indicador). Va en la descripción de cada variable y text style en Figma (la lee el MCP) y en `docs/design-system/`, con la regla en `CLAUDE.md` de leerla antes de elegir. Así el agente no deduce el uso por el nombre cuando no hay Figma (5.9, 6.10). Primer caso a resolver: los íconos usan colores de texto (`color/text/muted`, `color/text/default`) porque no hay `color/icon/muted`; decidir si se separan (de la 5.5). |
+| 6.5 | Dark mode y modos de variables. **Impeccable:** `colorize` para la paleta oscura, que se carga como tokens. |
+| 6.6 | Documentación para agentes: `docs/design-system/`, `AI_CONTEXT.md` y la regla en `CLAUDE.md` (guía §11.1). **Guía de uso de tokens y text styles:** para cada uno, para qué es, cuándo sí y cuándo no (por ejemplo, `heading/metric` solo para el número de un indicador). Va en la descripción de cada variable y text style en Figma (la lee el MCP) y en `docs/design-system/`, con la regla en `CLAUDE.md` de leerla antes de elegir. Así el agente no deduce el uso por el nombre cuando no hay Figma (5.9, 6.10). Primer caso a resolver: los íconos usan colores de texto (`color/text/muted`, `color/text/default`) porque no hay `color/icon/muted`; decidir si se separan (de la 5.5). **Impeccable:** `document` y `extract` actualizan `DESIGN.md`, que apunta a esta guía sin copiarla. |
 | 6.7 | Code Connect: concepto, template files, checklist. En plan Free: **mapeo documentado** Figma ↔ código (guía §9). |
-| 6.8 | Skills y reglas: gobernar al agente con roles (Component Architect, Plan Reviewer, Slice Closer…) (guía §14). Regla de supuestos explícitos: si el agente asume algo, lo dice y nombra el riesgo. El proceso completo (plan → aprobación → código → diff → ledger) queda en las skills con sus roles. |
+| 6.8 | Skills y reglas: gobernar al agente con roles (Component Architect, Plan Reviewer, Slice Closer…) (guía §14). Regla de supuestos explícitos: si el agente asume algo, lo dice y nombra el riesgo. El proceso completo (plan → aprobación → código → diff → ledger) queda en las skills con sus roles. Los roles usan Impeccable: el Plan Reviewer corre `critique` sobre el brief y el Slice Closer, `audit` y `polish`. |
 | 6.9 | StorySync y drift Figma ↔ código: concepto y demo (opcional según requisitos) (guía §10.1). |
-| 6.10 | **Prueba final:** pedirle a Claude Code una pantalla nueva y verificar que use tu sistema sin indicaciones extra. |
+| 6.10 | **Prueba final:** pedirle a Claude Code una pantalla nueva y verificar que use tu sistema sin indicaciones extra, con los hooks de Impeccable activos y pasando `critique` y `audit`. |
 | 6.11 | Contratos de componentes (opcional): spec agnóstica del framework (anatomía, estados, intención), catálogo de props por framework y emitters que generan el código. El código generado no se edita: se edita el contrato. Práctica: escribir el contrato de un componente a partir de la API de Base UI. |
 
 ### Módulo 8 — QA y verificación con evidencia
@@ -191,10 +232,10 @@ Guía §17–18. Cerrar el **proyecto ancla 1** con nivel de producción.
 |---|---|
 | 8.1 | Ledger de verificación: `PASS`/`FAIL`/`UNVERIFIED` con evidencia. |
 | 8.2 | Checks estáticos: lint, typecheck, build. Leer sus resultados. |
-| 8.3 | Accesibilidad en runtime: teclado, foco, lector de pantalla, contraste. |
-| 8.4 | Datos remotos: loading, error, retry, vacío (guía §18). Tablas y filtros. |
-| 8.5 | Responsive, contenido extremo y performance (Core Web Vitals). |
-| 8.6 | Dashboard: slices finales cerrados con ledger. |
+| 8.3 | Accesibilidad en runtime: teclado, foco, lector de pantalla, contraste. **Impeccable:** `audit`. |
+| 8.4 | Datos remotos: loading, error, retry, vacío (guía §18). Tablas y filtros. **Impeccable:** `harden` para los estados, y `onboard` como propuesta para el vacío inicial (hoy sin botón, por decisión de producto). |
+| 8.5 | Responsive, contenido extremo y performance (Core Web Vitals). **Impeccable:** `adapt` y `optimize`. |
+| 8.6 | Dashboard: slices finales cerrados con ledger. **Impeccable:** `distill` y `polish` sobre el dashboard completo. |
 
 ### Módulo 1 — CSS para juzgar y pulir (1.1–1.2 ✅ · 1.3–1.8 después del módulo 8)
 Lo que más vas a corregir de lo que genera la IA. Es tu diferencial.
@@ -244,18 +285,18 @@ Lo que la guía no cubre y Profound pide explícitamente. **Proyecto ancla 3.**
 
 | Clase | Tema |
 |---|---|
-| 7.1 | Principios: cuándo animar, duración, easing, propósito. |
+| 7.1 | Principios: cuándo animar, duración, easing, propósito. **Impeccable:** `animate` desde esta clase hasta la 7.4. |
 | 7.2 | CSS transitions y keyframes + performance (`transform`/`opacity`). |
 | 7.3 | Motion (motion.dev): variants, springs, `AnimatePresence`. |
 | 7.4 | Layout animations, gestos y `prefers-reduced-motion`. |
 | 7.5 | Documentar motion como tokens (duraciones y curvas) en el design system. |
-| 7.6 | **Craft lab:** experimentos de micro-interacción publicados. |
+| 7.6 | **Craft lab:** experimentos de micro-interacción publicados. **Impeccable:** `delight`, `overdrive`, `generate` y `live`. |
 
 ### Módulo 9 — Portfolio y búsqueda
 | Clase | Tema |
 |---|---|
 | 9.1 | Narrativa: mostrar el **proceso** (Figma AI-ready → MCP → slices → ledger), no solo el resultado. |
-| 9.2 | Portfolio en Next.js (con tu propio design system). |
+| 9.2 | Portfolio en Next.js (con tu propio design system). **Impeccable** en modo *Experience*: `shape`, `typeset`, `colorize`, `bolder`, `delight`, `overdrive` y `live`. |
 | 9.3 | Case studies en inglés. |
 | 9.4 | Live coding de UI ✍️: CSS y componentes React chicos. |
 | 9.5 | Take-home simulado: con agente y sin agente. |

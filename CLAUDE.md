@@ -8,6 +8,7 @@ Repo del curso de Jonathan (product designer → design engineer). Las skills de
 - **Sin preguntas ni ejercicios para responder** (tampoco "explicame con tus palabras"). Todo se muestra resuelto; la práctica es hacer algo donde corresponde (Figma, el repo, DevTools) y Claude lo revisa. Si la clase es solo de lectura, la práctica es otro ejemplo resuelto.
 - Si aplicás una regla de las skills que Jonathan todavía no vio en clase, explicala en una línea simple.
 - Lo técnico lo decide Claude y lo explica; a Jonathan se le preguntan solo decisiones de producto.
+- **Impeccable** (impeccable.style) se usa en todas las clases de UI desde la 5.6: qué comando va en cada clase y sus reglas están en `PLAN-DE-ESTUDIO.md` §4. Lo que propone y es producto lo decide Jonathan; lo que cambia el estilo pasa por tokens, primero en Figma.
 - Al cerrar cada clase: progreso + bitácora, reglas nuevas a las skills (escritas en forma general; lo específico de este repo va acá), commit en inglés y push.
 - **Si la clase tocó el dashboard:** actualizar también [`DASHBOARD-GURISES-UNIDOS.md`](DASHBOARD-GURISES-UNIDOS.md) (qué se hizo, por qué, archivos nuevos y preguntas de entrevista) y, en el repo del dashboard, `docs/CURRENT_STATE.md` y `docs/PENDING_TASKS.md`. Jonathan lo usa para explicar el proyecto.
 
