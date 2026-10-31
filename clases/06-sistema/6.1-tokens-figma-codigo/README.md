@@ -118,3 +118,5 @@ Fondo de una superficie destacada, como un aviso. Siempre con borde border/accen
 ## 6. Práctica (pendiente)
 
 Crear `color/action/secondary/bg-pressed` en Figma (#14) quedó para la 6.2, cuando se arma el `Button`, que es el que necesita el estado al apretar. Va en la colección `Semantic`, apunta a un primitivo y lleva *code syntax* WEB `var(--color-action-secondary-bg-pressed)`. Después se exporta y recorre el mismo camino que las notas.
+
+> **Cómo terminó (6.2):** al leer Figma salieron dos tokens en lugar de uno: `color/action/primary/bg-pressed` y `color/action/subtle/bg-pressed` (para secondary y ghost, que ya compartían el hover). Está en la guía de la 6.2, §3.
