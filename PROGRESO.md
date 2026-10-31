@@ -3,7 +3,7 @@
 > Marcá `[x]` cuando una clase esté terminada (incluida la práctica).
 > El tutor lee este archivo al empezar cada sesión.
 
-**Clase actual:** 6.3
+**Clase actual:** 6.4
 **Pausada:** 1.3 (Flexbox): material listo en `clases/01-css/1.3-flexbox/`, se retoma después del módulo 8
 
 ### Dónde está cada cosa
@@ -23,7 +23,7 @@
 |---|---|
 | **6.8** | Sumar a las skills los roles del agente (Plan Reviewer, Slice Closer…). El proceso de slices ya está en `design-implementation` §18 y en el `CLAUDE.md` del dashboard (5.5). |
 | **Práctica de la 6.2** | Decidir en Figma el issue #36 del dashboard (`Button`: contraste entre variantes, hover sobre superficies celestes, 44px en formularios mobile) y el #38 (`MetricCard`: base de comparación visible, ícono de "sin cambios", formato del %, textos de error y de sin dato, dónde va "Reintentar", títulos largos). |
-| **6.3** | Issue #37 del dashboard: alto contraste de Windows, anuncio del fin de la carga del `Button`, teclado mientras carga. Probar con un lector de pantalla real (NVDA) lo que quedó UNVERIFIED en la 6.2. |
+| **6.4 (de la 6.3)** | Issue #39 del dashboard: probar los componentes con NVDA sobre las stories. Decide si la zona de estado también anuncia "Guardando" (ADR 0009). No se hizo en la 6.3 por decisión mía. |
 | **6.4** | La referencia de tokens pasa a Storybook y `/tokens` queda solo para desarrollo (issue #35). Bloquea el primer deploy (5.8). |
 | **6.6** | Notas de uso para los tokens y text styles que no las tienen (issue #34), con el caso de los íconos. |
 | **5.9** | Configurar `live` de Impeccable al usarlo por primera vez (inyecta un script en la app; no se hizo en la 5.6 a propósito). |
@@ -64,7 +64,7 @@
 - [x] 5.6 Revisar implementaciones
 - [x] 6.1 Tokens Figma ↔ código
 - [x] 6.2 Componentes con variantes
-- [ ] 6.3 Accesibilidad de componentes
+- [x] 6.3 Accesibilidad de componentes
 - [ ] 6.4 Storybook
 - [ ] 5.7 Dashboard: Figma + slice 1
 - [ ] 5.8 Dashboard: slice 2 + deploy
@@ -142,6 +142,32 @@
 ---
 
 ## Bitácora
+
+### 2026-10-31 · Clase 6.3 — Accesibilidad de componentes
+- **Aprendí:**
+  - Un componente accesible cumple cuatro cosas: semántica (el elemento correcto), nombre, teclado y foco. Además respeta los modos del sistema: movimiento reducido y colores forzados.
+  - El alto contraste de Windows borra fondos y sombras. Todo lo que se dibujaba con un relleno o con `box-shadow` desaparece: el borde del secondary, los skeletons y la píldora del badge. La solución es un `outline` de 1px que aparece solo en ese modo (`forced-colors:`): no ocupa lugar y Windows le pone su color.
+  - `pointer-events: none` frena al mouse, no al teclado: con Espacio, el botón que carga se seguía viendo apretado.
+  - El botón dice que está ocupado; el resultado ("Guardado") lo anuncia quien lo usa, en una zona `role="status"` que existe desde el principio (ADR 0009). `status` espera su turno; `alert` interrumpe.
+  - Radix o Base UI van solo cuando el componente tiene un patrón de teclado propio (modal, tabs, menús). Si el HTML nativo alcanza, va el nativo.
+  - El árbol de accesibilidad dice qué recibe el lector, no qué dice: para eso hace falta uno real.
+- **Decidí:** no hacer la prueba con NVDA. Quedó en el issue #39, para hacerla sobre las stories de la 6.4.
+- **Claude hizo:**
+  - Slice 1 (#37, `675545e`): contorno en alto contraste para el `Button` y la X del aviso; el color de apretado solo si el botón no está ocupado; `loading` le gana a `disabled`; el ADR 0009. Anotaciones nuevas en Figma.
+  - Slice 2 (#40, `6dd3e75`): contorno en alto contraste para los skeletons de la `MetricCard` y la píldora del `StatusBadge`. Anotaciones en Figma.
+  - `audit` en cada slice y `harden` de la card.
+- **Sorpresa:** `harden` encontró que cualquier página con una card cargando tenía scroll horizontal. El título oculto llevaba `w-full` y `sr-only` juntos, y medía el ancho de la ventana. En la 6.2 se midió la card y no la página; por eso no apareció.
+- **Verificado:**
+  - En Chrome, con el alto contraste emulado: los contornos aparecen solo en ese modo y ningún tamaño cambia.
+  - El foco se distingue del contorno.
+  - Con Espacio, el botón que carga no se pinta como apretado.
+  - `loading` + `disabled` sigue enfocable.
+  - Sin scroll horizontal a 800 ni a 320, y el contenido extremo queda dentro de 288px.
+  - `audit`: 17/20 el `Button` y 18/20 la card y el badge. El detector solo marcó Inter, que es la tipografía del sistema.
+  - UNVERIFIED: lector de pantalla real (#39).
+- **Sumado a las skills:**
+  - En `design-implementation`: el patrón de colores forzados (`outline` solo en ese modo, también para skeletons y píldoras), el apretado de un botón ocupado, `loading` contra `disabled`, quién anuncia el resultado, cuándo usar una librería headless, `sr-only` sin clases de tamaño, medir el scroll de la página y cómo emular el alto contraste desde un script.
+  - En `figma-ai-ready`: anotar el alto contraste y quién anuncia el resultado de una acción.
 
 ### 2026-10-30 · Clase 6.2 — Componentes con variantes
 - **Aprendí:**

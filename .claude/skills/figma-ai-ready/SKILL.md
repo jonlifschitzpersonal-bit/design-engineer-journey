@@ -89,6 +89,8 @@ La skill `design-implementation` cubre la otra mitad: cómo se traduce todo esto
 - **Responsive:** se dibuja el ancho donde cambia el orden y se anota el que resuelve la grilla sola. Breakpoints: los del proyecto; si no hay, los de Tailwind (640 / 768 / 1024 / 1280).
 - **Contraste calculado, no estimado:** 4.5:1 texto normal, 3:1 texto grande, íconos con significado y anillo de foco. Deshabilitados exentos. Un borde bajo solo vale si es decorativo; el de un input necesita 3:1.
 - **Ningún significado solo con color,** y el texto para lector de pantalla se anota.
+- **Anotá qué pasa en alto contraste** (colores forzados de Windows) con lo que depende de un relleno o una sombra: un botón sin borde, un borde interior, un skeleton, una píldora. Ese modo los borra; la anotación dice qué contorno los reemplaza, para que no se resuelva en el código sin que el diseño lo sepa.
+- **En una acción asíncrona, anotá quién anuncia el resultado y con qué texto** ("Guardado", "No pudimos guardar"): no lo anuncia el botón, sino la pantalla que lo usa. Si dos propiedades se pueden combinar sin que el diseño lo muestre (`loading` y `disabled`), anotá cuál gana.
 
 ## 6. Anotaciones y "ready for dev"
 

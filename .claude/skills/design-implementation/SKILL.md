@@ -155,7 +155,7 @@ button, input, select, textarea {
 - `clamp()` para títulos que escalan entre un mínimo y un máximo.
 - Container queries si un componente cambia según su espacio y no según la pantalla.
 - `min-h-dvh` en lugar de `100vh` para pantallas completas en mobile.
-- **Nunca scroll horizontal.** Probá a 320px.
+- **Nunca scroll horizontal.** Probá a 320px midiendo **la página** (`document.documentElement.scrollWidth === innerWidth`), no solo el componente: un hijo con `position: absolute` puede salirse aunque el componente mida lo que dice el diseño.
 
 ## 9. Color y tokens
 
@@ -198,8 +198,17 @@ button, input, select, textarea {
 - **Si no hay datos reales, los estados se muestran con un control de demo** marcado como tal, fuera del diseño y oculto si no carga JavaScript.
 - `hover` solo con mouse: Tailwind v4 ya lo respeta; en CSS puro, `@media (hover: hover)`.
 - **Un aviso que se puede cerrar** es una región con un nombre que diga de qué trata (`<section aria-label="Aviso de datos ficticios">`), no una alerta (`role="alert"` interrumpe al lector). Tampoco un `<aside>`: es un landmark "complementario", contenido accesorio, y el aviso es parte de la página. Un nombre genérico ("Aviso") no le dice al lector de pantalla si le importa. La X es un `<button>` con `aria-label`. **Al cerrarlo, el foco va a un destino lógico** (el contenido de la página, con `tabIndex={-1}`), no se pierde en el `<body>`. Ese destino no es interactivo, así que puede ir sin anillo de foco: es la única excepción a "nunca `outline: none`".
-- Componentes interactivos complejos (dialog, menu, tabs, combobox, tooltip): **librería headless accesible** (Radix, Base UI) o shadcn/ui, no desde cero.
+- Componentes interactivos complejos (dialog, menu, tabs, combobox, tooltip): **librería headless accesible** (Radix, Base UI) o shadcn/ui, no desde cero. La señal es un patrón de teclado propio (flechas, Esc, foco atrapado y devuelto). **Si el HTML nativo alcanza** (`<button>`, `<a>`, `<details>`), va el nativo, sin librería.
 - Respetá `prefers-reduced-motion`.
+- **Respetá los colores forzados** (alto contraste de Windows, `forced-colors: active`). Ese modo reemplaza todos los colores por los del sistema y **borra fondos y sombras**: un botón que se distingue por su relleno, un borde hecho con `box-shadow`, un skeleton o una píldora desaparecen.
+  - Lo que tiene que seguir viéndose lleva un `outline` de 1px **solo en ese modo**, hacia adentro (`forced-colors:outline forced-colors:-outline-offset-1` en Tailwind). No ocupa lugar, así que nada cambia de tamaño, y el sistema le pone su color.
+  - El anillo de foco declara su `outline-offset` (`focus-visible:outline-offset-0`) para no heredar el de adentro, y así se distingue del contorno.
+  - Un `disabled` nativo ya sale en el gris del sistema (`GrayText`). Un punto o un ícono decorativo puede desaparecer si el texto ya dice lo mismo.
+  - Se prueba emulándolo: DevTools → *Rendering* → *forced-colors*. Desde un script, con el protocolo de Chrome (`Emulation.setEmulatedMedia` con `forced-colors: active`): `emulateMediaFeatures` de Puppeteer no lo acepta. Se miden los tamaños en los dos modos y se mira la captura.
+- **Un control ocupado no se ve apretado.** `:active` también se activa con Espacio, y `pointer-events: none` solo frena al mouse: el estilo de apretado va condicionado (`not-aria-disabled:active:`).
+- **El resultado de una acción asíncrona lo anuncia quien la dispara**, no el botón: es el único que sabe si salió bien o mal y qué texto corresponde. Va en una zona `role="status"` (cortés: espera su turno) que **existe desde el principio**, vacía. Si aparece junto con el texto, el lector no la oye. `role="alert"` interrumpe, y se reserva para lo urgente. Tampoco una región viva dentro del botón: su contenido pasa a ser el nombre del botón.
+- **`sr-only` no se combina con clases de tamaño.** Un `w-full` le gana al ancho de 1px, y como `sr-only` es `position: absolute`, el elemento oculto mide el ancho de la ventana y genera scroll horizontal. Las clases de tamaño van solo cuando el elemento se ve (`loading ? "sr-only" : "w-full"`).
+- **El árbol de accesibilidad** (DevTools → *Accessibility*, o el snapshot de un script) **dice qué recibe el lector, no qué dice:** cada lector anuncia distinto, por ejemplo, el cambio de nombre de un botón con foco. Lo que depende de eso se prueba con un lector real (NVDA en Windows, VoiceOver en Mac). Si no se probó, queda UNVERIFIED, con su issue.
 - Animá solo `transform` y `opacity`. Nunca `transition: all`.
 
 ## 11. Íconos
@@ -243,7 +252,7 @@ button, input, select, textarea {
 - **Un mismo tipo de propiedad de Figma tiene la misma forma en todos los componentes.** Si un Instance swap de ícono recibe un elemento en el `Button` (`iconStart={<Icon …/>}`), también en la card. El componente que lo recibe le pone tamaño y color.
 - **Un componente del sistema no envuelve los handlers que recibe** (un `handleClick` que llama a `onClick`). En Next.js eso lo obliga a ser de cliente, y deja de poder usarse desde una página de servidor. Para bloquear una acción, no se pasa el handler (`onClick={loading ? undefined : onClick}`).
 - **Las props del consumidor se esparcen antes de los atributos que el componente controla** (`{...props}` y después `aria-disabled`, `type`): si van después, los pueden pisar.
-- **Un botón cargando:** `aria-disabled` y no `disabled`, así no pierde el foco mientras trabaja. El ancho no cambia: el spinner ocupa el lugar del ícono, o tapa el texto, que sigue en su lugar con `opacity-0`. **Nunca `invisible`:** `visibility: hidden` también lo saca del lector de pantalla y el botón se queda sin nombre.
+- **Un botón cargando:** `aria-disabled` y no `disabled`, así no pierde el foco mientras trabaja. El ancho no cambia: el spinner ocupa el lugar del ícono, o tapa el texto, que sigue en su lugar con `opacity-0`. **Nunca `invisible`:** `visibility: hidden` también lo saca del lector de pantalla y el botón se queda sin nombre. **Si llegan `loading` y `disabled` juntos, gana `loading`:** deshabilitarlo mandaría el foco al principio de la página, justo lo que `loading` evita.
 - **Un valor que ya dice su dirección** con una flecha y con texto para lector ("Subió 12%…") va sin signo; si no, se lee "Subió +12%".
 - **Un componente que todavía no está en ninguna pantalla se mide en una página temporal** con todas sus variantes y estados, y la página se borra antes del commit. Cuando el proyecto tiene Storybook, esa página es una story.
 - `children` o props tipo slot para contenido intercambiable.
@@ -272,7 +281,7 @@ button, input, select, textarea {
 - **Si el componente dimensiona un hijo que llega por prop** (un ícono por Instance swap), usá la variante de hijos en el contenedor (`*:size-5`) en lugar de pedirle el tamaño a quien lo usa.
 - Variantes con **`cva`** y combinación con `cn()` (`clsx` + `tailwind-merge`).
 - **`tailwind-merge` solo conoce las utilidades de Tailwind.** Si el sistema tiene utilidades propias que comparten prefijo (los text styles `text-label-md` al lado de los colores `text-text-muted`), las toma por el mismo grupo y borra una sin avisar. Extendé su configuración (`extendTailwindMerge`) con la lista generada desde los tokens, y probalo con un caso que combine las dos.
-- **Un trazo interior que no suma al alto** (un botón de 40 con borde de 1px) en Tailwind v4 es `inset-ring`. Es una sombra: el modo de alto contraste de Windows (*forced colors*) la borra, así que el componente necesita un contorno para ese modo (por ejemplo, un `outline` transparente).
+- **Un trazo interior que no suma al alto** (un botón de 40 con borde de 1px) en Tailwind v4 es `inset-ring`. Es una sombra: el modo de alto contraste de Windows (*forced colors*) la borra, así que el componente necesita un contorno para ese modo (`forced-colors:outline forced-colors:-outline-offset-1`, sección 10).
 - **El texto de un botón no lleva `whitespace-nowrap` por defecto:** en Figma es Hug, pero en un contenedor más angosto que el texto tiene que bajar de línea (con `text-center`) en lugar de generar scroll horizontal.
 - **No concatenes clases dinámicas** (`` `bg-${color}-500` ``): Tailwind no las genera. Usá un mapa de clases completas.
 - Orden de clases consistente; si hay `prettier-plugin-tailwindcss`, que lo haga él.

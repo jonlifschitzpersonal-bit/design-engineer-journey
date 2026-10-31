@@ -182,6 +182,31 @@ En el archivo "Design Engineer Journey" se armó el design system que usa el das
 - **Lo que queda para mí:** las preguntas de diseño de la revisión, en Figma: contraste entre variantes del `Button` y 44px en mobile (#36), y en la card la base de comparación visible, el ícono de "sin cambios", el formato del % y los textos de error (#38). Lo de accesibilidad que falta (alto contraste, anuncio de la carga) va a la 6.3 (#37).
 - **Evidencia:** medido en Chrome con páginas temporales que se borraron: `Button` 110×40 y 96×32 como en Figma, colores por variante y estado, foco con teclado; `MetricCard` 194px en default, loading y error (sin saltos al cargar); todos los colores son tokens; sin desborde a 320. `critique` 23/32 (`Button`) y 18/28 (`MetricCard`, antes de las correcciones); `audit` 17/20 en los dos.
 
+### Clase 6.3 — Accesibilidad de componentes (31/10/2026)
+
+- **Qué se hizo:** los componentes funcionan con teclado y con el alto contraste de Windows. Dos slices:
+  - **Slice 1, el `Button` (#37, commit `675545e`):**
+    - En alto contraste, un contorno de 1px que reemplaza al relleno y al borde que ese modo borra. La X del aviso tiene el mismo.
+    - El color de apretado ya no aparece con Espacio mientras el botón carga.
+    - Si llegan `loading` y `disabled` juntos, gana `loading`.
+    - ADR 0009: el resultado de la acción lo anuncia la pantalla que usa el botón.
+  - **Slice 2, `MetricCard` y `StatusBadge` (#40, commit `6dd3e75`):** el mismo contorno para los skeletons de la card y la píldora del badge. Además, se corrigió un bug: con una card cargando, toda la página tenía scroll horizontal.
+- **La idea:** el alto contraste de Windows cambia todos los colores por los del sistema y **borra fondos y sombras**. Lo que se dibujaba con un relleno o con `box-shadow` desaparece: el botón primary, el borde del secondary, los skeletons y la píldora del badge. El arreglo es un `outline` de 1px que aparece solo en ese modo (`forced-colors:` en Tailwind). Como no ocupa lugar, nada cambia de tamaño, y Windows le pone su color.
+- **Por qué el resultado no lo anuncia el botón:** el botón no sabe si guardar salió bien o mal, ni qué texto corresponde. Lo sabe la pantalla, que lo escribe en una zona `role="status"`. Esa zona existe desde el principio vacía, porque si aparece junto con el texto el lector no la oye.
+- **Por qué no Radix:** ninguno de estos componentes lo necesita, porque el `<button>` nativo ya trae teclado y foco. Radix o Base UI entran con el modal de "Nuevo proyecto" (#10) y con tabs o selectores (#18): tienen patrones de teclado propios (Esc, flechas, foco atrapado).
+- **Lo que apareció:**
+  - `pointer-events: none` frena al mouse, pero no al teclado.
+  - El título oculto de la card que carga tenía `w-full` y `sr-only` juntos: medía el ancho de la ventana y empujaba la página de costado. En la 6.2 se midió la card (bien) y no la página.
+- **Decidí:** no hacer la prueba con NVDA en esta clase. Quedó en el #39, para hacerla con las stories de la 6.4.
+- **Evidencia:** en Chrome, con el alto contraste emulado por el protocolo de Chrome:
+  - Los contornos aparecen solo en ese modo y ningún tamaño cambia (botones de 40 y 32px, cards de 194px, badges de 24px).
+  - El foco se distingue del contorno.
+  - Con Espacio, el botón que carga no se pinta.
+  - Sin scroll a 800 ni a 320.
+  - `audit` 17/20 (`Button`) y 18/20 (card y badge).
+  - Figma: una anotación nueva de *Accessibility* en cada componente.
+  - UNVERIFIED: el lector de pantalla real (#39).
+
 ---
 
 ## 6. El repo, archivo por archivo
@@ -217,7 +242,7 @@ gurises-unidos-dashboard/
 │   ├── PENDING_TASKS.md
 │   ├── adr/
 │   │   ├── README.md
-│   │   └── 0001 … 0008
+│   │   └── 0001 … 0009
 │   └── research/
 │       ├── figma-mcp-options.md
 │       └── v1-case-study.md
@@ -261,9 +286,9 @@ gurises-unidos-dashboard/
 | `app/globals.css` | Lo que no es token | Importa Tailwind y `tokens.css`, excluye `scripts/` y `tokens/` de la búsqueda de clases, define la fuente, el fondo de la página y la variante `demo-dismissed:`, que oculta el aviso cuando está cerrado. |
 | `components/DemoNotice.tsx` | El aviso de datos ficticios | Una región con nombre "Aviso de datos ficticios" (desde la 5.6; antes era un `<aside>` genérico), con un borde inferior `border-accent`, el texto fijo y el botón "Cerrar aviso". Es *client component* porque tiene un clic. Al cerrarse, guarda `dismissed` en `localStorage` y pasa el foco al contenido. Un script en línea lo oculta antes de pintar si ya estaba cerrado. Los íconos son `<Icon>` (6.2); la X sigue siendo un botón interno hasta que aparezca un segundo botón de solo ícono. |
 | `components/Icon.tsx` | Los íconos del sistema | Traduce los 12 nombres de Figma (`currency`, `arrow-up`) a los de `lucide-react` (`DollarSign`, `MoveUp`), con trazo de 1,5px a cualquier tamaño. Toma el color del texto. Es decorativo (oculto al lector) salvo que reciba `label`. |
-| `components/Button.tsx` | El botón del sistema | `variant` (primary, secondary, ghost) y `size` (md, sm) con `cva`; `iconStart`; `loading`; `disabled` nativo. Hover, foco y apretado son CSS. Mientras carga: mismo ancho, sigue teniendo foco, no hace nada al clic y el lector oye ", cargando". |
-| `components/StatusBadge.tsx` | El estado de un proyecto | Solo `status` (active, paused, error). El texto sale de un mapa ("Activo"…), así el color y el texto no se contradicen. Nunca baja de línea. |
-| `components/MetricCard.tsx` | La card de un indicador | `title`, `value`, `icon`, `state` (default, loading, error) y la tendencia. `trend` y `trendValue` van juntos o no van (lo controla TypeScript), en lugar del `showTrend` de Figma. El título es un h3 que nombra la card, también mientras carga. La tendencia se lee como texto ("Subió 12% respecto del período anterior"). |
+| `components/Button.tsx` | El botón del sistema | `variant` (primary, secondary, ghost) y `size` (md, sm) con `cva`; `iconStart`; `loading`; `disabled` nativo. Hover, foco y apretado son CSS. Mientras carga: mismo ancho, sigue teniendo foco, no hace nada al clic ni se ve apretado con Espacio, y el lector oye ", cargando". `loading` le gana a `disabled`. En alto contraste muestra un contorno de 1px (6.3). |
+| `components/StatusBadge.tsx` | El estado de un proyecto | Solo `status` (active, paused, error). El texto sale de un mapa ("Activo"…), así el color y el texto no se contradicen. Nunca baja de línea. En alto contraste, la píldora muestra un contorno (6.3). |
+| `components/MetricCard.tsx` | La card de un indicador | `title`, `value`, `icon`, `state` (default, loading, error) y la tendencia. `trend` y `trendValue` van juntos o no van (lo controla TypeScript), en lugar del `showTrend` de Figma. El título es un h3 que nombra la card, también mientras carga. La tendencia se lee como texto ("Subió 12% respecto del período anterior"). En alto contraste, los skeletons muestran su contorno (6.3). |
 | `lib/cn.ts` | Combina clases | Une clases y resuelve conflictos: si alguien le pasa `rounded-sm` a un botón `rounded-md`, gana la suya. Conoce los text styles de Figma; si no, los borraba. |
 | `app/favicon.ico` | El ícono de la pestaña | Todavía es el de Next.js; está anotado como pendiente. |
 
@@ -390,6 +415,7 @@ Un ADR (*Architecture Decision Record*) es una decisión por archivo: contexto, 
 | **0006** | Acciones con backend completas, sin guardar | El producto se ve y se comporta como uno real, flujos incluidos. | Al confirmar no pasa nada con los datos; la demo avisa que son ficticios. |
 | **0007** | El CSS de los tokens se genera desde un export de Figma con Style Dictionary | Tres copias a mano coincidían solo hasta el primer cambio; ahora el build controla que Figma y el código se correspondan. | Es un mapeo, no una sincronización: hay que exportar para que el código se entere. Un tipo de token nuevo (sombras, dark mode) pide tocar el script. |
 | **0008** | Variantes con `cva`, clases con `tailwind-merge`, íconos con `lucide-react` | Una tabla de variantes con tipos, como el component set de Figma; shadcn/ui como modelo de API, no como dependencia. | Cuatro dependencias chicas, con versión exacta. Un ícono nuevo va primero al set de Figma y después al mapa de `Icon`. |
+| **0009** | El `Button` muestra que está ocupado; el resultado lo anuncia quien lo usa | Solo la pantalla sabe si salió bien o mal y qué texto corresponde; lo escribe en una zona `role="status"` que existe desde el principio. | Cada flujo (#9, #10, "Reintentar") arma su zona de estado y su mensaje. Si se repite en tres, se extrae. |
 
 ---
 
@@ -424,7 +450,7 @@ issue  →  plan aprobado  →  commits en main (uno por intención)  →  lint,
 
 ## 10. Estado hoy y lo que sigue
 
-**Hecho y verificado:** proyecto creado, tokens del sistema generados desde Figma (6.1), los componentes `Icon`, `Button`, `StatusBadge` y `MetricCard` en código con la API de Figma (6.2), Inter, `lang`, metadata, página `/tokens`, documentación para agentes, el flujo de trabajo (issues, push directo a `main` sin force push ni borrado, plantillas de issue y de PR), el aviso de datos ficticios en todas las pantallas (#20, revisado y mejorado en el #29) e Impeccable puesto a punto (#27).
+**Hecho y verificado:** proyecto creado, tokens del sistema generados desde Figma (6.1), los componentes `Icon`, `Button`, `StatusBadge` y `MetricCard` en código con la API de Figma (6.2), que funcionan con teclado y con el alto contraste de Windows (6.3), Inter, `lang`, metadata, página `/tokens`, documentación para agentes, el flujo de trabajo (issues, push directo a `main` sin force push ni borrado, plantillas de issue y de PR), el aviso de datos ficticios en todas las pantallas (#20, revisado y mejorado en el #29) e Impeccable puesto a punto (#27).
 
 **El backlog está en GitHub Issues:** https://github.com/jonlifschitzpersonal-bit/gurises-unidos-dashboard/issues (el orden de trabajo, en `docs/PENDING_TASKS.md`).
 
@@ -432,7 +458,7 @@ issue  →  plan aprobado  →  commits en main (uno por intención)  →  lint,
 
 | Clase | Qué se suma al dashboard |
 |---|---|
-| 6.3–6.4 | Accesibilidad de los componentes (#37) y Storybook: las stories cierran los issues de cada componente (#12, #3, #13, #4); la referencia de tokens en Storybook y `/tokens` solo en desarrollo (#35) |
+| 6.4 | Storybook: las stories cierran los issues de cada componente (#12, #3, #13, #4); la referencia de tokens en Storybook y `/tokens` solo en desarrollo (#35); la prueba con NVDA (#39) |
 | 5.7 | Pantallas de Gurises Unidos en Figma + slice 1: el shell (sidebar, barra superior, tabs) |
 | 5.8 | Slice 2: los indicadores de alcance + deploy de preview en Vercel |
 | 5.9 | Una pantalla diseñada directo en código, sin pasar por Figma |
@@ -441,7 +467,7 @@ issue  →  plan aprobado  →  commits en main (uno por intención)  →  lint,
 
 **Desde la 5.6, Impeccable** (impeccable.style) revisa y mejora el diseño en cada slice. `critique` y `audit` corren al cerrar cada slice de UI, y los hooks revisan cada cambio mientras el agente edita. Puede mejorar el sistema, pero no saltearlo: lo que cambia el estilo se vuelve token, primero en Figma.
 
-**Pendiente de producto:** el set de datos ficticios (#6: cuántos proyectos y años, nombres y estados). **Antes del primer deploy:** el favicon (#16). **Deuda conocida:** números tabulares en `heading/metric` (#5), el dark mode (#11) y la X del aviso, que pasa a `Button` con un segundo botón de solo ícono (#3). **De la revisión de la 6.2 (decido yo, en Figma):** el `Button` (#36) y la `MetricCard` (#38). **De la revisión de la 5.6:** la marca fija "Datos ficticios" en la barra superior (#30, con el slice 1). **De la 6.1:** las notas de uso que faltan (#34, en la 6.6) y sacar `/tokens` de la demo pública (#35, bloquea el primer deploy).
+**Pendiente de producto:** el set de datos ficticios (#6: cuántos proyectos y años, nombres y estados). **Antes del primer deploy:** el favicon (#16). **Deuda conocida:** números tabulares en `heading/metric` (#5), el dark mode (#11) y la X del aviso, que pasa a `Button` con un segundo botón de solo ícono (#3). **De la revisión de la 6.2 (decido yo, en Figma):** el `Button` (#36) y la `MetricCard` (#38). **De la 6.3:** la prueba con un lector de pantalla real (#39). **De la revisión de la 5.6:** la marca fija "Datos ficticios" en la barra superior (#30, con el slice 1). **De la 6.1:** las notas de uso que faltan (#34, en la 6.6) y sacar `/tokens` de la demo pública (#35, bloquea el primer deploy).
 
 ---
 
@@ -547,6 +573,18 @@ Lo que se repite tres veces o más con la misma intención. La X del aviso se pa
 
 **¿Qué es un ADR y por qué los usás?**
 Un archivo por decisión, con contexto, alternativas y consecuencias. Responde "¿por qué está hecho así?" sin depender de quien lo decidió, y le dice al agente qué no reabrir.
+
+**¿Cómo funcionan tus componentes con el alto contraste de Windows?**
+Ese modo cambia todos los colores por los del sistema y borra fondos y sombras. Mi botón secondary tenía el borde hecho con una sombra (para no sumar alto), así que desaparecía, y los tres botones quedaban como texto suelto. Les agregué un `outline` de 1px que aparece solo en ese modo: no ocupa lugar y Windows le pone su color. Lo mismo para los skeletons y la píldora del badge. Lo probé emulando el modo en Chrome y midiendo que ningún tamaño cambiara.
+
+**¿Cómo anunciás que una acción terminó?**
+El botón solo dice que está ocupado ("Guardar, cargando"). El resultado lo anuncia la pantalla que lo usa, en una zona `role="status"` que existe desde el principio vacía, porque es la única que sabe si salió bien o mal. `status` espera a que el lector termine; `alert` interrumpe, y lo dejo para lo urgente. Está en un ADR.
+
+**¿Usás Radix?**
+Todavía no, porque ninguno de mis componentes lo necesita: un `<button>` nativo ya tiene teclado y foco. Lo voy a usar en el modal y en las tabs, que tienen patrones de teclado propios (Esc, flechas, foco que vuelve al botón que lo abrió). Ahí hacerlo a mano es fácil de hacer mal.
+
+**¿Encontraste algún bug de accesibilidad difícil de ver?**
+Sí: con una card cargando, toda la página tenía scroll horizontal. El título oculto para el lector tenía `w-full` y `sr-only` juntos: `w-full` le ganaba al ancho de 1px y, como `sr-only` es `position: absolute`, medía el ancho de la ventana. En la revisión anterior había medido la card y estaba bien; desde ahí mido el scroll de la página, no solo el componente.
 
 ---
 
