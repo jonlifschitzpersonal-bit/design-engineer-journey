@@ -26,12 +26,11 @@ En pantalla está el dashboard publicado: arriba el alcance, que ocupa toda la f
 
 ## 3 · Por qué este stack (1,5 min)
 
-Cada elección está escrita como decisión (un ADR), con las opciones que consideré y lo que cuesta.
+Cada elección está escrita como decisión (un ADR), con las opciones que consideré.
 
 - **Next.js 16:** convierte componentes de React en una web: páginas, rutas, servidor local y armado para publicar. Publica en Vercel sin configurar nada, y cada carpeta con una página es una URL.
 - **React + TypeScript:** cada propiedad de Figma es una prop con el mismo nombre y los mismos valores, y TypeScript no deja pasar combinaciones que Figma no tiene.
 - **Tailwind v4:** lee los tokens desde CSS. Apagué la paleta que trae y dejé en el tema solo el sistema: un color que no está en Figma directamente no existe.
-- **Lo que cuesta:** Next.js 16 cambió APIs, así que el agente lee la documentación local antes de programar; y las clases de color repiten palabras (`bg-bg-surface`).
 
 **Si preguntan: "¿Por qué no CSS puro o CSS Modules?"** Porque los tokens de Figma pasan directo a clases, y revisar un diff es mucho más fácil: cada clase hace una sola cosa y se lee como el panel de propiedades de Figma.
 
