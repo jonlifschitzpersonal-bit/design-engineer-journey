@@ -124,17 +124,13 @@ Para que cualquier sesión del agente arranque sabiendo todo, el repo tiene `CLA
 
 **Transición:** el ledger me lleva a la pregunta clave: cómo sé que está bien.
 
-## 10 · ¿Cómo sé que está bien? (1,5 min)
+## 10 · ¿Cómo sé que está bien? (1 min)
 
-Cuando una IA escribe el código, la pregunta no es "¿compila?" sino "¿cómo sé que está bien?". La separo en tres.
+Cuando una IA escribe el código, la pregunta no es "¿compila?" sino "¿cómo sé que está bien?". Yo la respondo con un **ledger**: un registro con medidas reales en el navegador, comparadas con Figma. Cada fila se marca PASS, FAIL, UNVERIFIED u OUT OF SCOPE.
 
-1. **¿Es igual al diseño?** Lo responde el **ledger**: medidas reales en el navegador, comparadas con Figma. Cada fila es PASS, FAIL, UNVERIFIED u OUT OF SCOPE.
-2. **¿El código es confiable?** Diez señales que se ven en un diff sin leer toda la sintaxis: valores sin token, duplicados, un `div` que hace de botón, estados inventados, un PASS sin prueba, checks apagados.
-3. **¿El diseño está bien?** El ledger prueba que se construyó bien; una revisión de diseño con **Impeccable** evalúa si se construyó lo correcto. Por ejemplo, encontró que las muestras de `/tokens` usaban colores de acción, justo lo que las notas de la misma página prohíben. Después de corregir, subió de 16 a 21 sobre 28.
+En el mini ledger de la slide, fíjense en la última fila: lo que no probé figura como **UNVERIFIED, nunca como PASS**. Todavía no probé con un lector de pantalla real, y eso queda a la vista. La honestidad sobre lo que no se verificó es parte de la calidad.
 
-En el mini ledger de abajo, fíjense en la última fila: lo que no probé figura como **UNVERIFIED, nunca como PASS**. La honestidad sobre lo que no se verificó es parte de la calidad.
-
-**Si preguntan: "¿Cómo sabés que el código de la IA está bien?"** Con esas tres preguntas, no con confianza.
+**Si preguntan: "¿Cómo sabés que el código de la IA está bien?"** Con un ledger de medidas reales, no con confianza.
 
 **Transición:** para cerrar, lo que aprendí y lo que sigue.
 
