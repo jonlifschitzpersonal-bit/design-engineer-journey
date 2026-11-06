@@ -18,7 +18,7 @@ El cliente es Gurises Unidos, una ONG uruguaya que trabaja con niñas, niños, a
 
 La solución es un dashboard que junta todo en una sola vista: primero el alcance, que es el número que piden los donantes, y después familias, docentes y proyectos activos. Decisión de producto importante: el alcance mide alcance, no impacto, y la interfaz no puede sugerir otra cosa.
 
-La imagen es la sección Resumen que diseñé en Figma, con datos de muestra del sistema. Los datos reales son privados, por eso la demo usa datos ficticios.
+En pantalla está el dashboard publicado, la v1: arriba el alcance, que ocupa toda la fila; después familias, docentes y proyectos activos; y abajo la tabla de proyectos, con filtros por año y departamento. Los datos de la demo son ficticios porque los reales son privados.
 
 **Si preguntan: "¿Por qué datos ficticios?"** Porque los reales son privados. Filtros, búsqueda y estados funcionan igual, y la demo lo avisa en una franja arriba de todas las pantallas.
 
@@ -59,7 +59,7 @@ Los tokens no se copian: se generan.
 3. **Style Dictionary**, la herramienta estándar para compilar tokens, lo convierte en el CSS que lee Tailwind (`npm run tokens`).
 4. El build tiene **controles**: frena si un nombre no coincide con Figma, si un semántico no apunta a un primitivo, si el espaciado no sigue la escala. Probé cada control rompiéndolo a propósito.
 
-Ejemplo: `color/text/muted` en Figma es `text-text-muted` en el código. El mismo nombre de punta a punta. A la derecha, la página `/tokens`, que también se genera sola.
+Ejemplo, a la derecha: `color/text/muted` en Figma apunta a `--gray-600` en el CSS generado, es la clase `text-text-muted` en el código y termina en `#4b5563`. El mismo nombre de punta a punta.
 
 Lo aclaro porque es honesto: es un **mapeo con control, no una sincronización**. El código se entera de un cambio en Figma cuando alguien exporta. Con el plan Starter la API de variables no se puede usar desde CI.
 
@@ -70,7 +70,7 @@ Lo aclaro porque es honesto: es un **mapeo con control, no una sincronización**
 
 ## 6 · Misma API en Figma y en código (1,5 min)
 
-Cada propiedad de Figma es una prop en código, con el mismo nombre y los mismos valores. Arriba, la MetricCard en Figma con sus estados (tendencia arriba, abajo, neutra, cargando, error). Abajo, las mismas tarjetas en el navegador, con Next.js y Tailwind.
+Cada propiedad de Figma es una prop en código, con el mismo nombre y los mismos valores. Arriba, la MetricCard en Figma con sus estados (tendencia arriba, abajo, neutra, cargando, error). Abajo, las tarjetas de métricas del dashboard publicado, cada una con su variación contra el año anterior: el mismo componente, funcionando con datos.
 
 El Button de Figma tiene 24 variantes y en código son dos props: `variant` y `size`. Hover, foco y apretado los maneja el navegador con CSS, y `disabled` es el atributo nativo. Para armar las variantes uso `cva`, que es el component set de Figma escrito como una tabla con tipos. De shadcn/ui tomé la forma de armar la API, no los componentes, porque traen su propio diseño.
 
@@ -84,7 +84,7 @@ Un detalle: el booleano `showTrend` de Figma desapareció en código. Si pasás 
 
 Un componente accesible cumple cuatro cosas: el elemento correcto, un nombre, teclado y foco. Y respeta los modos del sistema, como movimiento reducido y colores forzados.
 
-El caso más lindo es el **alto contraste de Windows**: cambia todos los colores por los del sistema y borra fondos y sombras. Lo que se dibujaba con un relleno desaparece: el botón primario, el borde del secundario, los skeletons, la píldora del badge. La solución es un **contorno de 1 px que aparece solo en ese modo**. No ocupa lugar, así que nada cambia de tamaño, y Windows le pone su color. Arriba, los botones normales; abajo, los mismos con el modo emulado en Chrome.
+El caso más lindo es el **alto contraste de Windows**: cambia todos los colores por los del sistema y borra fondos y sombras. Lo que se dibujaba con un relleno desaparece: el botón primario, el borde del secundario, los skeletons, la píldora del badge. La solución es un **contorno de 1 px que aparece solo en ese modo**. No ocupa lugar, así que nada cambia de tamaño, y Windows le pone su color. Lo verifiqué emulando ese modo en Chrome. A la derecha, el Button en Figma con su tarjeta de anotaciones: ahí quedó escrito qué pasa en alto contraste, qué oye el lector cuando el botón carga y que conserva el foco.
 
 Otra decisión: el botón dice que está ocupado, pero el resultado ("Guardado", "No se pudo guardar") lo anuncia la pantalla en una zona de estado, porque solo ella sabe si salió bien o mal. Quedó escrito como ADR 0009.
 
