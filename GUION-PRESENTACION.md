@@ -1,6 +1,6 @@
 # Guion de la presentación — Dashboard de Gurises Unidos
 
-> Para decir mientras pasás las 12 slides (unos 10–12 minutos). El mismo texto está como notas del orador en cada slide del artifact: https://claude.ai/artifact/CfoUgSzUCbQiKSoChy7Pm7
+> Para decir mientras pasás las 11 slides (unos 10–12 minutos). El mismo texto está como notas del orador en cada slide del artifact: https://claude.ai/artifact/CfoUgSzUCbQiKSoChy7Pm7
 > Cada slide trae lo que se dice, la **transición** a la siguiente y, cuando sirve, un **"si preguntan"**.
 > Datos tomados de `PROGRESO.md` y `DASHBOARD-GURISES-UNIDOS.md` (hasta la clase 6.3).
 
@@ -8,7 +8,7 @@
 
 ## 1 · Portada (30 s)
 
-Hola, soy Jonathan. Vengo del diseño de producto y me dedico a algo que está entre el diseño y el código: diseñar el sistema y también llevarlo al navegador. Les quiero mostrar un caso real, no un ejercicio: el dashboard de Gurises Unidos, una ONG uruguaya. Van a ver cómo un diseño en Figma llega al navegador sin perder nada en el camino, y cómo trabajo con agentes de IA sin perder el control. Son doce pantallas, y después con gusto profundizo en lo que quieran.
+Hola, soy Jonathan. Vengo del diseño de producto y me dedico a algo que está entre el diseño y el código: diseñar el sistema y también llevarlo al navegador. Les quiero mostrar un caso real, no un ejercicio: el dashboard de Gurises Unidos, una ONG uruguaya. Van a ver cómo un diseño en Figma llega al navegador sin perder nada en el camino, y cómo trabajo con agentes de IA sin perder el control. Son once pantallas, y después con gusto profundizo en lo que quieran.
 
 **Transición:** arranco por el problema, porque todo parte de ahí.
 
@@ -35,21 +35,9 @@ Cada elección está escrita como decisión (un ADR), con las opciones que consi
 
 **Si preguntan: "¿Por qué no CSS puro o CSS Modules?"** Porque los tokens de Figma pasan directo a clases, y revisar un diff es mucho más fácil: cada clase hace una sola cosa y se lee como el panel de propiedades de Figma.
 
-**Transición:** además del stack, las herramientas que lo rodean.
-
-## 4 · Las herramientas y por qué (1 min)
-
-- **Figma Console MCP:** leer y escribir Figma. El MCP oficial, en el plan Starter, da 6 llamadas por mes y no escribe. Costo: necesita Figma Desktop abierto y no hay Code Connect, así que el mapeo se documenta a mano.
-- **Style Dictionary + DTCG:** de tokens a CSS. Estándar del W3C. Descarté Tokens Studio (otro plugin y otro formato) y el export directo a CSS del MCP (valores ya resueltos: los primitivos tendrían clases y se perderían los alias).
-- **cva + tailwind-merge:** variantes con tipos; es el component set de Figma escrito en código. De shadcn/ui tomé la forma de la API, no los componentes.
-- **lucide-react:** el set de íconos de Figma ya está basado en Lucide.
-- **Impeccable:** una revisión de diseño en cada cambio de interfaz: evalúa si se construyó lo correcto.
-
-Todo con versión exacta, para que el resultado se pueda repetir.
-
 **Transición:** veamos ahora el sistema en sí, en Figma.
 
-## 5 · El sistema en Figma (1 min)
+## 4 · El sistema en Figma (1 min)
 
 Esto lo hice antes de escribir una línea de código. Tiene tres capas.
 
@@ -61,7 +49,7 @@ Un agente lee la estructura del archivo, no una imagen: los nombres de las capas
 
 **Transición:** y hay un detalle de cómo armo el archivo que sostiene todo lo demás: los nombres de las capas.
 
-## 6 · Nombrar bien las capas (1 min)
+## 5 · Nombrar bien las capas (1 min)
 
 Un detalle que parece menor y sostiene todo lo demás. Un agente no mira la imagen del diseño: lee el **árbol de capas**. Si las capas se llaman `Frame 427`, `Group 12` o `Ellipse 4`, tiene que adivinar qué es cada cosa.
 
@@ -73,7 +61,7 @@ Uno de los últimos pasos de cada trabajo en Figma es una auditoría que busca c
 
 **Transición:** con las capas en orden, veamos cómo llegan los colores y las medidas al código sin copiarlos a mano.
 
-## 7 · Tokens generados, no copiados (1,5 min)
+## 6 · Tokens generados, no copiados (1,5 min)
 
 Los tokens no se copian: se generan.
 
@@ -91,7 +79,7 @@ Lo aclaro porque es honesto: es un **mapeo con control, no una sincronización**
 
 **Transición:** con los tokens resueltos, los componentes.
 
-## 8 · Misma API en Figma y en código (1,5 min)
+## 7 · Misma API en Figma y en código (1,5 min)
 
 Cada propiedad de Figma es una prop en código, con el mismo nombre y los mismos valores. Arriba, la MetricCard en Figma con sus estados (tendencia arriba, abajo, neutra, cargando, error). Abajo, las tarjetas de métricas del dashboard publicado, cada una con su variación contra el año anterior: el mismo componente, funcionando con datos.
 
@@ -103,7 +91,7 @@ Un detalle: el booleano `showTrend` de Figma desapareció en código. Si pasás 
 
 **Transición:** un componente que se ve bien todavía no está terminado. Falta accesibilidad.
 
-## 9 · Accesibilidad (1,5 min)
+## 8 · Accesibilidad (1,5 min)
 
 Un componente accesible cumple cuatro cosas: el elemento correcto, un nombre, teclado y foco. Y respeta los modos del sistema, como movimiento reducido y colores forzados.
 
@@ -119,7 +107,7 @@ Una sorpresa: al revisar, encontré que cualquier página con una tarjeta cargan
 
 **Transición:** ¿y cómo trabajo todo esto con agentes de IA?
 
-## 10 · Trabajar con agentes (1,5 min)
+## 9 · Trabajar con agentes (1,5 min)
 
 Trabajo por **slices**: un pedazo chico con un resultado que se ve y un criterio de "terminado".
 
@@ -137,7 +125,7 @@ Para que cualquier sesión del agente arranque sabiendo todo, el repo tiene `CLA
 
 **Transición:** el ledger me lleva a la pregunta clave: cómo sé que está bien.
 
-## 11 · ¿Cómo sé que está bien? (1,5 min)
+## 10 · ¿Cómo sé que está bien? (1,5 min)
 
 Cuando una IA escribe el código, la pregunta no es "¿compila?" sino "¿cómo sé que está bien?". La separo en tres.
 
@@ -151,7 +139,7 @@ En el mini ledger de abajo, fíjense en la última fila: lo que no probé figura
 
 **Transición:** para cerrar, lo que aprendí y lo que sigue.
 
-## 12 · Cierre (1,5 min)
+## 11 · Cierre (1,5 min)
 
 Tres sorpresas que me enseñaron más que los aciertos.
 
